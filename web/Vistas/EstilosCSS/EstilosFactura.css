@@ -1,0 +1,164 @@
+
+
+input[type="date"] {
+    appearance: none; /* Eliminar los estilos por defecto del navegador */
+    -webkit-appearance: none; /* Para Webkit (Chrome, Safari) */
+   /* -moz-appearance: textfield; /* Para Firefox */
+
+    background-color: #f8f9fa;
+    border: 2px solid #007bff; /* Color del borde */
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 16px;
+    color: #495057;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.6); /* Cambia el color del icono del calendario */
+}
+
+
+.label_{
+    color: #000;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    white-space: nowrap;
+    padding: 0.5rem 0.5rem;
+    font-size: 16px;
+
+}
+input{
+    font-weight: 600;
+    font-size: 13px;
+}
+
+/* Comentario: Estilo para los botones 1 */
+.formulario__btnNuevo {
+    height: 40px;  /* Altura del botón */
+    line-height: 40px;    /* Altura de la línea del texto dentro del botón */
+    width: 25%;  /* Ancho del botón */
+    background: #0062cc;     /* Color de fondo del botón */
+    color: #fff;     /* Color del texto del botón */
+    font-weight: bold;     /* Grosor de la fuente del texto */
+    border: none;     /* Sin borde */
+    border-radius: 3px;   /* Radio del borde del botón */
+    cursor: pointer;   /* Cursor al pasar sobre el botón */
+    transition: .1s ease all;   /* Transición de todas las propiedades con duración de 0.1 segundos */
+}
+/* Estilo al pasar el cursor sobre el botón */
+.formulario__btnNuevo:hover {
+    box-shadow: 3px 0px 30px rgba(50,120,100, 1); /* Sombra del botón al pasar el cursor */
+}
+
+
+@media print{
+
+    .parte1{
+        display: none;
+
+    }
+
+}
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+  /* Sombra y bordes suaves para la tabla */
+            .table {
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                border: none;
+            }
+
+            /* Cambiar color al pasar el ratón */
+            .table-hover tbody tr:hover {
+                background-color: #f1f1f1;
+            }
+
+.table-bordered {
+    border: 2px solid #007bff;
+}
+
+.thead-dark th {
+    background-color: #343a40;
+    color: #fff;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.table td, .table th {
+    vertical-align: middle;
+}
+
+tfoot td {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.formulario__grupo-btn-enviar {
+    margin-top: 20px;
+}
+
+.formulario__btnNuevo {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+}
+
+.btn-success {
+    padding: 10px 30px;
+    font-size: 1.2rem;
+}
+
+.table td {
+    text-align: center;
+}
+
+.table th {
+    text-align: center;
+}
+
+/* Estilo del ícono de eliminar */
+#mipapelera {
+    color: #ff0000;
+    cursor: pointer;
+}
+
+#fechaFactura {
+    margin-bottom: 10px;
+}
+
+/* Para dar estilo general de factura */
+body {
+    font-family: 'Arial', sans-serif;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-body h4 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+
+h3{
+    /* Familia de fuentes para el texto del cuerpo */
+    font-family: 'Roboto', sans-serif;
+    color: #00008B;
+
+}
+
+
+

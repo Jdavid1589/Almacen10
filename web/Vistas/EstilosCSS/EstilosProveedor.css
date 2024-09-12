@@ -1,0 +1,93 @@
+
+
+
+#myTable_buttons_bottom {
+    text-align: center; /* Centra el contenido del contenedor */
+    margin-top: -60px;   /* Añadir un poco de espacio superior si es necesario */
+
+}
+
+
+.btn {
+    border-radius: 10px; /* Redondear los botones */
+}
+
+
+/* Aumentando la especificidad del selector */
+button.close.elegant-close {
+    position: absolute !important; /* Posiciona el botón en la esquina del modal */
+    top: 15px !important;
+    right: 15px !important;
+    width: 35px !important;
+    height: 35px !important;
+    border: none !important;
+    border-radius: 50% !important;
+    background-color: #f8f9fa !important; /* Color de fondo suave */
+    color: #333 !important; /* Color del icono */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: background-color 0.3s, color 0.3s !important;
+}
+
+button.close.elegant-close:hover {
+    background-color: #333 !important; /* Cambia el color de fondo al pasar el mouse */
+    color: #fff !important; /* Cambia el color del icono al pasar el mouse */
+}
+
+button.close.elegant-close span {
+    font-size: 20px !important;
+}
+
+
+/* Ajustes al contenedor */
+.table-container {
+    background-color: #f8f9fc;
+    border-radius: 0.5rem;
+    padding: 1rem;
+}
+
+/* Estilo adicional para los campos de formulario */
+.form-control {
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+}
+
+/* Sombra y bordes suaves para la tabla */
+.table {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+/* Cambiar color al pasar el ratón */
+.table-hover tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Botones con márgenes */
+.btn-group .btn {
+    margin-right: 0.3rem;
+}
+
+/* Datos de paginación más pequeños */
+.dataTable_bottom {
+    font-size: 0.85rem;
+}
+
+/* Estilo personalizado para el botón */
+.btn-elegant {
+    background-color: #28a745; /* Color verde personalizado */
+    border-color: #28a745;
+    color: white;
+    font-weight: bold;
+    border-radius: 25px; /* Bordes redondeados */
+    padding: 10px 20px;  /* Espaciado personalizado */
+    transition: background-color 0.3s ease; /* Efecto de transición */
+}
+
+.btn-elegant:hover {
+    background-color: #218838; /* Cambia el color al pasar el ratón */
+    color: #fff;
+}
+
+

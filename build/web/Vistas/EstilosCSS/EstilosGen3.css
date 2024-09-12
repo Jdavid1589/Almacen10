@@ -1,0 +1,226 @@
+
+
+*{
+    padding: 0px;
+
+}
+
+.my-btn {
+    font-family: 'Roboto', sans-serif;
+    white-space: nowrap;
+    padding: 0.5rem 1rem;
+    font-size: 12px;
+    border-radius: 0.25rem;
+}
+
+.my-btn:hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+a #mipapelera{
+    font-size: 25px;
+    color: #66ff66;
+    transition: 0.3s;
+
+}
+a #mipapelera:hover{
+
+    color: #FF0000;
+    box-shadow: 3px 0px 30px rgba(246, 78, 60, 1.5);
+
+}
+
+/* Estilo para contenedor de tabla */
+.table-container {
+    max-height: 800px;
+ overflow-y:  scroll; /* Agrega una barra de desplazamiento vertical si es necesario */
+    margin-right: 3px;
+}
+
+/* Estilo para el encabezado de la tabla */
+.table-container thead {
+    position: sticky;
+    top: 0;
+    /* background-color: #0056b3;*/
+    background: rgb(25, 55, 86); /*Azul Oscuro */
+    color: #000; /* Color de texto más suave */
+    z-index: 1;
+
+}
+
+#miform2{
+    background-color: #E5E5E5; /* Fondo gris claro */
+    /* Familia de fuentes para el texto */
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    /* Color de fondo del cuerpo */
+    border-radius: 15px;
+}
+
+.miTH{
+
+    border-right: 2px solid #99ff99;
+    color: #09f;
+    text-align-last:  center;
+
+}
+.table-responsive {
+    overflow-x: auto; /* Habilita el desplazamiento horizontal si la tabla es más ancha que su contenedor */
+}
+
+.table-responsive table {
+    width: 100%;
+    border-collapse: collapse; /* Para evitar espacios entre celdas */
+}
+
+.table-responsive table th,
+.table-responsive table td {
+    padding: 8px; /* Ajusta según sea necesario para el espacio interno */
+    border: 1px solid #ddd; /* Agrega un borde para la visibilidad */
+    overflow: hidden; /* Oculta el desbordamiento */
+    text-overflow: ellipsis; /* Agrega puntos suspensivos cuando el contenido es demasiado largo */
+    white-space: normal; /* Permite que el texto se ajuste automáticamente */
+}
+
+/* Estilo para los títulos h1 */
+h1 {
+    margin: .65em 0;
+    font-size: 2em;
+    position: sticky;
+    top: 0;
+    background-color: #ffffff;
+    z-index: 1;
+    color: #000;
+    font-family: 'Open Sans', sans-serif;
+    margin-top: 90px;
+}
+
+
+
+/* Estilo para los títulos h2 y h3 */
+h2, h3 {
+    font-family: 'Open Sans', sans-serif;
+    color: #FF0000;
+    text-align: center;
+    line-height: 1.5;
+
+}
+
+
+#label-azul {
+    color: blue;
+}
+
+/* Estilo para el título personalizado */
+.custom-title {
+    font-family: 'Open Sans', sans-serif;
+    color: #0056b3;
+    text-align: center;
+    line-height: 1.5;
+
+}
+/* Estilo que el menu de la barra de abra horizontalmente  */
+.horizontal-menu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.horizontal-menu .nav-link {
+    margin-right: 10px;
+}
+
+h4{
+    color: rgb(66, 196, 66);
+    font-family: Tahoma;
+    text-align: center;
+    margin-top: 30px;
+    font-weight: bold;
+    font-size: 22px;
+
+    border-radius: 10px;
+
+}
+.form{
+    margin-left: 40px;
+    margin-top: 60px;
+}
+.my-menu-item span {
+    color: #ccc;
+    font-size: 22px;
+}
+/* Centra el título del modal */
+.modal-title {
+    text-align: center;
+    color: #333; /* Color del texto */
+}
+/* Agrega relleno y margen a los elementos del formulario para un mejor espaciado */
+.modal-body form .form-group {
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+/* Estiliza el botón de cierre */
+.modal-content .btn-close {
+    color: #333; /* Color del botón de cierre */
+}
+
+/* Estiliza el botón de envío si tienes uno */
+.modal-body form .btn-submit {
+    background-color: #007bff; /* Color de fondo del botón de envío */
+    color: #fff; /* Color del texto del botón de envío */
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+/* Agrega un efecto al pasar el ratón por encima del botón de envío */
+.modal-body form .btn-submit:hover {
+    background-color: #0056b3; /* Nuevo color de fondo al pasar el ratón */
+}
+
+.campo-invalido {
+    border: 1px solid red; /* Cambia el borde a rojo para resaltar el campo */
+    background-color: #ffcccc; /* Cambia el fondo a un tono rojo claro */
+}
+
+/*   * Estilos para el elemento con el id 'th_' Lodos   */
+#th_ {
+    background: #fff;            /* Establece el color de fondo del elemento a blanco */
+    font-size: 12px;             /* Establece el tamaño de la fuente a 14 píxeles */
+    font-weight: bold;           /* Establece el peso de la fuente a 'bold', haciendo que el texto sea negrita */
+
+    font-family: 'Roboto', Arial Narrow;
+    /* 
+   * Aplica la fuente 'Raleway' al texto del elemento.
+   * La fuente 'Raleway' es una fuente personalizada que se carga desde Google Fonts.
+   * Si por alguna razón 'Raleway' no se puede cargar, se usa 'sans-serif' como una fuente de respaldo.
+   * 'sans-serif' es una categoría de fuentes sin adornos en los extremos de los caracteres,
+   * lo que las hace generalmente más legibles en pantallas digitales.
+   */
+}
+#th_2 {
+    background:  #ffe8a1;
+    color:  #09f;
+    font-family: 'Roboto', Arial Narrow;
+    font-size: 14px;
+    font-weight: bold;
+}
+#th_2_ {
+
+    color:  #fff;
+    font-family: 'Roboto', Arial Narrow;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+
+
+
+
+

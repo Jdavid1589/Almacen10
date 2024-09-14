@@ -1,0 +1,72 @@
+     /* General Styles */
+           
+
+            /* Container Styles */
+            #login-container {
+                max-width: 400px;
+                margin: 50px auto;
+                padding: 20px;
+                background: rgba(255, 255, 255, 0.9); /* Fondo blanco con opacidad para hacer el formulario destacar */
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+
+            /* Title Styles */
+            .form-title {
+                margin-bottom: 20px;
+                font-size: 24px;
+                font-weight: bold;
+                text-align: center;
+                color: #007bff;
+            }
+
+            /* Form Group Styles */
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+            .form-group label {
+                display: block;
+                font-weight: 600;
+                margin-bottom: 5px;
+            }
+
+            .form-input {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                font-size: 16px;
+            }
+
+            /* Button Styles */
+            .submit-btn {
+                width: 100%;
+                padding: 10px;
+                border: none;
+                border-radius: 4px;
+                background-color: #007bff;
+                color: #fff;
+                font-size: 16px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+            .submit-btn:hover {
+                background-color: #0056b3;
+            }
+
+            /* Error Message Styles */
+            .error-message {
+                color: red;
+                text-align: center;
+                margin-top: 10px;
+            }
+
+            /* Brand Styles */
+            .brand {
+                margin-top: 20px;
+                text-align: center;
+                font-size: 18px;
+                color: #666;
+            }

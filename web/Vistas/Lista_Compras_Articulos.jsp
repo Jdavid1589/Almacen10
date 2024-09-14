@@ -87,11 +87,11 @@
 
                                 <div class="row">
                                     <div class="col-sm-6 d-flex">
-                                        <input type="text" class="formulario__input form-control" id="proveedorId" name="proveedorId" value="${param.proveedorId}" placeholder="Código">
-                                        <button class="btn btn-outline-info mx-2" type="submit" name="accion" value="BuscarProveedor">Buscar</button>
+                                        <input type="text" class="formulario__input form-control parte1" id="proveedorId" name="proveedorId" value="${param.proveedorId}" placeholder="Ingrese Código">
+                                        <button class="btn btn-outline-info mx-2 parte1" type="submit" name="accion" value="BuscarProveedor">Buscar</button>
                                     </div>
                                     <div class="col-sm-6">
-                                        <input type="text" class="formulario__input form-control" name="proveedor" value="${proveedorEncontrado.proveedor}" placeholder="Proveedor">
+                                        <input type="text" class="formulario__input form-control" style="font-weight: 600" name="proveedor" value="${proveedorEncontrado.proveedor}" placeholder="Proveedor">
                                     </div>
                                 </div>
 
@@ -107,11 +107,11 @@
 
                                 <div class="row parte1">
                                     <div class="col-sm-6 d-flex">
-                                        <input type="text" class="formulario__input form-control" name="productosId" placeholder="Código" value="${param.productosId}">
+                                        <input type="text" class="formulario__input form-control" name="productosId" placeholder="Ingrese Código" value="${param.productosId}">
                                         <button class="btn btn-outline-info mx-2" type="submit" name="accion" value="BuscarProductos">Buscar</button>
                                     </div>
                                     <div class="col-sm-6">
-                                        <input type="text" class="formulario__input form-control" name="producto" value="${listapr.productos}" placeholder="Producto">
+                                        <input type="text" class="formulario__input form-control" style="font-weight: 550" name="producto" value="${listapr.productos}" placeholder=" Producto">
                                     </div>
                                 </div>
 
@@ -150,14 +150,14 @@
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover sticky-top">
-                                    <thead>
+                                    <thead class="table-header">
                                         <tr class="text-center">
                                             <th>ID Producto</th>
                                             <th>Nombre</th>
                                             <th>Cantidad</th>
                                             <th>Precio Unitario</th>
                                             <th>Subtotal</th>
-                                            <th>Acciones</th>
+                                            <th class="parte1">Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -168,7 +168,7 @@
                                             if (carrito == null || carrito.isEmpty()) {
                                         %>
                                         <tr class="text-center">
-                                            <td colspan="6">No hay productos en el carrito.</td>
+                                            <td colspan="5">No hay productos en el carrito.</td>
                                         </tr>
                                         <%    
                                         } else {
@@ -187,7 +187,7 @@
                                             <td><%= cantidad%></td>
                                             <td><%= currencyFormat.format(costoArticulo)%></td>
                                             <td><%= currencyFormat.format(subtotal)%></td>
-                                            <td>
+                                            <td class="parte1">
                                                 <a href="ControladorCompras?accion=Eliminar&id=<%= detalle.getIdCompraProducto()%>">
                                                     <i id="mipapelera" class="fas fa-trash"></i>
                                                 </a>
@@ -201,8 +201,11 @@
                                         %>
                                     </tbody>
                                     <tfoot>
-                                        <tr class="text-right">
-                                            <td colspan="4"><strong>Total:</strong></td>
+                                        <tr class="line-before-footer">
+                                            <td colspan="6"></td> <!-- Asegúrate de que el número de columnas coincide con el de tu tabla -->
+                                        </tr>
+                                        <tr class="text-right " style="background-color: #ffecb5">
+                                            <td colspan="2"><strong>Total Factura:</strong></td>
                                             <td colspan="2"><%= currencyFormat.format(total)%></td>
                                         </tr>
                                     </tfoot>
@@ -226,13 +229,13 @@
         </div>
 
 
-
+        <!-- Script Limpiar campos  -->
         <script>
             // Función para limpiar los campos del formulario
             function limpiarCampos() {
-                //  document.getElementById('fecha').value = '';
-              //  document.getElementById('Idproveedor').value = '';
-               // document.getElementById('proveedor').value = '';
+         document.getElementById('fecha').value = '';
+                 document.getElementById('Idproveedor').value = '';
+                document.getElementById('proveedor').value = '';
                 document.getElementById('IdProducto').value = '';
                 document.getElementById('producto').value = '';
                 document.getElementById('precio').value = '';

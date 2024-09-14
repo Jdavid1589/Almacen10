@@ -103,6 +103,7 @@ main {
     grid-template-columns: 1fr 1fr;
     /* Espacio entre las celdas de la cuadrícula */
     gap: 10px;
+    text-transform: uppercase; /* Convertir texto a mayúsculas */
 
 
 }
@@ -123,12 +124,14 @@ label {
     font-size: 16px;
     background-color: #f8f9fa;
     color: #495057;
+    text-transform: uppercase; /* Convertir texto a mayúsculas */
 }
 
 .formulario__label {
     color: #007bff;
     font-weight: bold;
     margin-bottom: 5px;
+    text-transform: uppercase; /* Convertir texto a mayúsculas */
 }
 
 
@@ -142,6 +145,7 @@ label {
     padding: 10px;
     /* Cursor al pasar sobre la etiqueta */
     cursor: pointer;
+    text-transform: uppercase; /* Convertir texto a mayúsculas */
 }
 
 
@@ -164,6 +168,7 @@ label {
     border: 3px solid #0075FF;
     outline: none;
     box-shadow: 3px 0px 30px rgba(163,163,163, 0.4);
+    text-transform: uppercase; /* Convertir texto a mayúsculas */
 }
 
 .formulario__input-error {

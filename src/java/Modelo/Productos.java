@@ -9,10 +9,12 @@ public class Productos {
     private int idProductos;
     private String productos;
     private String plu;
+    private String fechaActualizacion;   
     private BigDecimal precioCompra;
     private BigDecimal precioVenta;
     private int categoriasId;
     private int proveedoresId;
+    private int porcIva;
     private int unidadMedidaId;
     private double cantidadDisponible;
     
@@ -22,17 +24,41 @@ public class Productos {
     public Productos() {
     }
 
-    public Productos(int idProductos, String productos, String plu, BigDecimal precioCompra, BigDecimal precioVenta, int categoriasId, int proveedoresId, int unidadMedidaId, double cantidadDisponible) {
+    public Productos(int idProductos, String productos, String plu, String fechaActualizacion, BigDecimal precioCompra, BigDecimal precioVenta, int categoriasId, int proveedoresId, int porcIva, int unidadMedidaId, double cantidadDisponible) {
         this.idProductos = idProductos;
         this.productos = productos;
         this.plu = plu;
+        this.fechaActualizacion = fechaActualizacion;
         this.precioCompra = precioCompra;
         this.precioVenta = precioVenta;
         this.categoriasId = categoriasId;
         this.proveedoresId = proveedoresId;
+        this.porcIva = porcIva;
         this.unidadMedidaId = unidadMedidaId;
         this.cantidadDisponible = cantidadDisponible;
     }
+
+    
+    
+    
+    public String getFechaActualizacion() {
+        return fechaActualizacion;
+    }
+
+    public void setFechaActualizacion(String fechaActualizacion) {
+        this.fechaActualizacion = fechaActualizacion;
+    }
+
+    
+
+    public int getPorcIva() {
+        return porcIva;
+    }
+
+    public void setPorcIva(int porcIva) {
+        this.porcIva = porcIva;
+    }
+
 
     public int getIdProductos() {
         return idProductos;

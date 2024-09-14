@@ -11,9 +11,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
-
-
 public class DaoProductos {
 
     static Conexion cn = Conexion.getInstance();
@@ -26,8 +23,8 @@ public class DaoProductos {
         try {
             con = cn.getConnection();
             String sql = "INSERT INTO productos (productos, plu, categoriasId, proveedoresId, unidadMedidaId,"
-                    + "cantidadDisponible, precioCompra, precioVenta) "
-                    + "VALUES(?,?,?,?,?,?,?,?);";
+                    + "cantidadDisponible, precioCompra, precioVenta, porcIva, fechaActualizacion) "
+                    + "VALUES(?,?,?,?,?,?,?,?,?,?);";
             ps = con.prepareStatement(sql);
 
             ps.setString(1, productos.getProductos());
@@ -38,6 +35,8 @@ public class DaoProductos {
             ps.setDouble(6, productos.getCantidadDisponible());
             ps.setBigDecimal(7, productos.getPrecioCompra());
             ps.setBigDecimal(8, productos.getPrecioVenta());
+            ps.setInt(9, productos.getPorcIva());
+            ps.setString(10, productos.getFechaActualizacion());
 
             if (ps.executeUpdate() > 0) {
                 return true;
@@ -71,6 +70,8 @@ public class DaoProductos {
                 productos1.setProveedoresId(rs.getInt("proveedoresId"));
                 productos1.setPrecioCompra(rs.getBigDecimal("precioCompra"));
                 productos1.setPrecioVenta(rs.getBigDecimal("precioVenta"));
+                productos1.setPorcIva(rs.getInt("porcIva"));
+                productos1.setFechaActualizacion(rs.getString("fechaActualizacion"));
 
                 lista.add(productos1);
             }
@@ -91,7 +92,7 @@ public class DaoProductos {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {  // Usamos `if` en lugar de `while` porque solo debería haber una fila
-              //   Productos  productos1 = new Productos();
+                    //   Productos  productos1 = new Productos();
 
                     productos.setIdProductos(rs.getInt("idProductos"));
                     productos.setProductos(rs.getString("productos"));
@@ -102,6 +103,8 @@ public class DaoProductos {
                     productos.setProveedoresId(rs.getInt("proveedoresId"));
                     productos.setPrecioCompra(rs.getBigDecimal("precioCompra"));
                     productos.setPrecioVenta(rs.getBigDecimal("precioVenta"));
+                    productos.setPorcIva(rs.getInt("porcIva"));
+                    productos.setFechaActualizacion(rs.getString("fechaActualizacion"));
                 }
             }
         } catch (SQLException ex) {
@@ -111,9 +114,9 @@ public class DaoProductos {
 
         return productos;
     }
-    
+
     // Metodo para busqueda   
-        public static Productos buscarProducto(int id) {
+    public static Productos buscarProducto(int id) {
 
         String sql = "SELECT * FROM productos WHERE idProductos=?";
 
@@ -122,7 +125,7 @@ public class DaoProductos {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {  // Usamos `if` en lugar de `while` porque solo debería haber una fila
-              //   Productos  productos1 = new Productos();
+                    //   Productos  productos1 = new Productos();
 
                     productos.setIdProductos(rs.getInt("idProductos"));
                     productos.setProductos(rs.getString("productos"));
@@ -133,6 +136,8 @@ public class DaoProductos {
                     productos.setProveedoresId(rs.getInt("proveedoresId"));
                     productos.setPrecioCompra(rs.getBigDecimal("precioCompra"));
                     productos.setPrecioVenta(rs.getBigDecimal("precioVenta"));
+                    productos.setPorcIva(rs.getInt("porcIva"));
+                    productos.setFechaActualizacion(rs.getString("fechaActualizacion"));
                 }
             }
         } catch (SQLException ex) {
@@ -142,8 +147,7 @@ public class DaoProductos {
 
         return productos;
     }
-    
-   
+
     //Se debe asegurar el mismo orden
     public static boolean editar(Productos productos) {
         Connection con = null;
@@ -153,11 +157,11 @@ public class DaoProductos {
             con = cn.getConnection();
             String sql = "UPDATE productos SET productos = ?, plu = ?, "
                     + "categoriasId = ?, proveedoresId = ?, unidadMedidaId = ?, "
-                    + "cantidadDisponible = ?, precioCompra = ?, precioVenta  = ? "
+                    + "cantidadDisponible = ?, precioCompra = ?, precioVenta  = ?, porcIva = ?, fechaActualizacion = ? "
                     + "WHERE idProductos = ?";
 
             ps = con.prepareStatement(sql);
-            
+
             ps.setString(1, productos.getProductos());
             ps.setString(2, productos.getPlu());
             ps.setInt(3, productos.getCategoriasId());
@@ -166,7 +170,9 @@ public class DaoProductos {
             ps.setDouble(6, productos.getCantidadDisponible());
             ps.setBigDecimal(7, productos.getPrecioCompra());
             ps.setBigDecimal(8, productos.getPrecioVenta());
-            ps.setInt(9, productos.getIdProductos());
+            ps.setInt(9, productos.getPorcIva());
+            ps.setString(10, productos.getFechaActualizacion());
+            ps.setInt(11, productos.getIdProductos());
 
             int rowsAffected = ps.executeUpdate();
 

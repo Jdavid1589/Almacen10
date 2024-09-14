@@ -1,9 +1,15 @@
 
 
+.line-before-footer td {
+    /* border-top: 2px solid #dee2e6; /* Color y grosor de la línea horizontal */
+    padding: 0; /* Elimina el relleno en la celda */
+    border: none;
+}
+
 input[type="date"] {
     appearance: none; /* Eliminar los estilos por defecto del navegador */
     -webkit-appearance: none; /* Para Webkit (Chrome, Safari) */
-   /* -moz-appearance: textfield; /* Para Firefox */
+    /* -moz-appearance: textfield; /* Para Firefox */
 
     background-color: #f8f9fa;
     border: 2px solid #007bff; /* Color del borde */
@@ -44,6 +50,7 @@ input{
     border-radius: 3px;   /* Radio del borde del botón */
     cursor: pointer;   /* Cursor al pasar sobre el botón */
     transition: .1s ease all;   /* Transición de todas las propiedades con duración de 0.1 segundos */
+
 }
 /* Estilo al pasar el cursor sobre el botón */
 .formulario__btnNuevo:hover {
@@ -59,6 +66,29 @@ input{
     }
 
 }
+
+
+/* Asegúrate de que la tabla se ajuste al ancho del contenedor */
+.table-responsive {
+    overflow-x: auto; /* Permite el desplazamiento horizontal solo si es necesario */
+}
+
+/* Ajustar la tabla para que ocupe el 100% del ancho disponible */
+.table {
+    width: 100%;
+    table-layout: fixed; /* Fija el ancho de las columnas, evita el desbordamiento */
+}
+
+/* Opcional: Ajusta el tamaño del texto si es necesario */
+.table td, .table th {
+    text-overflow: ellipsis; /* Agrega puntos suspensivos si el contenido es demasiado largo */
+    white-space: nowrap; /* Previene el ajuste de texto */
+    overflow: hidden; /* Oculta el contenido desbordado */
+}
+
+
+
+
 .card {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -69,16 +99,16 @@ input{
     font-size: 1.5rem;
 }
 
-  /* Sombra y bordes suaves para la tabla */
-            .table {
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                border: none;
-            }
+/* Sombra y bordes suaves para la tabla */
+.table {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: none;
+}
 
-            /* Cambiar color al pasar el ratón */
-            .table-hover tbody tr:hover {
-                background-color: #f1f1f1;
-            }
+/* Cambiar color al pasar el ratón */
+.table-hover tbody tr:hover {
+    background-color: #f1f1f1;
+}
 
 .table-bordered {
     border: 2px solid #007bff;
@@ -144,7 +174,7 @@ body {
 }
 
 .card-body {
-    padding: 20px;
+    padding: 10px;
 }
 
 .card-body h4 {
@@ -159,6 +189,37 @@ h3{
     color: #00008B;
 
 }
+
+.table-header th {
+    background-color: #f8f9fa; /* Color de fondo más claro para el encabezado */
+    font-weight: bold; /* Fuente en negrita para el encabezado */
+}
+
+.table-responsive {
+    margin-bottom: 20px; /* Espacio entre la tabla y el pie de página */
+}
+
+.card {
+    border-radius: 10px; /* Bordes redondeados para la tarjeta */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil para la tarjeta */
+}
+
+.table-header th {
+    background-color: #343a40; /* Fondo oscuro para el encabezado */
+    color: #ffffff; /* Texto blanco para contraste */
+    /* font-size: 1.1rem; /* Tamaño de fuente ligeramente mayor */
+    font-size: 0.8rem; /* Tamaño de fuente más pequeño */
+    text-transform: uppercase; /* Convertir texto a mayúsculas */
+    border-bottom: 2px solid #007bff; /* Línea inferior azul para el encabezado */
+}
+
+.table thead th {
+    border: none; /* Eliminar bordes predeterminados */
+}
+
+
+
+
 
 
 

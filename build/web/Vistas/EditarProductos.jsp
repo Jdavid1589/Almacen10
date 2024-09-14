@@ -42,6 +42,7 @@
 
         <link href="Vistas/EstilosCSS/EstilosGen3.css" rel="stylesheet" type="text/css"/>
         <link href="Vistas/EstilosCSS/Estilos_generales.css" rel="stylesheet" type="text/css"/>
+          <link href="Vistas/EstilosCSS/EstilosFactura.css" rel="stylesheet" type="text/css"/>
 
 
 
@@ -63,20 +64,7 @@
 
             <style>
 
-                #cuadro {
-                    /* Estilos para tu cuadro de formulario */
-                    max-width: 600px;
-                    margin: 50px auto;
-                    background-color: rgba(255, 255, 255, 0.8); /* el 0.6 es el grado de transparencia/* Fondo semitransparente para que la imagen de fondo sea visible */
-                    padding: 20px;
-
-                    border-radius: 10px;
-
-                    background-color: #ffcc0; /* Cambia #ffcc00 por el color que desees */
-                    padding: 20px; /* Ajusta el relleno según sea necesario */
-
-
-                }
+         
             </style>
 
 
@@ -89,6 +77,18 @@
             <form  class="formulario" id="formulario"   action="ControladorProductos"  autocomplete="off" method="POST"  >    
 
 
+                <div class="formulario__grupo" >
+                    <label for="fechaActualizacion"  class="formulario__label" >Fecha</label>
+                    <input 
+                        type="date" 
+                        value="<%= prod.getFechaActualizacion()%>"
+                        class="formulario__input"                                
+                        id="fechaActualizacion" 
+                        name="fechaActualizacion" 
+
+                        placeholder="Ingrese Nombre">
+                </div>     
+                        
                 <div class="formulario__grupo" >
                     <label for="productos"  class="formulario__label" >Producto</label>
                     <input 
@@ -147,11 +147,6 @@
                         %>
                     </select>
                 </div>
-
-
-
-
-
 
                 <div class="formulario__grupo">
                     <label class="formulario__label" for="proveedoresId">Proveedor</label>
@@ -222,7 +217,17 @@
                         name="precioVenta" 
                         placeholder="Ingrese precio Compra">
                 </div>
+                <div class="formulario__grupo " id="grupo__ID">
+                    <label for="porcIva"class="formulario__label" >% Iva</label>
+                    <input
+                        type="text" 
+                        value="<%= prod.getPorcIva()%>"
+                        class="formulario__input"                          
+                        id="porcIva"
+                        name="porcIva" 
+                        placeholder="Ingrese precio Compra">
                 </div>
+       
 
 
                 <hr>

@@ -32,7 +32,7 @@
 
         <link href="Vistas/EstilosCSS/EstilosGen3.css" rel="stylesheet" type="text/css"/>
         <link href="Vistas/EstilosCSS/Estilos_generales.css" rel="stylesheet" type="text/css"/>
-
+  
 
 
     </head>
@@ -69,14 +69,16 @@
                     <thead style="background-color: #4e73df; color: white;">
                         <tr>
                             <th>ID</th>
+                            <th>FECHA</th>
                             <th>Producto</th>
                             <th>PLU</th>                               
                             <th>Proveedor</th>
                             <th>Categoría</th>
                             <th>Precio Venta</th>
                             <th>Precio Compra</th>
+                            <th>% Iva</th>
                             <th>Unid. Medida</th>
-                            <th>Cantidad Disponible</th>
+                            <th>Cant Disponible</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -86,12 +88,14 @@
                             for (Productos producto : Lista) {%>
                         <tr>
                             <td><%= producto.getIdProductos()%></td>
+                            <td><%= producto.getFechaActualizacion()%></td>
                             <td><%= producto.getProductos()%></td>                    
                             <td><%= producto.getPlu()%></td>                                   
                             <td><%=DaoProveedores.obtenerNombreProveedores(producto.getProveedoresId())%></td>                          
                             <td><%=DaoCategorias.obtenerNombreCategorias(producto.getCategoriasId())%></td>
                             <td>$<%= producto.getPrecioVenta()%></td>   
                             <td>$<%= producto.getPrecioCompra()%></td>   
+                            <td><%= producto.getPorcIva()%></td>     
                             <td><%= DaoUnidMedida.obtenerNombreUnidad(producto.getUnidadMedidaId())%></td>   
                             <td><%= producto.getCantidadDisponible()%></td>   
                             <td>
@@ -125,7 +129,8 @@
 
                     <div class="modal-content" style="background-color: #F2F2F2;"> <!-- Cambia el color de fondo aquí -->
                         <div class="modal-header">
-                            <h5 class="modal-title text-primary  mx-auto"  style="font-size: 22px;" id="registroModalLabel">REGRISTRAR PRODUCTO</h5>
+                      
+                            <h5 class="modal-title text-primary  mx-auto"  style="font-size: 22px; margin-top:  25px" id="registroModalLabel">REGRISTRAR PRODUCTO</h5>
                             <!-- Botón de cerrar estilizado -->
                             <button type="button" class="close elegant-close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
@@ -138,6 +143,16 @@
                             <form class="formulario" id="formulario"   action="ControladorProductos"  autocomplete="off" method="POST" onsubmit="return validarFormulario()" >    
 
                                 <div class="formulario__grupo" >
+                                    <label for="fechaActualizacion"  class="formulario__label" >Fecha</label>
+                                    <input 
+                                        type="date" 
+                                        class="formulario__input"                                
+                                        id="fechaActualizacion" 
+                                        name="fechaActualizacion" 
+                                        placeholder="Ingrese Nombre">
+                                </div>    
+
+                                <div class="formulario__grupo" >
                                     <label for="productos"  class="formulario__label" >Producto</label>
                                     <input 
                                         type="text" 
@@ -146,6 +161,7 @@
                                         name="productos" 
                                         placeholder="Ingrese Nombre">
                                 </div>                           
+
 
                                 <div class="formulario__grupo">
                                     <label for="plu"class="formulario__label" >Plu</label>
@@ -240,9 +256,19 @@
                                         name="precioVenta" 
                                         placeholder="Ingrese precio Compra">
                                 </div>
+
+                                <div class="formulario__grupo">
+                                    <label for="porcIva"class="formulario__label" >% Iva</label>
+                                    <input
+                                        type="text" 
+                                        class="formulario__input"                          
+                                        id="porcIva"
+                                        name="porcIva" 
+                                        placeholder="Ingrese %">
+                                </div>
                         </div>
 
-                        <hr>
+
                         <!-- Grupo: Botones -->
                         <fieldset class="formulario__grupo-btn-enviar my-2 d-flex" >
                             <button class="formulario__btn"  type="submit" name="accion" value="registrar" >
@@ -255,10 +281,6 @@
 
                         </fieldset>
 
-                        <!-- Grupo: Botones -->
-                        <fieldset class="formulario__grupo-btn-enviar">
-
-                        </fieldset>
 
                         </form>
                     </div>

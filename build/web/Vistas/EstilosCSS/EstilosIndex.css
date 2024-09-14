@@ -1,0 +1,136 @@
+/* General Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding:0px;
+    background-color: #f8f9fa; /* Color de fondo suave */
+}
+
+/* Navbar Styles */
+.navbar {
+    background-color: #343a40; /* Color oscuro para el navbar */
+    border-bottom: 3px solid #007bff; /* Línea azul en la parte inferior */
+}
+
+.navbar-brand img {
+    margin-left: 15px;
+}
+
+.navbar-nav .nav-item {
+    margin-left: 20px;
+}
+
+.nav-link, .navbar-toggler-icon {
+    color: #ffffff; /* Color de texto blanco para los enlaces */
+}
+
+.navbar-toggler-icon {
+    background-color: #ffffff; /* Color del icono del toggle */
+}
+
+.btn-outline-light {
+    border-color: #007bff;
+    color: #ffffff;
+}
+
+.btn-outline-light:hover {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+.dropdown-menu{
+    background-color: #6c757d;
+    color: #ffffff;
+    border-color: #23527c;
+
+}
+
+.dropdown-item{
+
+    border-color: #007bff;
+    color: #ffffff;
+
+}
+.dropdown-item:hover{
+
+    background-color: #007bff;
+    color: #ffffff;
+
+}
+
+
+.btn-outline-light-salir {
+    border-color: #007bff;
+    color: #09f;
+}
+
+
+.btn-outline-light-salir:hover {
+    background-color: #d43f3a;
+    color: #ffffff;
+}
+
+/* Contenedor del cuadro elegante */
+.elegant-box {
+    background-color: #ffffff; /* Fondo blanco */
+    padding: 20px;
+    border-radius: 15px; /* Bordes redondeados */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra elegante */
+    text-align: left; /* Alinear el contenido a la izquierda */
+    max-width: 400px; /* Ancho máximo del cuadro */
+    margin: 0 auto; /* Centrado horizontal */
+    border: 1px solid #007bff; /* Borde azul */
+    display: flex; /* Flexbox para alinear la imagen y el texto */
+    align-items: center; /* Centrar verticalmente */
+
+}
+
+/* Estilos para la imagen */
+.welcome-logo {
+    max-width: 90px; /* Tamaño máximo más pequeño para la imagen */
+    height: auto; /* Mantener proporciones */
+    margin-right: 15px; /* Espacio entre la imagen y el título */
+    flex-shrink: 0; /* Evitar que la imagen se reduzca más con flexbox */
+    border-radius: 10px;
+}
+
+/* Estilos para el título */
+.welcome-title {
+    color: #007bff;
+    font-size: 22px;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Contenedor General del Bienvenido */
+.welcome-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    text-align: center;
+    z-index: 1;
+}
+
+
+/* Iframe Styles */
+iframe {
+    border: none;
+}
+
+/* Button Styles */
+.my-btn {
+    border-radius: 4px;
+}
+
+.salir-btn {
+    margin-top: 8px;
+}
+
+/* Container Styles */
+.container-fluid {
+    padding: 0px  0px;
+}
+
+

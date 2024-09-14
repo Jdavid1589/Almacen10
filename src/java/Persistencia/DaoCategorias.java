@@ -21,6 +21,8 @@ public class DaoCategorias {
     static PreparedStatement ps;
     static ResultSet rs;
     static Categorias categorias = new Categorias();
+    
+      private static final Logger LOGGER = Logger.getLogger(DaoCategorias.class.getName());
 
     public static boolean grabar(Categorias categorias) {
         try {
@@ -120,6 +122,45 @@ public class DaoCategorias {
         }
         return "--";
     }
+    
+    
+    
+
+    // Método para obtener el nombre completo de una categoría o subcategoría
+    public static String obtenerNombreCategoriaCompleto(int id) {
+        String nombreCategoria = "--";
+        String sql = "SELECT c1.nombre AS subcategoria, c2.nombre AS categoria_padre " +
+                     "FROM categorias2 c1 " +
+                     "LEFT JOIN categorias2 c2 ON c1.categoria_padre_id = c2.id " +
+                     "WHERE c1.id = ?";
+
+        try (Connection con = cn.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    String subcategoria = rs.getString("subcategoria");
+                    String categoriaPadre = rs.getString("categoria_padre");
+
+                    if (categoriaPadre != null) {
+                        // Si hay categoría padre, devuelve la categoría principal con subcategoría
+                        nombreCategoria = categoriaPadre + " > " + subcategoria;
+                    } else {
+                        // Solo hay subcategoría o categoría principal
+                        nombreCategoria = subcategoria;
+                    }
+                }
+            }
+
+        } catch (SQLException ex) {
+             Logger.getLogger(DaoCategorias.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return nombreCategoria;
+    }
+
+    
 
     public static boolean eliminar(int idCategorias) {
         try {
@@ -163,8 +204,7 @@ public class DaoCategorias {
             }
         } catch (SQLException ex) {
             // Registra el error sin mostrar detalles al usuario
-            Logger.getLogger(DaoCategorias.class
-                    .getName()).log(Level.SEVERE, "Error al acceder a la base de datos", ex);
+             Logger.getLogger(DaoCategorias.class.getName()).log(Level.SEVERE, null, ex);
 
         }
 

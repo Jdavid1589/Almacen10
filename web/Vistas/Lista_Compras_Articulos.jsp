@@ -56,16 +56,17 @@
         <div class="container-fluid mt-4">
             <!-- Encabezado de la factura -->
             <div class="row">
-                <div class="col-sm-12 text-center mb-1">
+                <div class="col-sm-12 text-center mb-1" style="padding-top: 15px">
                     <br>
-                    <h3>Factura de Compra</h3>
-                    <hr style="border: 2px solid #000; margin-bottom:  -3px">
+
+                    <h3 style="color: #0056b3;font-family: 'Roboto', sans-serif;font-weight: 600 ">Factura de Compra</h3>
+                    <hr id="hr_1">
                 </div>
             </div>
 
             <!-- Sección de Datos de la Factura y Proveedor -->
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-5">
                     <div class="card">
                         <div class="card-body">
                             <!-- Fecha de Factura -->
@@ -78,10 +79,12 @@
                                 </div>
 
                                 <!-- Sección de búsqueda de proveedor -->
-                                <div class="row ">
+
+
+                                <div class="row">
                                     <div class="col-sm-12">
                                         <h5>Datos Proveedor</h5>
-                                        <hr style="border: 1px solid #ccc;">
+                                        <hr >
                                     </div>
                                 </div>
 
@@ -101,33 +104,37 @@
                                 <div class="row parte1 ">
                                     <div class="col-sm-12 ">
                                         <h5>Datos del Producto</h5>
-                                        <hr class="parte1" style="border: 1px solid #ccc;">
+                                        <hr class="parte1">
                                     </div>
                                 </div>
 
-                                <div class="row parte1">
+                                <div class="row parte1 mb-3">
                                     <div class="col-sm-6 d-flex">
                                         <input type="text" class="formulario__input form-control" name="productosId" placeholder="Ingrese Código" value="${param.productosId}">
                                         <button class="btn btn-outline-info mx-2" type="submit" name="accion" value="BuscarProductos">Buscar</button>
                                     </div>
                                     <div class="col-sm-6">
-                                        <input type="text" class="formulario__input form-control" style="font-weight: 550" name="producto" value="${listapr.productos}" placeholder=" Producto">
+                                        <input type="text" class="formulario__input form-control" style="font-weight: 600" name="producto" value="${listapr.productos}" placeholder=" Producto">
                                     </div>
                                 </div>
 
                                 <!-- Información del producto -->
                                 <div class="row mb-2 parte1">
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-3">
                                         <label class="formulario__label">Precio Unidad</label>
                                         <input type="text" class="formulario__input form-control" name="precio" value="${'$ '}${listapr.precioCompra}" placeholder="$/0.00">
                                     </div>
-                                    <div class="col-sm-4 parte1">
+                                    <div class="col-sm-3 parte1">
                                         <label class="formulario__label">Cantidad</label>
                                         <input type="number" class="formulario__input form-control" name="cantidad" placeholder="">
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-3">
                                         <label class="formulario__label">Stock</label>
                                         <input type="text" class="formulario__input form-control" name="stock" value="${listapr.cantidadDisponible}" placeholder="Stock">
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label class="formulario__label">%Iva</label>
+                                        <input type="text" class="formulario__input form-control" name="porcIva" value="${listapr.porcIva}" placeholder="%Iva">
                                     </div>
                                 </div>
 
@@ -145,7 +152,7 @@
                 </div>
 
                 <!-- Sección de Carrito -->
-                <div class="col-sm-6">
+                <div class="col-sm-7">
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">
@@ -170,7 +177,7 @@
                                         <tr class="text-center">
                                             <td colspan="5">No hay productos en el carrito.</td>
                                         </tr>
-                                        <%    
+                                        <%
                                         } else {
                                             for (Compras compra : carrito) {
                                                 List<ComprasProductos> articulos = compra.getArticulos();
@@ -228,13 +235,37 @@
             </div>
         </div>
 
+        <style>
+            
+            #hr_1{
+                
+                border: #6c757d solid 2px;
+         
+                margin-bottom: -0.09rem !important;
+            }
+            h5 {
+                margin-bottom: 0.1rem !important; /* Menos espacio debajo del título */
+            }
+
+            hr {
+                border: #6c757d solid 2px;
+                margin-top: 0.5rem !important; /* Reduce el espacio entre el título y el campo */
+                margin-bottom: 0.8rem !important;
+
+            }
+
+            .formulario__input {
+                margin-top: 0.5px !important; /* Evita margen extra encima de los campos */
+            }
+        </style>
+
 
         <!-- Script Limpiar campos  -->
         <script>
             // Función para limpiar los campos del formulario
             function limpiarCampos() {
-         document.getElementById('fecha').value = '';
-                 document.getElementById('Idproveedor').value = '';
+                document.getElementById('fecha').value = '';
+                document.getElementById('Idproveedor').value = '';
                 document.getElementById('proveedor').value = '';
                 document.getElementById('IdProducto').value = '';
                 document.getElementById('producto').value = '';
@@ -242,19 +273,19 @@
                 document.getElementById('cantidad').value = '';
                 document.getElementById('stock').value = '';
             }
-            
+
             // Manejar el clic en el botón "Agregar al Carrito"
             document.getElementById('btnAgregarAlCarrito').addEventListener('click', function () {
                 // Enviar el formulario
                 document.getElementById('formAgregarProducto').submit();
-                
+
                 // Limpiar los campos después de enviar el formulario
                 // Nota: En este caso, los campos se limpiarán después de la redirección, así que no es necesario aquí.
                 // limpiarCampos();
             });
-            
+
             //Funsion para inicializar la fecha 
-            
+
             document.addEventListener('DOMContentLoaded', function () {
                 flatpickr("#fechaFactura", {
                     dateFormat: "Y-m-d", // Formato de fecha
@@ -263,7 +294,7 @@
                     defaultDate: "today", // Fecha por defecto (hoy)
                 });
             });
-            
+
         </script>
 
 

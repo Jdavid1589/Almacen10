@@ -123,7 +123,7 @@ public class DaoCompras {
         }
 
         // Consulta para registrar los detalles de la compra
-        String sqlDetalle = "INSERT INTO comprasproductos (comprasId, productosId, cantidad, costoArticulo) VALUES (?, ?, ?, ?)";
+        String sqlDetalle = "INSERT INTO comprasproductos (comprasId, productosId, cantidad, costoArticulo, porcIva) VALUES (?, ?, ?, ?,?)";
         psDetalle = con.prepareStatement(sqlDetalle);
 
         // Consulta para actualizar la cantidad disponible en la tabla productos
@@ -137,6 +137,7 @@ public class DaoCompras {
             psDetalle.setInt(2, detalle.getProductosId());
             psDetalle.setBigDecimal(3, detalle.getCantidad());
             psDetalle.setBigDecimal(4, detalle.getCostoArticulo());
+            psDetalle.setInt(5, detalle.getPorcIva());
             psDetalle.addBatch();  // Agregar a batch
 
             // Actualizar el stock del producto

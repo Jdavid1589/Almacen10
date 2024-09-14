@@ -41,12 +41,10 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="btn btn-outline-light etiqueta_a" href="ControladorFacturas?accion=listar" target="myframe">Facturas</a>
+                            <a class="btn btn-outline-light etiqueta_a" href="ControladorFacturas?accion=listar" target="myframe">Nueva Venta</a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="btn btn-outline-light etiqueta_a" href="ControladorProveedores?accion=listar" target="myframe">Proveedores</a>
-                        </li>
+
 
                         <li class="nav-item dropdown">
                             <a class="btn btn-outline-light dropdown-toggle etiqueta_a" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -59,16 +57,16 @@
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="ControladorCategorias?accion=listar" target="myframe">Categorias</a></li>
                                 <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item"  href="ControladorProveedores?accion=listar" target="myframe">Proveedores</a></li>
+                                <li><hr class="dropdown-divider"></li>
 
                             </ul>
                         </li>
                     </ul>
 
-                    <form action="ControladorValidar" method="POST" class="mx-auto" style="margin-left: 25px">
-                        <!-- Botón de cierre de sesión -->
-                        <div class="me-auto">
-                            <button class="btn btn-outline-dark my-btn salir-btn" name="accion" value="Salir">Cerrar Sesión</button>
-                        </div>
+                    <!-- Posiciona el botón de cierre de sesión en la esquina derecha -->
+                    <form action="ControladorValidar" method="POST" class="mx-auto">
+                        <button class="btn btn-outline-light-salir" name="accion" value="Salir">Cerrar Sesión</button>
                     </form>
                 </div>
             </div>

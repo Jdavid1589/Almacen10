@@ -211,7 +211,9 @@ public class DaoMovimientos {
                 if (rs.next()) {
                     producto = new Productos(); // Solo crear si hay un resultado
                     producto.setIdProductos(rs.getInt("idProductos"));
+                    producto.setPorcIva(rs.getInt("porcIva"));
                     producto.setProductos(rs.getString("productos"));
+                    producto.setFechaActualizacion(rs.getString("fechaActualizacion"));
                     producto.setPlu(rs.getString("plu"));
                     producto.setCategoriasId(rs.getInt("categoriasId"));
                     producto.setUnidadMedidaId(rs.getInt("unidadMedidaId"));
@@ -270,8 +272,10 @@ public class DaoMovimientos {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {  // Si solo esperas un resultado
                     Productos producto = new Productos();
-                    producto.setIdProductos(rs.getInt("idProductos"));
+                   producto.setIdProductos(rs.getInt("idProductos"));
+                    producto.setPorcIva(rs.getInt("porcIva"));
                     producto.setProductos(rs.getString("productos"));
+                    producto.setFechaActualizacion(rs.getString("fechaActualizacion"));
                     producto.setPlu(rs.getString("plu"));
                     producto.setCategoriasId(rs.getInt("categoriasId"));
                     producto.setUnidadMedidaId(rs.getInt("unidadMedidaId"));

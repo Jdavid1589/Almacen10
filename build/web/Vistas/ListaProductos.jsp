@@ -130,7 +130,8 @@
                     <div class="modal-content" style="background-color: #F2F2F2;"> <!-- Cambia el color de fondo aquí -->
                         <div class="modal-header">
                       
-                            <h5 class="modal-title text-primary  mx-auto"  style="font-size: 22px; margin-top:  25px" id="registroModalLabel">REGRISTRAR PRODUCTO</h5>
+                            <h5 class="modal-title text-primary  mx-auto"  style="font-size: 22px; margin-top:  25px; " id="registroModalLabel">REGRISTRAR PRODUCTO</h5>
+                      
                             <!-- Botón de cerrar estilizado -->
                             <button type="button" class="close elegant-close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>

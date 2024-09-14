@@ -189,6 +189,12 @@ h3{
     color: #00008B;
 
 }
+.h3_1{
+    /* Familia de fuentes para el texto del cuerpo */
+    font-family: 'Roboto', sans-serif;
+    color: #0056b3;
+
+}
 
 .table-header th {
     background-color: #f8f9fa; /* Color de fondo más claro para el encabezado */

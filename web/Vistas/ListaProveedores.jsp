@@ -28,6 +28,7 @@
         <link href="Vistas/EstilosCSS/Estilos_generales.css" rel="stylesheet" type="text/css"/>
         <link href="Vistas/EstilosCSS/EstilosFactura.css" rel="stylesheet" type="text/css"/>
         <link href="Vistas/EstilosCSS/EstilosProveedor.css" rel="stylesheet" type="text/css"/>
+        
     </head>
 
     <body>
@@ -52,6 +53,7 @@
                 <div class="col-sm-5">
                     <div class="card shadow-sm border-0">
                         <div class="card-body">
+                            <br>
                             <br>
                             <h5 class="text-primary elegant-font text-center"><b>REGISTRO</b></h5>
                             <form id="formAgregarProducto" action="ControladorProveedores" method="POST" autocomplete="off" class="formulario">
@@ -111,6 +113,7 @@
                 <div class="col-sm-7">
                     <div class="card shadow-sm border-0">
                         <div class="card-body">
+                            <br>
                             <br>
                             <h5 class="text-primary elegant-font text-center"><b>PROVEEDORES</b></h5>
                             <div class="table-container table-responsive pagination-container shadow-sm p-3 mb-5 bg-white rounded">

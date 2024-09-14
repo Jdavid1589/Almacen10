@@ -6,23 +6,17 @@ import java.util.List;
 
 public class Compras {   //Compra
 
-    private int idCompra; 
-    private String fecha;   
+    private int idCompra;
+    private String fecha;
     private int proveedorId; //kf
     private BigDecimal totalCompra;
-
- private List<ComprasProductos> articulos = new ArrayList<>(); // Inicializado
-
+    private List<ComprasProductos> articulos = new ArrayList<>(); // Inicializado
     
+
     @Override
     public String toString() {
         return "Compras{" + "idCompra=" + idCompra + ", fecha=" + fecha + ", proveedorId=" + proveedorId + ", totalCompra=" + totalCompra + ", articulos=" + articulos + '}';
     }
-    
-    
-    
-    
-    
 
     public List<ComprasProductos> getArticulos() {
         return articulos;
@@ -31,15 +25,14 @@ public class Compras {   //Compra
     public void setArticulos(List<ComprasProductos> articulos) {
         this.articulos = articulos;
     }
-    
-    
+
     public Compras() {
     }
 
-    public Compras(int idCompra, String fecha,  int proveedorId, BigDecimal totalCompra) {
+    public Compras(int idCompra, String fecha, int proveedorId, BigDecimal totalCompra) {
         this.idCompra = idCompra;
         this.fecha = fecha;
-      
+
         this.proveedorId = proveedorId;
         this.totalCompra = totalCompra;
     }
@@ -61,7 +54,6 @@ public class Compras {   //Compra
         this.fecha = fecha;
     }
 
-    
     public int getProveedorId() {
         return proveedorId;
     }
@@ -77,9 +69,5 @@ public class Compras {   //Compra
     public void setTotalCompra(BigDecimal totalCompra) {
         this.totalCompra = totalCompra;
     }
-
-    
-    
-  
 
 }

@@ -7,25 +7,55 @@ public class ComprasProductos {
     private int idCompraProducto;
     private int productosId;
     private int comprasId;
-    private BigDecimal cantidad; //kf 
+    private int porcIva; //Nuevo
+    private BigDecimal cantidad; 
     private BigDecimal costoArticulo;
-   // private int porcIva;
+ 
 
+    public int getComprasId() {
+        return comprasId;
+    }
+
+    public void setComprasId(int comprasId) {
+        this.comprasId = comprasId;
+    }
+
+    public int getPorcIva() {
+        return porcIva;
+    }
+
+    public void setPorcIva(int porcIva) {
+        this.porcIva = porcIva;
+    }
+
+    
+    
+    
+    
+    @Override
+    public String toString() {
+        return "ComprasProductos{" + "idCompraProducto=" + idCompraProducto + ", productosId=" + productosId + ", comprasId=" + comprasId + ", porcIva=" + porcIva + ", cantidad=" + cantidad + ", costoArticulo=" + costoArticulo + '}';
+    }
+
+    
+    
+    
+    
     public ComprasProductos() {
     }
 
-    public ComprasProductos(int idCompraProducto, int productosId, int comprasId, BigDecimal cantidad, BigDecimal costoArticulo) {
+    public ComprasProductos(int idCompraProducto, int productosId, int comprasId, int porcIva, BigDecimal cantidad, BigDecimal costoArticulo) {
         this.idCompraProducto = idCompraProducto;
         this.productosId = productosId;
         this.comprasId = comprasId;
+        this.porcIva = porcIva;
         this.cantidad = cantidad;
         this.costoArticulo = costoArticulo;
     }
 
-    @Override
-    public String toString() {
-        return "ComprasProductos{" + "idCompraProducto=" + idCompraProducto + ", productosId=" + productosId + ", comprasId=" + comprasId + ", cantidad=" + cantidad + ", costoArticulo=" + costoArticulo + '}';
-    }
+  
+
+  
 
     
 

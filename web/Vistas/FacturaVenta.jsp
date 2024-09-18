@@ -17,8 +17,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-        <title>Factura Compras</title>      
+        
+        <title>Factura Venta</title>      
 
         <!-- Bootstrap -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
@@ -96,7 +96,7 @@
                     <div class="card">
                         <div class="card-body">
                             <!-- Fecha de Factura -->
-                            <form id="formAgregarProducto" action="ControladorCompras" method="POST" autocomplete="off" class="custom-form">
+                            <form id="formAgregarProducto" action="ControladorFacturas" method="POST" autocomplete="off" class="custom-form">
                                 <div class="row mb-2">
                                     <div class="col-sm-6">
                                         <label for="fechaFactura" class="formulario__label">Fecha de Factura:</label>
@@ -116,15 +116,11 @@
 
                                 <div class="row">
                                     <div class="col-sm-6 d-flex">
-                                        <input type="text" class="formulario__input form-control" id="proveedorId" name="proveedorId" 
-                                               value="${param.proveedorId}"
-                                             
-                                               placeholder="Código">
-                                        <button class="btn btn-outline-info mx-2" type="submit" name="accion" value="BuscarProveedor">Buscar</button>
+                                        <input type="text" class="formulario__input form-control parte1" id="proveedorId" name="proveedorId" value="${param.proveedorId}" placeholder="Ingrese Código">
+                                        <button class="btn btn-outline-info mx-2 parte1" type="submit" name="accion" value="BuscarProveedor">Buscar</button>
                                     </div>
                                     <div class="col-sm-6">
-                                        <input type="text" class="formulario__input form-control" name="proveedor   " 
-                                               value="${proveedorEncontrado.proveedor}" placeholder="Proveedor">
+                                        <input type="text" class="formulario__input form-control" style="font-weight: 600" name="proveedor" value="${proveedorEncontrado.proveedor}" placeholder="Proveedor">
                                     </div>
                                 </div>
 
@@ -207,7 +203,7 @@
                                         <tr class="text-center">
                                             <td colspan="5">No hay productos en el carrito.</td>
                                         </tr>
-                                        <%
+                                        <%    
                                         } else {
                                             for (Compras compra : carrito) {
                                                 List<ComprasProductos> articulos = compra.getArticulos();
@@ -281,19 +277,19 @@
                 document.getElementById('cantidad').value = '';
                 document.getElementById('stock').value = '';
             }
-
+            
             // Manejar el clic en el botón "Agregar al Carrito"
             document.getElementById('btnAgregarAlCarrito').addEventListener('click', function () {
                 // Enviar el formulario
                 document.getElementById('formAgregarProducto').submit();
-
+                
                 // Limpiar los campos después de enviar el formulario
                 // Nota: En este caso, los campos se limpiarán después de la redirección, así que no es necesario aquí.
                 // limpiarCampos();
             });
-
+            
             //Funsion para inicializar la fecha 
-
+            
             document.addEventListener('DOMContentLoaded', function () {
                 flatpickr("#fechaFactura", {
                     dateFormat: "Y-m-d", // Formato de fecha
@@ -302,7 +298,7 @@
                     defaultDate: "today", // Fecha por defecto (hoy)
                 });
             });
-
+            
         </script>
 
 

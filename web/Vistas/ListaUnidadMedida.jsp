@@ -59,7 +59,7 @@
                         <div class="card-body">
 
 
-                            <h5><b>REGISTRO</b></h5>
+                            <h5>REGISTRO</h5>
                             <!-- Formulario de Registro Productos -->
                             <form   id="formAgregarProducto" class="formulario" action="ControladorUnidMedida"  autocomplete="off" method="POST" >    
 
@@ -103,8 +103,7 @@
                 <div class="col-sm-8">
                     <div class="card shadow-sm border-0">
                         <div class="card-body">
-
-                            <h5><b>LISTA PROVEEDORES</b></h5>
+                            <h5>LISTA UNIDADES</h5>
                             <div class="table-container table-responsive pagination-container shadow-sm p-3 mb-5 bg-white rounded">
                                 <table id="myTable" class="table table-striped table-hover table-bordered">
                                     <thead style="background-color: #4e73df; color: white; text-align: center">
@@ -160,23 +159,7 @@
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-        <!-- Funsion para Modal editar -->
-        <script>
-                                                           $(document).ready(function () {
-                                                               $('.edit-btn').on('click', function (e) {
-                                                                   e.preventDefault(); // Evita la redirección predeterminada
 
-                                                                   var id = $(this).data('id'); // Obtén el ID del producto
-                                                                   // Aquí puedes hacer una llamada AJAX para cargar los datos del producto si es necesario
-                                                                   // $.get('ControladorProductos?accion=editar&id=' + id, function(data) {
-                                                                   //     // Actualiza los campos del modal con los datos recibidos
-                                                                   // });
-
-                                                                   // Muestra el modal
-                                                                   $('#editarProducto').modal('show');
-                                                               });
-                                                           });
-        </script>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 

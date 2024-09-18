@@ -1,137 +1,138 @@
-  /* Cambiar el color de fondo y de texto del encabezado */
-            thead th {
+/* Cambiar el color de fondo y de texto del encabezado */
+thead th {
 
-                color: #fff; /* Color del texto */
-                font-size: 14px;
-            }
-
-
-
-            h3 {
-                color: #388e3c; /* Un tono verde más asociado con frescura y naturaleza */
-                font-family: 'Poppins', sans-serif; /* Fuente más amigable */
-                font-weight: 500; /* Peso moderado */
-                letter-spacing: 0.05rem; /* Espaciado entre letras para mejor legibilidad */
-                font-size: 2rem; /* Ajusta el tamaño según prefieras */
-            }
-
-            #hr_1 {
-                border: 1px solid #ccc;
-                width: 60%; /* Hacer la línea más corta para un estilo más limpio */
-                margin: auto;
-            }
-            h5 {
-                color: #388e3c; /* Un tono verde más asociado con frescura y naturaleza */
-                font-family: 'Poppins', sans-serif; /* Fuente más amigable */
-                font-weight: 500; /* Peso moderado */
-                letter-spacing: 0.05rem; /* Espaciado entre letras para mejor legibilidad */
-                font-size: 1.5rem; /* Ajusta el tamaño según prefieras */
-            }
-
-            hr {
-                border: #6c757d solid 2px;
-                margin-top: 0.5rem !important; /* Reduce el espacio entre el título y el campo */
-                margin-bottom: 0.8rem !important;
-
-            }
-
-            .formulario__input {
-                margin-top: 0.5px !important; /* Evita margen extra encima de los campos */
-            }
+    color: #fff; /* Color del texto */
+    font-size: 14px;
+}
 
 
-            body {
-                font-family: 'Poppins', sans-serif;
-                background-color: #f8f9fa; /* Color de fondo suave */
-            }
 
-            h3, h5 {
-                color: #4caf50; /* Un verde que da frescura */
-                font-weight: 600;
-            }
+h3 {
+    color: #388e3c; /* Un tono verde más asociado con frescura y naturaleza */
+    font-family: 'Poppins', sans-serif; /* Fuente más amigable */
+    font-weight: 500; /* Peso moderado */
+    letter-spacing: 0.05rem; /* Espaciado entre letras para mejor legibilidad */
+    font-size: 2rem; /* Ajusta el tamaño según prefieras */
+}
 
-            #hr_1 {
-                border: 1px solid #ccc;
-                width: 60%;
-                margin: auto;
-            }
 
-            .card {
-                border-radius: 10px;
-                margin-bottom: 20px;
-            }
+h5 {
+    color: #388e3c; /* Un tono verde más asociado con frescura y naturaleza */
+    font-family: 'Poppins', sans-serif; /* Fuente más amigable */
+    font-weight: 500; /* Peso moderado */
+    letter-spacing: 0.05rem; /* Espaciado entre letras para mejor legibilidad */
+    font-size: 1.5rem; /* Ajusta el tamaño según prefieras */
+}
 
-            .formulario__label {
-                font-weight: 500;
-                color: #333;
-            }
+hr {
+    border: #6c757d solid 2px;
+    margin-top: 0.5rem !important; /* Reduce el espacio entre el título y el campo */
+    margin-bottom: 0.8rem !important;
 
-            .formulario__input {
-                border-radius: 5px;
-                border: 1px solid #ccc;
-                padding: 10px;
-                width: 100%;
-                margin-top: 5px;
-            }
+}
 
-            /* Botones */
-            button.btn {
-                border-radius: 25px;
-                padding: 10px 20px;
-                font-size: 0.9rem;
-                transition: background-color 0.3s ease;
-            }
+.formulario__input {
+    margin-top: 0.5px !important; /* Evita margen extra encima de los campos */
+}
 
-            button.btn-primary {
-                background-color: #4caf50; /* Verde para agregar */
-                border: none;
-            }
 
-            button.btn-warning {
-                background-color: #ffa726; /* Naranja para actualizar */
-                border: none;
-            }
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa; /* Color de fondo suave */
+}
 
-            button.btn-secondary {
-                background-color: #78909c; /* Gris para cancelar */
-                border: none;
-            }
+/*h3, h5 {
+   color: #4caf50; /* Un verde que da frescura */
+  /*  color: #0056b3; /* Un Azul que da frescura */
+  /*  font-weight: 600;
+}*/
 
-            button.btn:hover {
-                opacity: 0.9;
-            }
+#hr_1 {
+    border: 1px solid #ccc;
+    width: 60%;
+    margin: auto;
+}
 
-            /* Tabla */
-            table.table {
-                background-color: white;
-                border-radius: 10px;
-            }
+.card {
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
 
-            table.table th {
-                background-color: #388e3c; /* Verde oscuro */
-                color: white;
-                font-weight: bold;
-                text-align: center;
-            }
+.formulario__label {
+    font-weight: 500;
+    color: #333;
+}
 
-            table.table td {
-                text-align: center;
-                padding: 12px;
-            }
+.formulario__input {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 100%;
+    margin-top: 5px;
+}
 
-            table.table-hover tbody tr:hover {
-                background-color: #f1f8e9;
-            }
+/* Botones */
+button.btn {
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
 
-            /* Paginación */
-            .dataTables_paginate {
-                display: flex;
-                justify-content: center;
-                margin-top: 15px;
-            }
+button.btn-primary {
+    background-color: #4caf50; /* Verde para agregar */
+    border: none;
+}
 
-            .dataTables_info {
-                text-align: left;
-                color: #555;
-            }
+button.btn-warning {
+    background-color: #ffa726; /* Naranja para actualizar */
+    border: none;
+}
+
+button.btn-secondary {
+    background-color: #78909c; /* Gris para cancelar */
+    border: none;
+}
+
+button.btn:hover {
+    opacity: 0.9;
+}
+
+/* Tabla */
+table.table {
+    background-color: white;
+    border-radius: 10px;
+}
+
+table.table th {
+    background-color: #388e3c; /* Verde oscuro */
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+table.table td {
+    text-align: center;
+    padding: 12px;
+}
+
+table.table-hover tbody tr:hover {
+    background-color: #f1f8e9;
+}
+
+/* Paginación */
+.dataTables_paginate {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.dataTables_info {
+    text-align: left;
+    color: #555;
+}
+
+
+
+
 

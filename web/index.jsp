@@ -37,7 +37,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="btn btn-outline-light etiqueta_a" href="ControladorMovimientos?accion=listar" target="myframe">Nueva Compra</a>
+                            <a class="btn btn-outline-light etiqueta_a" href="ControladorCompras?accion=FacturaCompra" target="myframe">Nueva Compra</a>
                         </li>
 
                         <li class="nav-item">
@@ -86,7 +86,7 @@
             </div>
         </div>
     </div>
-</body>
+
 
 <script>
     // Función para ocultar el título cuando el iframe cargue una nueva página

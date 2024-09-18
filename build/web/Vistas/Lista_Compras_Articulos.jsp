@@ -17,6 +17,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
         <title>Factura Compras</title>      
 
         <!-- Bootstrap -->
@@ -45,6 +46,31 @@
         <link href="Vistas/EstilosCSS/EstilosFactura.css" rel="stylesheet" type="text/css"/>
 
 
+
+        <!-- Estilos -->
+        <style>
+
+            #hr_1{
+
+                border: #6c757d solid 2px;
+
+                margin-bottom: -0.09rem !important;
+            }
+            h5 {
+                margin-bottom: 0.1rem !important; /* Menos espacio debajo del título */
+            }
+
+            hr {
+                border: #6c757d solid 2px;
+                margin-top: 0.5rem !important; /* Reduce el espacio entre el título y el campo */
+                margin-bottom: 0.8rem !important;
+
+            }
+
+            .formulario__input {
+                margin-top: 0.5px !important; /* Evita margen extra encima de los campos */
+            }
+        </style>
 
     </head>
 
@@ -90,11 +116,15 @@
 
                                 <div class="row">
                                     <div class="col-sm-6 d-flex">
-                                        <input type="text" class="formulario__input form-control parte1" id="proveedorId" name="proveedorId" value="${param.proveedorId}" placeholder="Ingrese Código">
-                                        <button class="btn btn-outline-info mx-2 parte1" type="submit" name="accion" value="BuscarProveedor">Buscar</button>
+                                        <input type="text" class="formulario__input form-control" id="proveedorId" name="proveedorId" 
+                                               value="${param.proveedorId}"
+                                             
+                                               placeholder="Código">
+                                        <button class="btn btn-outline-info mx-2" type="submit" name="accion" value="BuscarProveedor">Buscar</button>
                                     </div>
                                     <div class="col-sm-6">
-                                        <input type="text" class="formulario__input form-control" style="font-weight: 600" name="proveedor" value="${proveedorEncontrado.proveedor}" placeholder="Proveedor">
+                                        <input type="text" class="formulario__input form-control" name="proveedor   " 
+                                               value="${proveedorEncontrado.proveedor}" placeholder="Proveedor">
                                     </div>
                                 </div>
 
@@ -235,29 +265,7 @@
             </div>
         </div>
 
-        <style>
-            
-            #hr_1{
-                
-                border: #6c757d solid 2px;
-         
-                margin-bottom: -0.09rem !important;
-            }
-            h5 {
-                margin-bottom: 0.1rem !important; /* Menos espacio debajo del título */
-            }
 
-            hr {
-                border: #6c757d solid 2px;
-                margin-top: 0.5rem !important; /* Reduce el espacio entre el título y el campo */
-                margin-bottom: 0.8rem !important;
-
-            }
-
-            .formulario__input {
-                margin-top: 0.5px !important; /* Evita margen extra encima de los campos */
-            }
-        </style>
 
 
         <!-- Script Limpiar campos  -->

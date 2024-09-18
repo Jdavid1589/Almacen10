@@ -37,7 +37,7 @@
                 </div>
             </form>
 
-            <p class="brand">SISTEMA ABARROTES</p>
+                <p class="brand"><strong>DISTRIBUIDORA NOGALES</strong></p>
         </div>
 
         <!-- Estilos -->
@@ -49,7 +49,6 @@
                 margin: 0;
                 padding: 0;
                 background-image: url('./img/img_abarrotes.avif'); /* Cambia esta ruta por la ubicación de tu imagen */
-
                 background-size: cover; /* Asegura que la imagen cubra todo el fondo */
                 background-repeat: no-repeat; /* Evita que la imagen se repita */
                 background-attachment: fixed; /* Fija la imagen de fondo para un efecto más elegante */

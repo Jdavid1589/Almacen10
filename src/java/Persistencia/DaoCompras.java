@@ -113,6 +113,7 @@ public class DaoCompras {
         psCompra.setString(1, compra.getFecha());
         psCompra.setInt(2, compra.getProveedorId());
         psCompra.setBigDecimal(3, compra.getTotalCompra());
+        
         psCompra.executeUpdate();
 
         // Obtener el ID generado de la compra
@@ -138,6 +139,7 @@ public class DaoCompras {
             psDetalle.setBigDecimal(3, detalle.getCantidad());
             psDetalle.setBigDecimal(4, detalle.getCostoArticulo());
             psDetalle.setInt(5, detalle.getPorcIva());
+            
             psDetalle.addBatch();  // Agregar a batch
 
             // Actualizar el stock del producto

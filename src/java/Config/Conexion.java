@@ -7,7 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 // Almacen
 public class Conexion {
-      private static final String DATABASE_NAME = "almacen12";
+      private static final String DATABASE_NAME = "almacen13";
    // private static final String URL = "jdbc:mysql://localhost:3306/" + DATABASE_NAME;
     private static final String URL = "jdbc:mysql://localhost:3306/" + DATABASE_NAME + "?useUnicode=true&characterEncoding=UTF-8";
 

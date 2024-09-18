@@ -27,14 +27,23 @@ public class ControladorCompras extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Set the character encoding for the request
+        request.setCharacterEncoding("UTF-8");
+        // Set the content type and character encoding for the response
         response.setContentType("text/html;charset=UTF-8");
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("accion");
+        // Ensure UTF-8 encoding
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
 
         switch (action) {
+            case "FacturaCompra":
+                request.getRequestDispatcher("Vistas/Lista_Compras_Articulos.jsp").forward(request, response);
+                break;
             case "BuscarProveedor":
                 buscarProveedor(request, response);
                 break;
@@ -113,7 +122,7 @@ public class ControladorCompras extends HttpServlet {
         }
     }
 
-     private void agregarProductoAlCarrito(HttpServletRequest request, HttpServletResponse response)
+    private void agregarProductoAlCarrito(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
             // Obtener los parámetros de la solicitud
@@ -195,7 +204,6 @@ public class ControladorCompras extends HttpServlet {
                 detalleCompraProducto.setCantidad(cantidad);
                 detalleCompraProducto.setCostoArticulo(costo);
                 detalleCompraProducto.setPorcIva(porcIva);
-                  
 
                 Compras detalleCompra = new Compras();
 
@@ -214,6 +222,9 @@ public class ControladorCompras extends HttpServlet {
             // Guardar el carrito actualizado en la sesión
             request.getSession().setAttribute("carrito", carrito);
             request.getSession().setAttribute("fechaFactura", fechastr);
+           // request.getSession().setAttribute("proveedorId", proveedorId); // Guardar proveedor en sesión
+
+            mantenerBusquedaProveedor(request);
 
             // Imprimir el contenido del carrito en la consola
             //  System.out.println("Contenido del carrito:");
@@ -265,8 +276,6 @@ public class ControladorCompras extends HttpServlet {
 
     }
 
-
-
     private void registrarCompra(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -291,6 +300,7 @@ public class ControladorCompras extends HttpServlet {
 
         // Crear una nueva instancia de compra
         Compras compraFinal = new Compras();
+
         compraFinal.setProveedorId(proveedorId); // Asignar el proveedor
         compraFinal.setFecha(fechastr); // Asignar la fecha de la compra    
 
@@ -387,6 +397,13 @@ public class ControladorCompras extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Ensure UTF-8 encoding
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
+
+        // Call processRequest to handle the logic
+        processRequest(request, response);
+
         doGet(request, response);
     }
 

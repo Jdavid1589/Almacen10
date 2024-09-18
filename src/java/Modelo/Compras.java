@@ -10,6 +10,7 @@ public class Compras {   //Compra
     private String fecha;
     private int proveedorId; //kf
     private BigDecimal totalCompra;
+    
     private List<ComprasProductos> articulos = new ArrayList<>(); // Inicializado
     
 
@@ -26,6 +27,7 @@ public class Compras {   //Compra
         this.articulos = articulos;
     }
 
+    
     public Compras() {
     }
 
@@ -37,6 +39,8 @@ public class Compras {   //Compra
         this.totalCompra = totalCompra;
     }
 
+    
+    
     //Metodos Get y Set
     public int getIdCompra() {
         return idCompra;

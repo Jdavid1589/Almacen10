@@ -1,219 +1,247 @@
-<%@page import="Persistencia.DaoCategorias"%>
+
+
 <%@page import="Modelo.Categorias"%>
-<%@page import="Persistencia.DaoProveedores"%>
-<%@page import="Modelo.Proveedores"%>
 <%@page import="java.util.List"%>
+<%@page import="Modelo.UnidadMedida"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title> Recibo</title>      
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>    
-        <!-- Bootstrap CSS -->
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <title>Categorias</title>      
+
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+              integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" 
+              crossorigin="anonymous" referrerpolicy="no-referrer">
         <!-- DataTable -->
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css">
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.3/css/buttons.bootstrap5.min.css">
 
-        <!-- Font Awesome -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <!-- Incluye los archivos CSS de Bootstrap -->  
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-...." crossorigin="anonymous" />
+        <!--link href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css" rel="stylesheet"-->
 
+        <link href="Vistas/EstilosCSS/EstilosUnidadaM.css" rel="stylesheet" type="text/css"/>
 
     </head>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const actualizarButton = document.getElementById('btnActualizar');
+            const isEditing = actualizarButton.getAttribute('data-editing') === 'true';
+
+            // Configura el estado del bot贸n basado en el atributo de datos
+            actualizarButton.disabled = !isEditing;
+
+            const editButtons = document.querySelectorAll('.btn-edit');
+
+            editButtons.forEach(button => {
+                button.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    actualizarButton.disabled = false;
+                    setTimeout(() => {
+                        window.location.href = this.href;
+                    }, 100);
+                });
+            });
+        });
+
+
+    </script>
+
+
     <body>
 
-        <!--Barra de Navegacion -->
-        <nav class="navbar  navbar-expand-md navbar-dark bg-dark border-3 fixed-top border-bottom" id="menu" >
-            <div class="container-fluid"> 
+        <style>
+            /* Cambiar el color de fondo y de texto del encabezado */
+            thead th {
 
-                <a class="navbar-brand" href="#"></a>
-                <img src="./img/llogo.jpg" alt="llogo" style="float: left; width: 40px;" >
+                color: #fff; /* Color del texto */
+                font-size: 14px;
+            }
 
-                <button 
-                    class="navbar-toggler" type="button" data-bs-toggle="collapse" 
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" 
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+            /* Estilo para el formulario */
+            .formulario {
+                /* Mostrar los elementos del formulario como una cuadr铆cula */
+                display: grid;
+                /* Distribuci贸n de columnas en la cuadr铆cula */
+                grid-template-columns: 1fr 1fr;
+                /* Espacio entre las celdas de la cuadr铆cula */
+                gap: 10px;
+                text-transform: uppercase; /* Convertir texto a may煤sculas */
+
+            }
+
+            .formulario__label {
+                color: #333;
+                font-weight: 500;
+                margin-bottom: 10px;
+                text-transform: uppercase; /* Convertir texto a may煤sculas */
+            }
+
+            /* Estilo para las etiquetas (labels) con texto azul */
+            label {
+                color: #000;
+                font-family: 'Roboto', sans-serif;
+                white-space: nowrap;
+                padding: 0.5rem 0.5rem;
+                font-size: 14px;
+            }
 
 
-                <div class="collapse navbar-collapse  " id="navbarSupportedContent">
-                    <ul class="navbar-nav ml-3 me-auto">  
-                        <form class="navbar-nav ms-auto ml-auto" role="search">
-                            <input class="form-control " type="search" name="txtbuscar" placeholder="Buscar Nombre, CC" aria-label="Buscar">
-                            <button  type="submit" name="accion" value="buscar" class="btn btn-primary ml-1">Buscar</button>
-                        </form>
 
-                    </ul>
 
-                    <ul class="navbar-nav mb-5 mb-lg-0 float-start ">   
 
-                        <li class="nav-item ">
-                            <a class="nav-link active my-menu-item" aria-current="page" href="./index.jsp"><b>
-                                    <span  style="margin-left: 50px; border:none" class="btn btn-info">
-                                        <i class="bi bi-arrow-left-square-fill text-dark"></i> <b> Inicio </b>
-                                    </span>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link active" aria-current="page" href="ControladorCategorias?accion=listar">
-                                <span  style="margin-left: 50px; border:none" class="btn btn-warning">
-                                    <i class="bi bi-plus-circle"></i> <b> Listar </b> </span>
-                            </a>
-                        </li>
 
-                    </ul>
+        </style>
+
+
+
+
+
+        <div class="container-fluid mt-4">
+            <div class="row">
+                <div class="col-sm-12 text-center mb-1" style="padding-top: 15px">
+                    <br>
+                    <h3 style="color: #388e3c;font-family: 'Poppins', sans-serif; font-weight: 600 ">CATEGORIAS</h3>
+                    <hr id="hr_1">
                 </div>
             </div>
-            <form action="ControladorValidar" method="POST">
-                <div class="ml-xl-2">
-                    <!-- Bot髇 de cierre de sesi髇 -->              
-                    <button class="btn btn-outline-light my-btn" name="accion" value="Salir">Cerrar Sesi髇</button>
-                </div>
-            </form>
-            <style>
-                .my-btn {
-                    font-family: 'Roboto', sans-serif;
-                    white-space: nowrap;
-                    padding: 0.5rem 1rem;
-                    font-size: 12px;
-                    border-radius: 0.25rem;
-                }
-
-                .my-btn:hover {
-                    background-color: #f0f0f0;
-                    cursor: pointer;
-                    font-size: 12px;
-                    font-weight: 700;
-                }
-            </style>
-
-        </nav>
-        <!-- Barra de Navegacion -->
+            <div class="row">
+                <!-- Formulario de Registro -->
+                <div class="col-sm-4">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body">
 
 
-        <hr>
-        <hr>
-        <!-- Formulario -->
-        <div class="row ">   
-            <div class="col-md-4 ">
-                <%--Formulario para registrar y sirve para editar --%>
-                <div class="col-sm- bg-darkt card-body">
-                    <hr>
-                    <hr>
-                    <h4 class="text-primary elegant-font"><b>Formulario Categorias</b></h4>
-                    <form action="ControladorCategorias" method="POST" autocomplete="off" class="custom-form">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group text-left">
-                                    <label for="tipo" class="text-left">Tipo</label>
-                                    <input type="text" class="form-control" id="plu" name="tipo" value="${User.getTipo()}" placeholder="Ingrese Tipo">
+                            <h5><b>REGISTRO</b></h5>
+                            <!-- Formulario de Registro Productos -->
+                            <form   id="formAgregarProducto" class="formulario" action="ControladorCategorias"  autocomplete="off" method="POST" >    
+
+                                <div class="mb-3">
+                                    <label for="tipos"  class="formulario__label" >Nombre</label>
+                                    <input 
+                                        type="text" 
+                                        value="${categEdit.getTipos()}"
+                                        class="formulario__input form-control-sm"                          
+                                        id="tipos" 
+                                        name="tipos" 
+                                        placeholder="Ingrese Nombre">
+                                </div>                         
+                                <div class="mb-3">
+                                    <label for="descripcion"  class="formulario__label" >Descripci贸n</label>
+                                    <input 
+                                        type="text" 
+                                        value="${categEdit.getDescripcion()}"
+                                        class="formulario__input form-control-sm"                          
+                                        id="descripcion" 
+                                        name="descripcion" 
+                                        placeholder="Ingrese Descripci贸n">
+                                </div>                         
+
+
+
+                                <!-- Grupo: Botones -->
+                                <div class=" d-md-block text-center" style=" grid-column: span 2;">
+                                    <button class="btn btn-primary btn-sm" type="submit" name="accion" value="registrar" >
+                                        <i class="fas fa-save "></i> AGREGAR  
+                                    </button>   
+                                    <button type="submit" name="accion" value="actualizar" class="btn btn-warning btn-sm" id="btnActualizar"
+                                            data-editing="${isEditing != null && isEditing}">
+                                        <i class="bi bi-arrow-repeat"></i> Actualizar
+                                    </button>
+
+
+
+
+
+
+
+                                    <button type="submit" class="btn btn-secondary btn-sm"   name="accion" value="listar">
+                                        <i class="bi bi-x-lg"></i> CANCELAR
+                                    </button>
+
                                 </div>
-                                <div class="form-group text-left">
-                                    <label for="descripcion" class="text-left">Descripcion</label>
-                                    <input type="text" class="form-control" id="descripcion"
-                                           name="descripcion" value="${User.getDescripcion()}" placeholder="Ingrese Descripcion">
-                                </div>
-                                <div class="form-group text-left">
-                                    <label for="cantidad">Cantidad</label>
-                                    <input type="text" class="form-control" id="cantidad"
-                                           name="cantidad" value="${User.getCantidad()}" placeholder="Ingrese Cantidad">
+
+
+
+                            </form>
+                        </div>  
+                    </div>  
+                </div>  
+
+                <!-- Tabla Unidad Medida -->
+
+                <div class="col-sm-8">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body">
+
+                            <h5><b>LISTA CATEGORIAS</b></h5>
+                            <div class="table-container table-responsive pagination-container shadow-sm p-3 mb-5 bg-white rounded">
+                                <table id="myTable" class="table table-striped table-hover table-bordered">
+                                    <thead style="background-color: #4e73df; color: white; text-align: center">
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Nombre Categ</th>                           
+                                            <th>Descripci贸n</th>                           
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Aqu铆 se mostrar谩n los datos de la tabla -->
+                                        <%
+                                            List<Categorias> Lista = (List<Categorias>) request.getAttribute("listaCategorias");
+                                            for (Categorias categ : Lista) {%>
+                                        <tr>
+                                            <td><%= categ.getIdCategorias()%></td>
+                                            <td><%= categ.getTipos()%></td>                    
+                                            <td><%= categ.getDescripcion()%></td>                    
+
+
+                                            <td>
+                                                <div class="btn-group text-center" role="group">
+
+                                                    <a href="ControladorCategorias?accion=eliminar&id=<%= categ.getIdCategorias()%>"
+                                                       class="btn btn-outline-danger btn-sm"  onclick="return confirm('驴Est谩s seguro de que deseas eliminar este producto?')">
+                                                        <i class="fas fa-trash-alt"></i> <!-- 脥cono de papelera -->
+                                                    </a>
+
+                                                    <a href="ControladorCategorias?accion=editar&id=<%=categ.getIdCategorias()%>" class="btn btn-outline-primary btn-sm btn-edit">
+                                                        <i class="fas fa-edit"></i> <!-- 脥cono de l谩piz -->
+                                                    </a>
+
+
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <% }%>
+                                    </tbody>
+                                </table>
+                                <div class="dataTable_bottom">
+                                    <div class="dataTables_info"></div>
+                                    <div class="dataTables_paginate"></div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group text-left">
-                                    <label for="text">Area</label>
-                                    <input type="area" class="form-control" id="area" name="area" value="${User.getArea()}" placeholder="Ingrese Area">
-                                </div>
-
-                                <div class="form-group text-left">
-                                    <label for="nombres">Proveedores</label>
-                                    <select class="form-control" id="nombres" value="${User.getProveedores_idProveedores()}" name="proveedores_idProveedores">
-                                        <option value="0">Seleccione Proveedor</option>
-                                        <% List<Proveedores> prov = DaoProveedores.listar();
-                                            if (prov != null) {
-                                                for (Proveedores pr : prov) {
-                                                    if (pr != null) {%>
-                                        <option value="<%=pr.getIdProveedores()%>"><%=pr.getNombres()%></option>
-                                        <% }
-                                                }
-                                            }%>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                </div>     
-                <!--Botones -->
-                <div class="form-group mt-3 text-center">
-                    <button type="submit" name="accion" value="registrar" class="btn btn-warning">
-                        <i class="fas fa-save"></i> Grabar 
-                    </button>
-                    <button type="submit" name="accion" value="editarCategorias" class="btn btn-success">
-                        <i class="bi bi-arrow-repeat"></i> Actualizar
-                    </button>                                    
-                    <button type="submit" name="accion" value="listar" class="btn btn-secondary">
-                        <i class="bi bi-x-lg"></i> Cancelar
-                    </button>
-
-                </div>
-            </div>
-            <!-- Contenedor lista usuarios donde aparecen los datos -->
-            <div class="col-sm-8 mb-4 mt-5 sticky-top">
-                <br>
-                <h5 class="text-primary elegant-font"><b>Lista Catalogos</b></h5> 
-                <div class=" table-container ml-3 md-3 table-responsive" >
-                    <div class="container mt-6 bg-dark btn-group" >
-                        <table id="myTable"  class="table table-dark table-striped">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Tipos</th>
-                                    <th>Descripcion</th>
-                                    <th>Cantidad</th>
-                                    <th>Area</th>
-                                    <th>Proveedores</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <%
-                                    List<Categorias> Lista = (List<Categorias>) request.getAttribute("listaCategorias");
-                                    for (Categorias categorias : Lista) {%>
-                                <tr>
-                                    <td><%= categorias.getIdCategorias()%></td>
-                                    <td><%= categorias.getTipos()%></td>
-                                    <td><%= categorias.getDescripcion()%></td>
-                                    <td><%= categorias.getCantidad()%></td>
-                                    <td><%= categorias.getArea()%></td>
-                                    <td><%= DaoProveedores.obtenerNombreProveedores(categorias.getProveedores_idProveedores())%></td>
-
-                                    <td>
-                                        <div class="btn-group" role="group" aria-label="Acciones">
-
-                                            <a href="ControladorCategorias?accion=eliminar&id=<%= categorias.getIdCategorias()%>"
-                                               class="btn btn-danger btn-sm" onclick="return confirm('縀st醩 seguro de que deseas eliminar este recibo?')">
-                                                <i class="fas fa-trash"></i> <!-- 蚦ono de papelera -->
-                                            </a>
-
-                                            <a href="ControladorCategorias?accion=editar&id=<%= categorias.getIdCategorias()%>" class="btn btn-primary btn-sm">
-                                                <i class="fas fa-pencil-alt"></i> <!-- 蚦ono de l醦iz -->
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <% }%>
-                            </tbody>
-                        </table>
-                        <div  class="dataTable_bottom">  
-                            <div class="dataTables_info"></div>
-                            <div class="dataTables_paginate"></div> 
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+
+
+
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -237,101 +265,111 @@
 
 
 
+
+
+
+
+        <!-- Scrip DataTable -->
         <script>
-                                                   $(document).ready(function () {
-                                                       $('#myTable').DataTable({
-                                                           "paging": true, // Habilita la paginaci髇
-                                                           "pageLength": 7, // N鷐ero de registros por p醙ina
-                                                           "language": {
-                                                               "processing": "Procesando...",
-                                                               "lengthMenu": "Mostrar _MENU_ registros por p醙ina",
-                                                               "zeroRecords": "No se encontraron resultados",
-                                                               "emptyTable": "Ning鷑 dato disponible en esta tabla",
-                                                               "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
-                                                               "infoEmpty": "Mostrando 0 a 0 de 0 entradas",
-                                                               "infoFiltered": "(filtrado de un total de _MAX_ entradas)",
-                                                               "search": "Buscar:",
-                                                               "paginate": {
-                                                                   "first": "Primero",
-                                                                   "last": "趌timo",
-                                                                   "next": "Siguiente",
-                                                                   "previous": "Anterior"
-                                                               },
-                                                               "aria": {
-                                                                   "sortAscending": ": Activar para ordenar la columna ascendente",
-                                                                   "sortDescending": ": Activar para ordenar la columna descendente"
+
+                                                           $(document).ready(function () {
+                                                               // Inicializa la tabla DataTables
+                                                               var table = $('#myTable').DataTable({
+                                                                   dom: 'Blftrip', // Mueve los elementos de paginaci贸n al final de la tabla
+                                                                   buttons: [
+                                                                       {
+                                                                           extend: 'excelHtml5',
+                                                                           text: '<i class="fas fa-file-excel"></i> ',
+                                                                           titleAttr: 'Exportar a Excel',
+                                                                           className: 'btn btn-success btn-elegant'
+                                                                       }
+                                                                       /*,
+                                                                        {
+                                                                        extend: 'pdfHtml5',
+                                                                        text: '<i class="fas fa-file-pdf"></i> ',
+                                                                        titleAttr: 'Exportar a PDF',
+                                                                        className: 'btn btn-danger',
+                                                                        orientation: 'landscape', // Establece la orientaci贸n horizontal
+                                                                        customize: function (doc) {
+                                                                        // Ajusta las m谩rgenes
+                                                                        doc.pageMargins = [5, 5, 5, 5]; // [left, top, right, bottom]
+                                                                        doc.defaultStyle.fontSize = 10;
+                                                                        
+                                                                        // Filtra las columnas que quieres imprimir
+                                                                        var filteredColumns = [0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 23]; // 脥ndices de las columnas que quieres imprimir
+                                                                        
+                                                                        // Remueve las columnas no deseadas
+                                                                        doc.content[1].table.body.forEach(function (row) {
+                                                                        row.splice(0, row.length, ...row.filter((cell, index) => filteredColumns.includes(index)));
+                                                                        });
+                                                                        }
+                                                                        }*/
+                                                                   ],
+                                                                   lengthMenu: [10, 15, 20, 50],
+                                                                   columnDefs: [
+                                                                       {className: 'centered', targets: '_all'}, // Aplica la clase 'centered' a todas las columnas
+                                                                       {orderable: false, targets: [0, 2, ]},
+                                                                       {searchable: false, targets: [0, ]}
+                                                                   ],
+                                                                   pageLength: 4,
+                                                                   destroy: true,
+                                                                   // order: [[1, 'desc']], // Ordena la tabla por la Segunda columna en orden descendente
+                                                                   pagingType: 'simple_numbers', // Tipo de paginaci贸n simple con n煤meros
+                                                                   language: {
+                                                                       processing: 'Procesando...',
+                                                                       "lengthMenu": "<span style='color: #09f; font-size: 18px;   '>Mostrar _MENU_ Registros </span>",
+                                                                       "zeroRecords": "No se Encontraron Resultados",
+                                                                       "emptyTable": "Ning煤n dato disponible en esta tabla",
+                                                                       "info": "<span style='color: #09f; font-size: 18px;'>Mostrando _START_ a _END_ de _TOTAL_ Entradas</span>",
+                                                                       "infoEmpty": "<span style='color: #09f; font-size: 18px;'>Mostrando 0 a 0 de 0 Entradas</span>",
+                                                                       "infoFiltered": "<span style='color: purple; font-size: 14px;'>(filtrado de un total de _MAX_ entradas)</span>",
+                                                                       "search": "<span style='color: #09f; font-size: 18px; border-bottom: 2px  solid #ccc;'>Buscar:</span>",
+                                                                       paginate: {
+                                                                           first: 'Primero',
+                                                                           last: '脷ltimo',
+                                                                           next: 'Siguiente',
+                                                                           previous: 'Anterior'
+                                                                       },
+                                                                       aria: {
+                                                                           sortAscending: ': Activar para ordenar la columna ascendente',
+                                                                           sortDescending: ': Activar para ordenar la columna descendente'
+                                                                       }
+                                                                   }
+                                                               });
+
+
+                                                               // Crear un nuevo contenedor para los botones debajo de la tabla
+                                                               $('#myTable_wrapper').append('<div id="myTable_buttons_bottom"></div>');
+
+                                                               // Mover los botones a este nuevo contenedor
+                                                               $('.dt-buttons', table.table().container()).appendTo($('#myTable_buttons_bottom'));
+
+
+                                                               // Funci贸n para limitar los botones de paginaci贸n
+                                                               function limitPagination(table) {
+                                                                   var pagination = $(table.table().container()).find('.dataTables_paginate .paginate_button');
+                                                                   var numPages = 4; // Limita a 4 botones de paginaci贸n
+
+                                                                   pagination.each(function (index, element) {
+                                                                       if (index > numPages && !$(element).hasClass('next') && !$(element).hasClass('previous')) {
+                                                                           $(element).css('display', 'none');
+                                                                       }
+                                                                   });
                                                                }
-                                                           },
-                                                           "dom": 'Bfrtip',
-                                                           "buttons": [
-                                                               {
-                                                                   extend: 'pdfHtml5',
-                                                                   text: '<i class="fas fa-file-pdf"></i>',
-                                                                   titleAttr: 'Exportar a PDF',
-                                                                   className: 'btn btn-danger btn-sm' // A馻dir clase "btn-sm" para hacer los botones m醩 peque駉s
-                                                               },
-                                                               {
-                                                                   extend: 'excelHtml5',
-                                                                   text: '<i class="fas fa-file-excel" ></i>', // Aplicar el radio de borde al 韈ono de Excel
-                                                                   titleAttr: 'Exportar a Excel',
-                                                                   className: 'btn btn-success btn-sm' // A馻dir clase "btn-sm" para hacer los botones m醩 peque駉s
-                                                               }
-                                                           ]
-                                                       });
-                                                   });
+
+                                                               // Llama a la funci贸n limitPagination cuando se redibuja la tabla
+                                                               table.on('draw', function () {
+                                                                   limitPagination(table);
+                                                               });
+
+                                                               // Llama a la funci贸n limitPagination inicialmente
+                                                               limitPagination(table);
+
+
+                                                           });
         </script>
 
 
-        <style>
-            .dataTables_info {
-                font-family: 'Roboto', sans-serif;
-                font-weight: 600;
-                position: fixed;
-
-                right:  38%;
-                transform: translateX(-50%);
-                margin-bottom: 15px; /* Ajusta seg鷑 sea necesario */
-                color: #09f;
-            }
-
-
-            #myTable {
-                table-layout: fixed;
-                width: 100%;
-            }
-            .btn {
-                border-radius: 20px; /* Redondear los botones */
-            }
-
-
-
-        </style>
-
-        <style>
-
-            body {
-
-                background-image: url('img/ass.jpg');
-                background-size: cover;
-
-            }
-
-            label{
-
-                color:#000
-            }
-
-            .btn {
-                border-radius: 20px; /* Redondear los botones */
-            }
-
-            h5{
-
-                color: #ffffff
-            }
-
-
-        </style>
 
 
     </body>

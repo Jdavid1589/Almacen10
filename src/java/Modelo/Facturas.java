@@ -1,47 +1,47 @@
 package Modelo;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Facturas {
 
-    private int idFacturas;
+    private int id;
     private String fecha;
-    private int usuariosId;
-    private int proveedoresId;
-    private int unidadMedidaId;
+    private int clienteId;
     private BigDecimal totalCosto;
     private BigDecimal totalIva;
     private BigDecimal totalVenta;
+    private BigDecimal totalPrecioNeto;
+
+    private final List<DetallesFacturas> facturas = new ArrayList<>(); // Inicializado
 
     public Facturas() {
     }
 
-    
-    
-    public Facturas(int idFacturas, String fecha, int usuariosId, int proveedoresId, int unidadMedidaId, BigDecimal totalCosto, BigDecimal totalIva, BigDecimal totalVenta) {
-        this.idFacturas = idFacturas;
+    public Facturas(int id, String fecha, int clienteId, BigDecimal totalCosto, BigDecimal totalIva, BigDecimal totalVenta, BigDecimal totalPrecioNeto) {
+        this.id = id;
         this.fecha = fecha;
-        this.usuariosId = usuariosId;
-        this.proveedoresId = proveedoresId;
-        this.unidadMedidaId = unidadMedidaId;
+        this.clienteId = clienteId;
         this.totalCosto = totalCosto;
         this.totalIva = totalIva;
         this.totalVenta = totalVenta;
+        this.totalPrecioNeto = totalPrecioNeto;
     }
 
-    
-    
-    
-    
-    
-    
-    
-    public int getIdFacturas() {
-        return idFacturas;
+    @Override
+    public String toString() {
+        return "Facturas{" + "id=" + id + ", fecha=" + fecha + ", idCliente=" + clienteId + ", totalCosto=" + totalCosto + ", totalIva=" + totalIva + ", totalVenta=" + totalVenta + ", totalPrecioNeto=" + totalPrecioNeto + ", facturas=" + facturas + '}';
     }
 
-    public void setIdFacturas(int idFacturas) {
-        this.idFacturas = idFacturas;
+  
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFecha() {
@@ -52,29 +52,15 @@ public class Facturas {
         this.fecha = fecha;
     }
 
-    public int getUsuariosId() {
-        return usuariosId;
+    public int getClienteId() {
+        return clienteId;
     }
 
-    public void setUsuariosId(int usuariosId) {
-        this.usuariosId = usuariosId;
+    public void setClienteId(int clienteId) {
+        this.clienteId = clienteId;
     }
 
-    public int getProveedoresId() {
-        return proveedoresId;
-    }
-
-    public void setProveedoresId(int proveedoresId) {
-        this.proveedoresId = proveedoresId;
-    }
-
-    public int getUnidadMedidaId() {
-        return unidadMedidaId;
-    }
-
-    public void setUnidadMedidaId(int unidadMedidaId) {
-        this.unidadMedidaId = unidadMedidaId;
-    }
+   
 
     public BigDecimal getTotalCosto() {
         return totalCosto;
@@ -98,6 +84,14 @@ public class Facturas {
 
     public void setTotalVenta(BigDecimal totalVenta) {
         this.totalVenta = totalVenta;
+    }
+
+    public BigDecimal getTotalPrecioNeto() {
+        return totalPrecioNeto;
+    }
+
+    public void setTotalPrecioNeto(BigDecimal totalPrecioNeto) {
+        this.totalPrecioNeto = totalPrecioNeto;
     }
 
 }

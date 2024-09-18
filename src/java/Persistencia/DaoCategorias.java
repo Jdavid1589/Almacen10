@@ -16,24 +16,23 @@ import java.util.logging.Logger;
  /*adicionar*/
 public class DaoCategorias {
 
-   static Conexion cn = Conexion.getInstance();
+    static Conexion cn = Conexion.getInstance();
     static Connection con;
     static PreparedStatement ps;
     static ResultSet rs;
     static Categorias categorias = new Categorias();
-    
-      private static final Logger LOGGER = Logger.getLogger(DaoCategorias.class.getName());
+
+    private static final Logger LOGGER = Logger.getLogger(DaoCategorias.class.getName());
 
     public static boolean grabar(Categorias categorias) {
         try {
-           con = cn.getConnection();
+            con = cn.getConnection();
             String sql = "INSERT INTO categorias (tipos,descripcion)"
                     + "VALUES(?,?);";
             ps = con.prepareStatement(sql);
 
             ps.setString(1, categorias.getTipos());
             ps.setString(2, categorias.getDescripcion());
-       
 
             if (ps.executeUpdate() > 0) {
                 return true;
@@ -50,7 +49,7 @@ public class DaoCategorias {
     public static List<Categorias> listar() {
         List<Categorias> lista = new ArrayList<>();
         try {
-         con = cn.getConnection();
+            con = cn.getConnection();
             String sql = "SELECT * FROM categorias;";
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
@@ -61,7 +60,7 @@ public class DaoCategorias {
                 categorias.setIdCategorias(rs.getInt("idCategorias"));
                 categorias.setTipos(rs.getString("tipos"));
                 categorias.setDescripcion(rs.getString("descripcion"));
-             
+
                 lista.add(categorias);
             }
         } catch (Exception e) {
@@ -74,14 +73,14 @@ public class DaoCategorias {
     //Se debe asegurar el mismo orden
     public static boolean editar(Categorias categorias) {
         try {
-              con = cn.getConnection();
+            con = cn.getConnection();
             String sql = "UPDATE categorias SET tipos = ?, "
                     + "descripcion =? WHERE idCategorias =?";
 
             ps = con.prepareStatement(sql);
 
             ps.setString(1, categorias.getTipos());
-            ps.setString(2, categorias.getDescripcion());     
+            ps.setString(2, categorias.getDescripcion());
             ps.setInt(3, categorias.getIdCategorias());
 
             ps.executeUpdate();
@@ -107,7 +106,7 @@ public class DaoCategorias {
 
     public static String obtenerNombreCategorias(int id) {
         try {
-             con = cn.getConnection();
+            con = cn.getConnection();
             String sql = "SELECT tipos  FROM categorias WHERE idCategorias=? ";
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
@@ -122,20 +121,16 @@ public class DaoCategorias {
         }
         return "--";
     }
-    
-    
-    
 
     // Método para obtener el nombre completo de una categoría o subcategoría
     public static String obtenerNombreCategoriaCompleto(int id) {
         String nombreCategoria = "--";
-        String sql = "SELECT c1.nombre AS subcategoria, c2.nombre AS categoria_padre " +
-                     "FROM categorias2 c1 " +
-                     "LEFT JOIN categorias2 c2 ON c1.categoria_padre_id = c2.id " +
-                     "WHERE c1.id = ?";
+        String sql = "SELECT c1.nombre AS subcategoria, c2.nombre AS categoria_padre "
+                + "FROM categorias2 c1 "
+                + "LEFT JOIN categorias2 c2 ON c1.categoria_padre_id = c2.id "
+                + "WHERE c1.id = ?";
 
-        try (Connection con = cn.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = cn.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
@@ -154,13 +149,11 @@ public class DaoCategorias {
             }
 
         } catch (SQLException ex) {
-             Logger.getLogger(DaoCategorias.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DaoCategorias.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return nombreCategoria;
     }
-
-    
 
     public static boolean eliminar(int idCategorias) {
         try {
@@ -198,13 +191,12 @@ public class DaoCategorias {
                     categorias.setIdCategorias(rs.getInt("idCategorias"));
                     categorias.setTipos(rs.getString("tipos"));
                     categorias.setDescripcion(rs.getString("descripcion"));
-                   
 
                 }
             }
         } catch (SQLException ex) {
             // Registra el error sin mostrar detalles al usuario
-             Logger.getLogger(DaoCategorias.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DaoCategorias.class.getName()).log(Level.SEVERE, null, ex);
 
         }
 
@@ -215,7 +207,7 @@ public class DaoCategorias {
         List<Categorias> listaCategorias = new ArrayList<>();
 
         try {
-              con = cn.getConnection();
+            con = cn.getConnection();
 
             String sql = "SELECT * FROM categorias "
                     + "WHERE tipos LIKE ?"
@@ -233,7 +225,7 @@ public class DaoCategorias {
                 categorias.setIdCategorias(rs.getInt("idCategorias"));
                 categorias.setTipos(rs.getString("tipos"));
                 categorias.setDescripcion(rs.getString("descripcion"));
-              
+
                 listaCategorias.add(categorias);
 
             }

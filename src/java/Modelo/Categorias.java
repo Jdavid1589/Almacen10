@@ -5,10 +5,22 @@ public class Categorias {
     private int idCategorias;
     private String tipos;
     private String descripcion;
-    // private int cantidad; //sale
-  //  private String area; //sale
-    // private int proveedores_idProveedores; //kf
 
+    
+    
+    //Counstructor Vacio 
+    public Categorias() {
+    }
+
+           //Counstructor Con datos 
+    public Categorias(int idCategorias, String tipos, String descripcion) {
+        this.idCategorias = idCategorias;
+        this.tipos = tipos;
+        this.descripcion = descripcion;
+    }
+  
+    
+    //Metodos Get y Set
     public int getIdCategorias() {
         return idCategorias;
     }

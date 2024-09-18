@@ -23,12 +23,18 @@ public class ControladorProductos extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+          // Set the character encoding for the request
+        request.setCharacterEncoding("UTF-8");
+        // Set the content type and character encoding for the response
         response.setContentType("text/html;charset=UTF-8");
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+            // Ensure UTF-8 encoding
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
         processRequest(request, response);
 
         String action = request.getParameter("accion");
@@ -214,6 +220,12 @@ public class ControladorProductos extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+         // Ensure UTF-8 encoding
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
+
+        // Call processRequest to handle the logic
+        processRequest(request, response);
         doGet(request, response);
     }
 

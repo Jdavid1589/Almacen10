@@ -17,10 +17,7 @@ public class ControladorUnidMedida extends HttpServlet {
     UnidadMedida unidadMedida = new UnidadMedida();
     int ide;  // Variable de instancia para almacenar el ID
 
-    //La variable serialVersionUID se utiliza en Java para asignar una versión única 
-    //a una clase Serializable.
-    //En este contexto, private static final long serialVersionUID = 1L; simplemente está estableciendo 
-    //el serialVersionUID de la clase ControladorConsecutivo
+
     private static final long serialVersionUID = 1L;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -145,6 +142,10 @@ public class ControladorUnidMedida extends HttpServlet {
 
             String mensaje = actualizacionExitosa ? "Consecutivo actualizado correctamente" : "No se pudo actualizar el Consecutivo";
             request.setAttribute("mensaje", mensaje);
+            
+             // Limpia los campos
+            request.setAttribute("Unid", new UnidadMedida());
+            
 
             listarUnidad(request, response);
 

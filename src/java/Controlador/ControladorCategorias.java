@@ -11,23 +11,27 @@ import javax.servlet.http.HttpServletResponse;
 
 public class ControladorCategorias extends HttpServlet {
 
-    Categorias user = new Categorias();
+   // Categorias cat = new Categorias();
     int ide;  // Variable de instancia para almacenar el ID
 
-    //La variable serialVersionUID se utiliza en Java para asignar una versión única 
-    //a una clase Serializable.
-    //En este contexto, private static final long serialVersionUID = 1L; simplemente está estableciendo 
-    //el serialVersionUID de la clase ControladorConsecutivo
     private static final long serialVersionUID = 1L;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+       // Set the character encoding for the request
+        request.setCharacterEncoding("UTF-8");
+        // Set the content type and character encoding for the response
         response.setContentType("text/html;charset=UTF-8");
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+          // Ensure UTF-8 encoding
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
+
+        // Call processRequest to handle the logic
         processRequest(request, response);
 
         String action = request.getParameter("accion");
@@ -49,7 +53,7 @@ public class ControladorCategorias extends HttpServlet {
                 editarCategorias(request, response);
                 break;
 
-            case "editarCategorias":
+            case "actualizar":
                 actualizarCategorias(request, response);
                 break;
 
@@ -84,7 +88,7 @@ public class ControladorCategorias extends HttpServlet {
             }
 
             List<Categorias> lt = DaoCategorias.listar();
-            request.setAttribute("listaCategorias", lt);
+            request.setAttribute("listCateg", lt);
             request.getRequestDispatcher("Vistas/ListaCategorias.jsp").forward(request, response);
 
         } catch (Exception ex) {
@@ -99,6 +103,7 @@ public class ControladorCategorias extends HttpServlet {
         try {
             List<Categorias> lt = DaoCategorias.listar();
             request.setAttribute("listaCategorias", lt);
+         
             request.getRequestDispatcher("Vistas/ListaCategorias.jsp").forward(request, response);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -107,29 +112,33 @@ public class ControladorCategorias extends HttpServlet {
         }
     }
 
-    private void editarCategorias(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
-            // Obtener el ID del parámetro de solicitud y almacenarlo en la variable de instancia
-            ide = Integer.parseInt(request.getParameter("id"));
-            Categorias cat = DaoCategorias.obtenerCategoriasPorId(ide);
-            request.setAttribute("User", cat);
+   private void editarCategorias(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    try {
+        // Obtener el ID del parámetro de solicitud y almacenarlo en la variable de instancia
+        ide = Integer.parseInt(request.getParameter("id"));
+        Categorias cat = DaoCategorias.obtenerCategoriasPorId(ide);
 
-            listarCategorias(request, response);
+        // Establecer la categoría a editar y una bandera para indicar que estamos editando
+        request.setAttribute("categEdit", cat);
+        request.setAttribute("isEditing", true); // Indicador de edición
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            request.setAttribute("mensaje", "Error al editar el Consecutivo");
-            listarCategorias(request, response);
-        }
+      listarCategorias(request, response);
+
+    } catch (Exception ex) {
+        ex.printStackTrace();
+        request.setAttribute("mensaje", "Error al editar el Consecutivo");
+        listarCategorias(request, response);
     }
+}
+
 
     private void actualizarCategorias(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
             // Utilizar la variable de instancia para obtener el ID
             Categorias cat = DaoCategorias.obtenerCategoriasPorId(ide);
-            request.setAttribute("User", cat);
+            request.setAttribute("categEdit", cat);
 
             Categorias categorias = new Categorias();
 
@@ -145,6 +154,9 @@ public class ControladorCategorias extends HttpServlet {
                 request.setAttribute("mensaje", "No se pudo actualizar el Consecutivo");
             }
 
+             // Limpia los campos
+            request.setAttribute("categEdit", new Categorias());
+            
             listarCategorias(request, response);
 
         } catch (IOException | NumberFormatException | ServletException ex) {
@@ -192,6 +204,14 @@ public class ControladorCategorias extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+          // Ensure UTF-8 encoding
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
+
+        // Call processRequest to handle the logic
+        processRequest(request, response);
+        
         doGet(request, response);
     }
 

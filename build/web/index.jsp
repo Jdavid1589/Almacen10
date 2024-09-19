@@ -58,7 +58,7 @@
                                 <li><a class="dropdown-item" href="ControladorCategorias?accion=listar" target="myframe">Categorias</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item"  href="ControladorProveedores?accion=listar" target="myframe">Proveedores</a></li>
-                                <li><hr class="dropdown-divider"></li>
+                            
 
                             </ul>
                         </li>

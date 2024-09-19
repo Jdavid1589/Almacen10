@@ -7,12 +7,16 @@ package Persistencia;
 import Config.Conexion;
 import Modelo.Compras;
 import Modelo.ComprasProductos;
+import Modelo.Productos;
+import Modelo.Proveedores;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DaoCompras {
 
@@ -176,6 +180,67 @@ public class DaoCompras {
     return false;  // Error
 }
 
+    
+    
+     public static Productos buscarProducto(int id) {
+        Productos producto = null; // Inicializamos como null
+        String sql = "SELECT * FROM productos WHERE idProductos = ?"; // Usar consulta parametrizada
+
+        try (Connection con = cn.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id); // Asignar el parámetro PLU
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    producto = new Productos(); // Solo crear si hay un resultado
+                    producto.setIdProductos(rs.getInt("idProductos"));
+                    producto.setPorcIva(rs.getInt("porcIva"));
+                    producto.setProductos(rs.getString("productos"));
+                    producto.setFechaActualizacion(rs.getString("fechaActualizacion"));
+                    producto.setPlu(rs.getString("plu"));
+                    producto.setCategoriasId(rs.getInt("categoriasId"));
+                    producto.setUnidadMedidaId(rs.getInt("unidadMedidaId"));
+                    producto.setCantidadDisponible(rs.getDouble("cantidadDisponible"));
+                    producto.setProveedoresId(rs.getInt("proveedoresId"));
+                    producto.setPrecioCompra(rs.getBigDecimal("precioCompra"));
+                    producto.setPrecioVenta(rs.getBigDecimal("precioVenta"));
+                    // Rellenar otros campos necesarios
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoCompras.class.getName()).log(Level.SEVERE, "Error al acceder a la base de datos", ex);
+        }
+
+        return producto; // Retornar el producto encontrado o null
+    }
+
+    public static Proveedores buscarProveedor(int id) {
+        Proveedores proveedores = null; // Inicializamos como null
+        String sql = "SELECT * FROM proveedores WHERE idProveedor = ?"; // Usar consulta parametrizada
+
+        try (Connection con = cn.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id); // Asignar el parámetro PLU
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    proveedores = new Proveedores(); // Solo crear si hay un resultado
+                    proveedores.setIdProveedor(rs.getInt("idProveedor")); // Usar nombres de columna explícitos
+                    proveedores.setAsesor(rs.getString("asesor"));
+                    proveedores.setProveedor(rs.getString("proveedor"));
+
+                    // Rellenar otros campos necesarios
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoCompras.class.getName()).log(Level.SEVERE, "Error al acceder a la base de datos", ex);
+        }
+
+        return proveedores; // Retornar el producto encontrado o null
+    }
+
+    
+    
+    
+    
 
     // Agrega este método para cerrar las conexiones y recursos
     private static void cerrarRecursos() {

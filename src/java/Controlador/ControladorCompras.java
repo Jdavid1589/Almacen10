@@ -5,10 +5,9 @@ import Modelo.ComprasProductos;
 
 import Modelo.Productos;
 import Modelo.Proveedores;
-import Persistencia.CompraDAO;
 import Persistencia.DaoCompras;
-import Persistencia.DaoMovimientos;
-import Persistencia.DaoProductos;
+
+
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -79,7 +78,7 @@ public class ControladorCompras extends HttpServlet {
             if (idProveedor != null && !idProveedor.isEmpty()) {
                 try {
                     int proveedorId = Integer.parseInt(idProveedor);
-                    Proveedores proveedor = DaoMovimientos.buscarProveedor(proveedorId);
+                    Proveedores proveedor = DaoCompras.buscarProveedor(proveedorId);
                     request.setAttribute("proveedorEncontrado", proveedor);
                 } catch (NumberFormatException e) {
                     request.setAttribute("mensaje", "ID de proveedor no válido.");
@@ -105,7 +104,7 @@ public class ControladorCompras extends HttpServlet {
             if (idprod != null && !idprod.isEmpty()) {
                 try {
                     int productoId = Integer.parseInt(idprod);
-                    Productos producto = DaoMovimientos.buscarProducto(productoId);
+                    Productos producto = DaoCompras.buscarProducto(productoId);
                     request.setAttribute("listapr", producto);
                 } catch (NumberFormatException e) {
                     request.setAttribute("mensaje", "ID de producto no válido.");
@@ -234,6 +233,8 @@ public class ControladorCompras extends HttpServlet {
                     System.out.println("    Producto ID: " + detalle.getProductosId() + ", Cantidad: " + detalle.getCantidad() + ", Costo Unitario: " + detalle.getCostoArticulo());
                 }
             }*/
+            
+            
             // Redirigir a la página del carrito
             request.getRequestDispatcher("Vistas/Lista_Compras_Articulos.jsp").forward(request, response);
 
@@ -255,7 +256,7 @@ public class ControladorCompras extends HttpServlet {
 
             try {
                 int productoId = Integer.parseInt(idprod);
-                Productos producto = DaoMovimientos.buscarProducto(productoId);
+                Productos producto = DaoCompras.buscarProducto(productoId);
                 request.setAttribute("listapr", producto);
             } catch (NumberFormatException e) {
                 request.setAttribute("mensaje", "ID de producto no válido.");
@@ -268,7 +269,7 @@ public class ControladorCompras extends HttpServlet {
 
         try {
             int proveedorId = Integer.parseInt(idProveedor);
-            Proveedores proveedor = DaoMovimientos.buscarProveedor(proveedorId);
+            Proveedores proveedor = DaoCompras.buscarProveedor(proveedorId);
             request.setAttribute("proveedorEncontrado", proveedor);
         } catch (NumberFormatException e) {
             request.setAttribute("mensaje", "ID de proveedor no válido.");

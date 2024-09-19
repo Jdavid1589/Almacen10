@@ -52,8 +52,8 @@ body {
 
 }
 .dropdown-item:hover{
-
-    background-color: #007bff;
+    background: #007bff;
+    outline: 2px solid #ccc;  
     color: #ffffff;
 
 }

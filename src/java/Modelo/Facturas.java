@@ -14,7 +14,7 @@ public class Facturas {
     private BigDecimal totalVenta;
     private BigDecimal totalPrecioNeto;
 
-    private final List<DetallesFacturas> facturas = new ArrayList<>(); // Inicializado
+    private  List<DetallesFacturas> facturas = new ArrayList<>(); // Inicializado
 
     public Facturas() {
     }
@@ -31,11 +31,23 @@ public class Facturas {
 
     @Override
     public String toString() {
-        return "Facturas{" + "id=" + id + ", fecha=" + fecha + ", idCliente=" + clienteId + ", totalCosto=" + totalCosto + ", totalIva=" + totalIva + ", totalVenta=" + totalVenta + ", totalPrecioNeto=" + totalPrecioNeto + ", facturas=" + facturas + '}';
+        return "Facturas{" + "id=" + id + ", fecha=" + fecha + ", clienteId=" + clienteId + ", totalCosto=" + totalCosto + ", totalIva=" + totalIva + ", totalVenta=" + totalVenta + ", totalPrecioNeto=" + totalPrecioNeto + ", facturas=" + facturas + '}';
     }
 
-  
+    
 
+    public List<DetallesFacturas> getFacturas() {
+        return facturas;
+    }
+
+    public void setFacturas(List<DetallesFacturas> facturas) {
+        this.facturas = facturas;
+    }
+
+    
+    
+    
+    
     public int getId() {
         return id;
     }
@@ -59,8 +71,6 @@ public class Facturas {
     public void setClienteId(int clienteId) {
         this.clienteId = clienteId;
     }
-
-   
 
     public BigDecimal getTotalCosto() {
         return totalCosto;
@@ -93,5 +103,7 @@ public class Facturas {
     public void setTotalPrecioNeto(BigDecimal totalPrecioNeto) {
         this.totalPrecioNeto = totalPrecioNeto;
     }
+
+  
 
 }

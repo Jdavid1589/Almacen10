@@ -10,6 +10,7 @@
 <%@page import="Modelo.Productos"%>
 <%@page import="java.util.List"%>
 <%@page import="Modelo.UnidadMedida"%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 
@@ -35,11 +36,164 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-...." crossorigin="anonymous" />
         <!--link href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css" rel="stylesheet"-->
 
+
         <link href="Vistas/EstilosCSS/EstilosFacturasFinal.css" rel="stylesheet" type="text/css"/>
+        
         <!-- Sirven para actualizar la fecha automaticamnente -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
+
+        <!-- Estilos -->
+        <style>
+           
+
+            /* Fondo general de la factura */
+            body {
+                background-color: #f7f9fb;
+                font-family: 'Poppins', sans-serif;
+            }
+
+            /* Mejora de la tarjeta */
+            .card {
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                border: none;
+            }
+
+
+
+            /* Divider customizado */
+            #hr_1 {
+                border: 1px solid #5A9BD5;
+                width: 100%;
+            }
+
+            /* Inputs y labels */
+            .formulario__input {
+                border-radius: 5px;
+                box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+                border: 1px solid #ced4da;
+                transition: all 0.3s ease;
+            }
+
+            .formulario__input:focus {
+                border-color: #5A9BD5;
+                box-shadow: 0 0 5px rgba(90, 155, 213, 0.3);
+            }
+
+            .formulario__label {
+                font-weight: 500;
+                color: #555;
+            }
+
+            /* Botones personalizados */
+            .btn-primary {
+                background-color: #5A9BD5;
+                border: none;
+                border-radius: 50px;
+                padding: 10px 20px;
+                font-size: 16px;
+                transition: background-color 0.3s ease;
+            }
+
+            .btn-primary:hover {
+                background-color: #41729F;
+            }
+
+            /* Estilo del botón de búsqueda */
+            .btn-outline-info {
+                border-radius: 50px;
+                transition: background-color 0.3s ease, color 0.3s ease;
+            }
+
+            .btn-outline-info:hover {
+                background-color: #5A9BD5;
+                color: #fff;
+            }
+
+            /* Leyendas y subtítulos */
+            legend {
+                font-size: 18px;
+                text-align: center;
+                color: #333;
+                border-bottom: 2px solid #5A9BD5;
+                padding-bottom: 10px;
+            }
+
+            /* Mejora del espacio entre campos */
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+            /* Responsive en pantallas más pequeñas */
+            @media (max-width: 768px) {
+                .col-sm-3, .col-sm-6 {
+                    margin-bottom: 15px;
+                }
+            }
+
+            /* Sombras en las tarjetas */
+            .card-body {
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                padding: 25px;
+            }
+
+            /* Estilo de footer */
+            tfoot tr {
+                background-color: #ffecb5;
+                color: #000;
+            }
+
+            .tituloPrincipal {
+                font-size: 22px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+            .tituloPrincipal2 {
+                text-transform: uppercase;
+                padding: 10px; /* Reducir el padding */
+                font-size: 25px;
+                font-weight: bold;
+                color: #333;
+                letter-spacing: 0.5px;
+            }
+
+            .table-hover tbody tr:hover {
+                background-color: #f8f9fa;
+            }
+
+            .table thead th {
+                background-color: #343a40;
+                color: white;
+            }
+
+            .line-before-footer {
+                border-top: 2px solid #dee2e6;
+            }
+
+            hr#hr_1 {
+                border-top: 1px solid #007bff;
+            }
+
+            button.btn-success {
+                padding: 10px 20px;
+                font-size: 18px;
+            }
+
+            .card-body {
+                padding: 30px;
+                background-color: #f8f9fa;
+                border-radius: 10px;
+            }
+
+            .campo-vacio{
+                border: 2px solid red
+            }
+
+
+
+        </style>
 
 
     </head>
@@ -66,7 +220,7 @@
                             <form id="formAgregarProducto" action="ControladorCompras" method="POST" autocomplete="off" class="custom-form">
                                 <!-- Fecha de Factura -->
                                 <fieldset>
-                                    <legend style="font-size: 20px">Datos de la Factura</legend>
+                                    <legend  class="tituloPrincipal">Datos de la Factura</legend>
                                     <div class="row mb-2">
                                         <div class="col-sm-6">
                                             <label for="fechaFactura" class="formulario__label">Fecha de Factura:</label>
@@ -77,7 +231,7 @@
 
                                 <!-- Sección de búsqueda de proveedor -->
                                 <fieldset>
-                                    <legend style="font-size: 20px">Datos del Proveedor</legend>
+                               <legend class="w-auto px-2" style="font-size: 20px; font-weight: 600;">Datos del Proveedor</legend>
                                     <div class="row">
                                         <div class="col-sm-6 d-flex">
                                             <input type="text" class="formulario__input form-control" id="proveedorId" name="proveedorId" value="${param.proveedorId}" placeholder="Código">
@@ -93,7 +247,7 @@
 
                                 <!-- Sección de búsqueda de producto -->
                                 <fieldset class="parte1">
-                                    <legend style="font-size: 20px">Datos del Producto</legend>
+                                  <legend class="w-auto px-2" style="font-size: 20px; font-weight: 600;">Datos del Producto</legend>
                                     <div class="row mb-3">
                                         <div class="col-sm-6 d-flex">
                                             <input type="text" class="formulario__input form-control" name="productosId" placeholder="Ingrese Código" value="${param.productosId}">
@@ -231,7 +385,7 @@
         <!-- Script Limpiar campos  -->
         <script>
 
-           //Funsion para inicializar la fecha 
+            //Funsion para inicializar la fecha 
 
             document.addEventListener('DOMContentLoaded', function () {
                 flatpickr("#fechaFactura", {
@@ -289,8 +443,6 @@
 
                 }
             });
-
-
 
 
 

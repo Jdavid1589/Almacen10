@@ -7,7 +7,7 @@ public class DetallesFacturas {
     
     private int facturasId;
     private int productosId;
-    private String cantidad;
+    private BigDecimal cantidad;
     private BigDecimal precioCompra;
     private BigDecimal precioVenta;
     private int porcIva;
@@ -18,8 +18,10 @@ public class DetallesFacturas {
     }
 
     
+    
+    
     // constructor lleno
-    public DetallesFacturas(int facturasId, int productosId, String cantidad, BigDecimal precioCompra, BigDecimal precioVenta, int porcIva) {
+    public DetallesFacturas(int facturasId, int productosId, BigDecimal cantidad, BigDecimal precioCompra, BigDecimal precioVenta, int porcIva) {
         this.facturasId = facturasId;
         this.productosId = productosId;
         this.cantidad = cantidad;
@@ -46,11 +48,11 @@ public class DetallesFacturas {
         this.productosId = productosId;
     }
 
-    public String getCantidad() {
+    public BigDecimal getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(String cantidad) {
+    public void setCantidad(BigDecimal cantidad) {
         this.cantidad = cantidad;
     }
 

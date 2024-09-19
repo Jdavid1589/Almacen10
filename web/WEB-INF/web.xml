@@ -40,10 +40,7 @@
         <servlet-name>ControladorFacturas</servlet-name>
         <servlet-class>Controlador.ControladorFacturas</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>ControladorMovimientos</servlet-name>
-        <servlet-class>Controlador.ControladorMovimientos</servlet-class>
-    </servlet>
+  
     <servlet>
         <servlet-name>Controladornuevo</servlet-name>
         <servlet-class>Controlador.ControladorProveedores</servlet-class>
@@ -51,10 +48,6 @@
     <servlet>
         <servlet-name>Nuevo</servlet-name>
         <servlet-class>Controlador.ControladorProveedores</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ControladorJuan</servlet-name>
-        <servlet-class>Controlador.ControladorJuan</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ControladorValidar</servlet-name>
@@ -76,18 +69,18 @@
         <servlet-name>ControladorCompras</servlet-name>
         <servlet-class>Controlador.ControladorCompras</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Controladorventas</servlet-name>
+        <servlet-class>Controlador.Controladorventas</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ControladorFacturaventa</servlet-name>
+        <servlet-class>Controlador.ControladorFacturaventa</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ControladorUsuarios</servlet-name>
         <url-pattern>/ControladorUsuarios</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Recibo</servlet-name>
-        <url-pattern>/Recibo</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ControladorRecibo</servlet-name>
-        <url-pattern>/ControladorRecibo</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>  
     <servlet-mapping>
         <servlet-name>ControladorProveedor</servlet-name>
         <url-pattern>/ControladorProveedor</url-pattern>
@@ -116,30 +109,10 @@
         <servlet-name>ControladorFacturas</servlet-name>
         <url-pattern>/ControladorFacturas</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ControladorMovimientos</servlet-name>
-        <url-pattern>/ControladorMovimientos</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Controladornuevo</servlet-name>
-        <url-pattern>/Controladornuevo</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Nuevo</servlet-name>
-        <url-pattern>/Nuevo</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ControladorJuan</servlet-name>
-        <url-pattern>/ControladorJuan</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
+      <servlet-mapping>
         <servlet-name>ControladorValidar</servlet-name>
         <url-pattern>/ControladorValidar</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ControladorRecibo2</servlet-name>
-        <url-pattern>/ControladorRecibo2</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>  
     <servlet-mapping>
         <servlet-name>ControladorProveedores</servlet-name>
         <url-pattern>/ControladorProveedores</url-pattern>
@@ -151,6 +124,14 @@
     <servlet-mapping>
         <servlet-name>ControladorCompras</servlet-name>
         <url-pattern>/ControladorCompras</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Controladorventas</servlet-name>
+        <url-pattern>/Controladorventas</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControladorFacturaventa</servlet-name>
+        <url-pattern>/ControladorFacturaventa</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

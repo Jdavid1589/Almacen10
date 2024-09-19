@@ -1,7 +1,10 @@
 package Persistencia;
 
 import Config.Conexion;
+import Modelo.Clientes;
 import Modelo.Facturas;
+import Modelo.Productos;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,9 +25,9 @@ public class DaoFacturas {
     static PreparedStatement ps;
     static ResultSet rs;
 
-    public static boolean registrarCompra(Facturas facturas) {
+    public static boolean registrarVenta(Facturas facturas) {
 
-        PreparedStatement psCompra = null;
+        PreparedStatement psVenta = null;
         PreparedStatement psDetalle = null;
         PreparedStatement psUpdateProducto = null;
         ResultSet rsCompra = null;
@@ -36,18 +39,21 @@ public class DaoFacturas {
             con.setAutoCommit(false);  // Comenzar la transacción
 
             // Consulta para registrar la compra
-            String sqlCompra = "INSERT INTO compras (fecha, proveedorId, totalCompra) VALUES (?, ?, ?)";
+            String sqlCompra = "INSERT INTO facturas (fecha, clienteId, totalCosto, totalIva, totalPrecioNeto, totalVenta) VALUES (?, ?, ?, ?, ?, ?)";
 
-            psCompra = con.prepareStatement(sqlCompra, Statement.RETURN_GENERATED_KEYS);
+            psVenta = con.prepareStatement(sqlCompra, Statement.RETURN_GENERATED_KEYS);
 
-            psCompra.setString(1, compra.getFecha());
-            psCompra.setInt(2, compra.getProveedorId());
-            psCompra.setBigDecimal(3, compra.getTotalCompra());
+            psVenta.setString(1, facturas.getFecha());
+            psVenta.setInt(2, facturas.getClienteId());
+            psVenta.setBigDecimal(3, facturas.getTotalCosto());
+            psVenta.setBigDecimal(4, facturas.getTotalIva());
+            psVenta.setBigDecimal(5, facturas.getTotalPrecioNeto());
+            psVenta.setBigDecimal(6, facturas.getTotalVenta());
 
-            psCompra.executeUpdate();
+            psVenta.executeUpdate();
 
             // Obtener el ID generado de la compra
-            rsCompra = psCompra.getGeneratedKeys();
+            rsCompra = psVenta.getGeneratedKeys();
             int idCompra = 0;
             if (rsCompra.next()) {
                 idCompra = rsCompra.getInt(1);  // Recuperar ID generado
@@ -104,6 +110,61 @@ public class DaoFacturas {
         }
 
         return false;  // Error
+    }
+    
+     public static Productos buscarProducto(int id) {
+        Productos producto = null; // Inicializamos como null
+        String sql = "SELECT * FROM productos WHERE idProductos = ?"; // Usar consulta parametrizada
+
+        try (Connection con = cn.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id); // Asignar el parámetro PLU
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    producto = new Productos(); // Solo crear si hay un resultado
+                    producto.setIdProductos(rs.getInt("idProductos"));
+                    producto.setPorcIva(rs.getInt("porcIva"));
+                    producto.setProductos(rs.getString("productos"));
+                    producto.setFechaActualizacion(rs.getString("fechaActualizacion"));
+                    producto.setPlu(rs.getString("plu"));
+                    producto.setCategoriasId(rs.getInt("categoriasId"));
+                    producto.setUnidadMedidaId(rs.getInt("unidadMedidaId"));
+                    producto.setCantidadDisponible(rs.getDouble("cantidadDisponible"));
+                    producto.setProveedoresId(rs.getInt("proveedoresId"));
+                    producto.setPrecioCompra(rs.getBigDecimal("precioCompra"));
+                    producto.setPrecioVenta(rs.getBigDecimal("precioVenta"));
+                    // Rellenar otros campos necesarios
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoFacturas.class.getName()).log(Level.SEVERE, "Error al acceder a la base de datos", ex);
+        }
+
+        return producto; // Retornar el producto encontrado o null
+    }
+     
+     public static Clientes buscarCliente(int id) {
+        Clientes clientes = null; // Inicializamos como null
+        String sql = "SELECT * FROM clientes WHERE id = ?"; // Usar consulta parametrizada
+
+        try (Connection con = cn.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id); // Asignar el parámetro PLU
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    clientes = new Clientes(); // Solo crear si hay un resultado
+                    clientes.setId(rs.getInt("id"));
+                    clientes.setNombres(rs.getString("nombres"));
+                    clientes.setTelefono(rs.getString("telefono"));
+                  
+                    // Rellenar otros campos necesarios
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoFacturas.class.getName()).log(Level.SEVERE, "Error al acceder a la base de datos", ex);
+        }
+
+        return clientes; // Retornar el producto encontrado o null
     }
 
     //**********************************************

@@ -1,5 +1,7 @@
 
 
+<%@page import="Modelo.DetallesFacturas"%>
+<%@page import="Modelo.Facturas"%>
 <%@page import="java.text.NumberFormat"%>
 <%@page import="java.util.Locale"%>
 <%@page import="java.math.BigDecimal"%>
@@ -18,7 +20,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-        <title>Factura Compras</title>      
+        <title>Factura Venta</title>      
 
         <!-- Bootstrap -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
@@ -33,14 +35,165 @@
         <!-- Incluye los archivos CSS de Bootstrap -->  
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-...." crossorigin="anonymous" />
-        <!--link href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css" rel="stylesheet"-->
 
         <link href="Vistas/EstilosCSS/EstilosFacturasFinal.css" rel="stylesheet" type="text/css"/>
+
         <!-- Sirven para actualizar la fecha automaticamnente -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 
+        <!-- Estilos -->
+        <style>
+
+
+            /* Fondo general de la factura */
+            body {
+                background-color: #f7f9fb;
+                font-family: 'Poppins', sans-serif;
+            }
+
+            /* Mejora de la tarjeta */
+            .card {
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                border: none;
+            }
+
+
+
+            /* Divider customizado */
+            #hr_1 {
+                border: 1px solid #5A9BD5;
+                width: 100%;
+            }
+
+            /* Inputs y labels */
+            .formulario__input {
+                border-radius: 5px;
+                box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+                border: 1px solid #ced4da;
+                transition: all 0.3s ease;
+            }
+
+            .formulario__input:focus {
+                border-color: #5A9BD5;
+                box-shadow: 0 0 5px rgba(90, 155, 213, 0.3);
+            }
+
+            .formulario__label {
+                font-weight: 500;
+                color: #555;
+            }
+
+            /* Botones personalizados */
+            .btn-primary {
+                background-color: #5A9BD5;
+                border: none;
+                border-radius: 50px;
+                padding: 10px 20px;
+                font-size: 16px;
+                transition: background-color 0.3s ease;
+            }
+
+            .btn-primary:hover {
+                background-color: #41729F;
+            }
+
+            /* Estilo del botón de búsqueda */
+            .btn-outline-info {
+                border-radius: 50px;
+                transition: background-color 0.3s ease, color 0.3s ease;
+            }
+
+            .btn-outline-info:hover {
+                background-color: #5A9BD5;
+                color: #fff;
+            }
+
+            /* Leyendas y subtítulos */
+            legend {
+                font-size: 18px;
+                text-align: center;
+                color: #333;
+                border-bottom: 2px solid #5A9BD5;
+                padding-bottom: 10px;
+            }
+
+            /* Mejora del espacio entre campos */
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+            /* Responsive en pantallas más pequeñas */
+            @media (max-width: 768px) {
+                .col-sm-3, .col-sm-6 {
+                    margin-bottom: 15px;
+                }
+            }
+
+            /* Sombras en las tarjetas */
+            .card-body {
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                padding: 25px;
+            }
+
+            /* Estilo de footer */
+            tfoot tr {
+                background-color: #ffecb5;
+                color: #000;
+            }
+
+            .tituloPrincipal {
+                font-size: 22px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+            .tituloPrincipal2 {
+                text-transform: uppercase;
+                padding: 10px; /* Reducir el padding */
+                font-size: 25px;
+                font-weight: bold;
+                color: #333;
+                letter-spacing: 0.5px;
+            }
+
+            .table-hover tbody tr:hover {
+                background-color: #f8f9fa;
+            }
+
+            .table thead th {
+                background-color: #343a40;
+                color: white;
+            }
+
+            .line-before-footer {
+                border-top: 2px solid #dee2e6;
+            }
+
+            hr#hr_1 {
+                border-top: 1px solid #007bff;
+            }
+
+            button.btn-success {
+                padding: 10px 20px;
+                font-size: 18px;
+            }
+
+            .card-body {
+                padding: 30px;
+                background-color: #f8f9fa;
+                border-radius: 10px;
+            }
+            h1, h2 {
+                font-weight: 700;
+                color: #0056b3; /* Azul elegante */
+            }
+
+
+
+
+        </style>
 
     </head>
 
@@ -51,22 +204,22 @@
             <div class="row">
                 <div class="col-sm-12 text-center mb-1">
                     <br>
-                    <h2>Factura de Compra</h2>
+                    <h2>Factura de Venta</h2>
                     <hr id="hr_1">
                 </div>
             </div>
         </header>
 
-        <main class="container-fluid ">
+
+
+        <main class="container-fluid">
             <section class="row">
                 <article class="col-sm-5">
                     <div class="card">
                         <div class="card-body">
-                            <!-- Sección de datos de la factura -->
-                            <form id="formAgregarProducto" action="ControladorCompras" method="POST" autocomplete="off" class="custom-form">
-                                <!-- Fecha de Factura -->
+                            <form id="formAgregarProducto" action="ControladorFacturaventa" method="POST" autocomplete="off" class="custom-form">
                                 <fieldset>
-                                    <legend style="font-size: 20px">Datos de la Factura</legend>
+                                    <legend class="tituloPrincipal">Datos de la Factura</legend>
                                     <div class="row mb-2">
                                         <div class="col-sm-6">
                                             <label for="fechaFactura" class="formulario__label">Fecha de Factura:</label>
@@ -75,48 +228,49 @@
                                     </div>
                                 </fieldset>
 
-                                <!-- Sección de búsqueda de proveedor -->
-                                <fieldset>
-                                    <legend style="font-size: 20px">Datos del Proveedor</legend>
-                                    <div class="row">
-                                        <div class="col-sm-6 d-flex">
-                                            <input type="text" class="formulario__input form-control" id="proveedorId" name="proveedorId" value="${param.proveedorId}" placeholder="Código">
-                                            <button class="btn btn-outline-info mx-2 parte1" type="submit" name="accion" value="BuscarProveedor">Buscar</button>
+                                <fieldset class="border p-3 rounded shadow-sm">
+                                    <legend class="w-auto px-2" style="font-size: 20px; font-weight: 600;">Datos del Cliente</legend>
+                                    <div class="row mb-2">
+                                        <div class="col-sm-6 d-flex align-items-center">
+                                            <input type="text" class="form-control" id="clienteId" name="clienteId" value="${param.clienteId}" placeholder="Ingrese Nombres">
+                                            <button class="btn btn-outline-primary ml-2" type="submit" name="accion" value="BuscarCliente">Buscar</button>
                                         </div>
                                         <div class="col-sm-6">
-                                            <input style="font-weight: 600" type="text" class="formulario__input form-control" name="proveedor" value="${proveedorEncontrado.proveedor}" placeholder="Proveedor">
+                                            <input type="text" class="form-control font-weight-bold" name="nombres" value="${clienteEncontrado.nombres}" placeholder="Cliente">
                                         </div>
                                     </div>
                                 </fieldset>
 
+
                                 <hr id="hr_1">
 
-                                <!-- Sección de búsqueda de producto -->
-                                <fieldset class="parte1">
-                                    <legend style="font-size: 20px">Datos del Producto</legend>
+                                <fieldset class="border p-3 rounded shadow-sm mt-4">
+                                    <legend class="w-auto px-2" style="font-size: 20px; font-weight: 600;">Datos del Producto</legend>
                                     <div class="row mb-3">
-                                        <div class="col-sm-6 d-flex">
-                                            <input type="text" class="formulario__input form-control" name="productosId" placeholder="Ingrese Código" value="${param.productosId}">
-                                            <button class="btn btn-outline-info mx-2" type="submit" name="accion" value="BuscarProductos">Buscar</button>
+                                        <div class="col-sm-6 d-flex align-items-center">
+                                            <input type="text" class="form-control" name="productosId" placeholder="Ingrese Código" value="${param.productosId}">
+                                            <button class="btn btn-outline-primary ml-2" type="submit" name="accion" value="BuscarProductos">Buscar</button>
                                         </div>
                                         <div class="col-sm-6">
-                                            <input type="text" class="formulario__input form-control " style="font-weight: 500;" name="producto" value="${listapr.productos}" placeholder="Producto">
+                                            <input type="text" class="form-control font-weight-bold" name="producto" value="${listapr.productos}" placeholder="Producto">
                                         </div>
                                     </div>
-
-                                    <!-- Información del producto -->
                                     <div class="row mb-2">
                                         <div class="col-sm-3">
                                             <label class="formulario__label">Precio Unidad</label>
-                                            <input type="text" class="formulario__input form-control" name="precio" value="${'$ '}${listapr.precioCompra}" placeholder="$/0.00">
+                                            <input type="text" class="formulario__input form-control" name="precioCompra" value="${'$ '}${listapr.precioCompra}" placeholder="$/0.00">
                                         </div>
                                         <div class="col-sm-3">
                                             <label class="formulario__label">Cantidad</label>
-                                            <input style="background: #fff"  type="number" class="formulario__input form-control" name="cantidad" placeholder="">
+                                            <input style="background: #fff" type="number" class="formulario__input form-control" name="cantidad" placeholder="">
                                         </div>
                                         <div class="col-sm-3">
                                             <label class="formulario__label">Stock</label>
                                             <input type="text" class="formulario__input form-control" name="stock" value="${listapr.cantidadDisponible}" placeholder="Stock">
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <label class="formulario__label">Precio Venta</label>
+                                            <input type="text" class="formulario__input form-control" name="precioVenta" value="${'$ '}${listapr.precioVenta}" placeholder="$/0.00">
                                         </div>
                                         <div class="col-sm-3">
                                             <label class="formulario__label">%Iva</label>
@@ -125,63 +279,83 @@
                                     </div>
                                 </fieldset>
 
-                                <hr class="parte1"  id="hr_1">
+                                <hr class="parte1" id="hr_1">
 
-                                <!-- Botón Agregar al Carrito -->
                                 <div class="text-center parte1">
-                                    <button id="btnAgregarAlCarrito" class="btn btn-primary" type="submit" name="accion" value="AgregarAlCarrito">Agregar al Carrito</button>
+                                    <button id="btnAgregarAlCarrito" class="btn btn-primary" type="submit" name="accion" value="AgregarAlCarrito2">Agregar al Carrito</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </article>
 
+
+
                 <!-- Sección del carrito -->
                 <article class="col-sm-7">
                     <div class="card">
+                        <legend class="tituloPrincipal">Carrito de Ventas</legend>
                         <div class="card-body">
+
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover sticky-top">
                                     <thead class="table-header">
-                                        <tr class="text-center">
+                                        <tr>
                                             <th>ID Producto</th>
                                             <th>Nombre</th>
                                             <th>Cantidad</th>
                                             <th>Precio Unitario</th>
                                             <th>Subtotal</th>
+                                            <th>IVA</th> <!-- Nueva columna para IVA -->
+                                            <th>Precio Neto</th> <!-- Nueva columna para Precio Neto -->
                                             <th class="parte1">Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <%
                                             NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
-                                            BigDecimal total = BigDecimal.ZERO;
-                                            List<Compras> carrito = (List<Compras>) request.getSession().getAttribute("carrito");
+                                            BigDecimal totalCosto = BigDecimal.ZERO;
+                                            BigDecimal totalIva = BigDecimal.ZERO;
+                                            BigDecimal totalPrecioNeto = BigDecimal.ZERO;
+                                            BigDecimal totalVenta = BigDecimal.ZERO;
+
+                                            List<Facturas> carrito = (List<Facturas>) request.getSession().getAttribute("carrito");
                                             if (carrito == null || carrito.isEmpty()) {
                                         %>
-                                        <tr class="text-center">
-                                            <td colspan="5">No hay productos en el carrito.</td>
+                                        <tr>
+                                            <td colspan="7">No hay productos en el carrito.</td>
                                         </tr>
                                         <%
                                         } else {
-                                            for (Compras compra : carrito) {
-                                                List<ComprasProductos> articulos = compra.getArticulos();
-                                                if (articulos != null) {
-                                                    for (ComprasProductos detalle : articulos) {
+                                            for (Facturas venta : carrito) {
+                                                List<DetallesFacturas> facturas = venta.getFacturas();
+                                                if (facturas != null) {
+                                                    for (DetallesFacturas detalle : facturas) {
                                                         BigDecimal cantidad = detalle.getCantidad();
-                                                        BigDecimal costoArticulo = detalle.getCostoArticulo();
-                                                        BigDecimal subtotal = cantidad.multiply(costoArticulo);
-                                                        total = total.add(subtotal);
+                                                        BigDecimal precioUnitario = detalle.getPrecioCompra(); // Precio de compra
+                                                        BigDecimal subtotal = cantidad.multiply(precioUnitario); // Subtotal sin IVA
+                                                        int porcIva = detalle.getPorcIva(); // % IVA
+                                                        BigDecimal iva = subtotal.multiply(BigDecimal.valueOf(porcIva)).divide(BigDecimal.valueOf(100)); // Cálculo del IVA
+                                                        BigDecimal precioNeto = subtotal.add(iva); // Subtotal + IVA (Precio Neto)
+
+                                                        // Acumuladores de los totales
+                                                        totalCosto = totalCosto.add(subtotal);
+                                                        totalIva = totalIva.add(iva);
+                                                        totalPrecioNeto = totalPrecioNeto.add(precioNeto);
+                                                        totalVenta = totalVenta.add(precioNeto); // Actualizar totalVenta correctamente
+
                                         %>
-                                        <tr class="text-center">
+                                        <tr>
                                             <td><%= detalle.getProductosId()%></td>
                                             <td><%= DaoProductos.obtenerNombreProductos(detalle.getProductosId())%></td>
                                             <td><%= cantidad%></td>
-                                            <td><%= currencyFormat.format(costoArticulo)%></td>
+                                            <td><%= currencyFormat.format(precioUnitario)%></td>
                                             <td><%= currencyFormat.format(subtotal)%></td>
+                                            <td><%= currencyFormat.format(iva)%></td> <!-- Mostrar el IVA -->
+                                            <td><%= currencyFormat.format(precioNeto)%></td> <!-- Mostrar el precio neto -->
                                             <td class="parte1">
-                                                <a href="ControladorCompras?accion=Eliminar&id=<%= detalle.getIdCompraProducto()%>">
-                                                    <i class="fas fa-trash-alt"></i> <!-- Ícono de papelera -->
+                                                <a href="ControladorFacturaventa?accion=Eliminar&id=<%= detalle.getFacturasId()%>">
+                                                    <i class="fas fa-trash-alt"></i>
                                                 </a>
                                             </td>
                                         </tr>
@@ -193,15 +367,26 @@
                                         %>
                                     </tbody>
                                     <tfoot>
-                                        <tr class="line-before-footer">
-                                            <td colspan="6"></td> <!-- Asegúrate de que el número de columnas coincide con el de tu tabla -->
+                                        <tr class="line-before-footer" style="background-color: #fff">
+                                            <td colspan="8"></td> <!-- Asegúrate de que el número de columnas coincide con el de tu tabla -->
                                         </tr>
-                                        <tr class="text-right " style="background-color: #ffecb5">
-                                            <td colspan="2"><strong>Total Factura:</strong></td>
-                                            <td colspan="2"><%= currencyFormat.format(total)%></td>
+                                        <tr class="text-right " style="background-color: #fff">
+                                            <td colspan="3"><strong>Total Costo:</strong></td>
+                                            <td colspan="2"><%= currencyFormat.format(totalCosto)%></td>
+                                        </tr>
+                                        <tr class="text-right " style="background-color: #fff">
+                                            <td colspan="3"><strong>Total IVA:</strong></td>
+                                            <td colspan="2"><%= currencyFormat.format(totalIva)%></td>
+                                        </tr>
+
+                                        <tr class="text-right " style="background-color: #ffe8a1">
+                                            <td colspan="3"><strong>Total Venta:</strong></td>
+                                            <td colspan="2"><%= currencyFormat.format(totalVenta)%></td>
                                         </tr>
                                     </tfoot>
                                 </table>
+
+
                             </div>
 
                             <!-- Botón para generar compra -->

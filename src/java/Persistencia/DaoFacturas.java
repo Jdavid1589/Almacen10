@@ -2,6 +2,7 @@ package Persistencia;
 
 import Config.Conexion;
 import Modelo.Clientes;
+import Modelo.DetallesFacturas;
 import Modelo.Facturas;
 import Modelo.Productos;
 
@@ -30,7 +31,7 @@ public class DaoFacturas {
         PreparedStatement psVenta = null;
         PreparedStatement psDetalle = null;
         PreparedStatement psUpdateProducto = null;
-        ResultSet rsCompra = null;
+        ResultSet rsVenta = null;
 
         try {
             // Obtener conexión y desactivar auto-commit para manejar transacción
@@ -39,42 +40,43 @@ public class DaoFacturas {
             con.setAutoCommit(false);  // Comenzar la transacción
 
             // Consulta para registrar la compra
-            String sqlCompra = "INSERT INTO facturas (fecha, clienteId, totalCosto, totalIva, totalPrecioNeto, totalVenta) VALUES (?, ?, ?, ?, ?, ?)";
+            String sqlCompra = "INSERT INTO facturas (fecha, clienteId, totalCosto, totalIva, totalVenta) VALUES (?, ?, ?, ?, ?)";
 
             psVenta = con.prepareStatement(sqlCompra, Statement.RETURN_GENERATED_KEYS);
 
             psVenta.setString(1, facturas.getFecha());
             psVenta.setInt(2, facturas.getClienteId());
             psVenta.setBigDecimal(3, facturas.getTotalCosto());
-            psVenta.setBigDecimal(4, facturas.getTotalIva());
-            psVenta.setBigDecimal(5, facturas.getTotalPrecioNeto());
-            psVenta.setBigDecimal(6, facturas.getTotalVenta());
+            psVenta.setBigDecimal(4, facturas.getTotalIva());       
+            psVenta.setBigDecimal(5, facturas.getTotalVenta());
 
             psVenta.executeUpdate();
 
             // Obtener el ID generado de la compra
-            rsCompra = psVenta.getGeneratedKeys();
-            int idCompra = 0;
-            if (rsCompra.next()) {
-                idCompra = rsCompra.getInt(1);  // Recuperar ID generado
+            rsVenta = psVenta.getGeneratedKeys();
+            int idVenta = 0;
+            if (rsVenta.next()) {
+                idVenta = rsVenta.getInt(1);  // Recuperar ID generado
             }
 
             // Consulta para registrar los detalles de la compra
-            String sqlDetalle = "INSERT INTO comprasproductos (comprasId, productosId, cantidad, costoArticulo, porcIva) VALUES (?, ?, ?, ?,?)";
+            String sqlDetalle = "INSERT INTO detalles_facturas (facturasId, productosId, cantidad, precioCompra, precioVenta, porcIva) VALUES (?, ?, ?, ?, ?, ?)";
             psDetalle = con.prepareStatement(sqlDetalle);
 
             // Consulta para actualizar la cantidad disponible en la tabla productos
-            String sqlUpdateProducto = "UPDATE productos SET cantidadDisponible = cantidadDisponible + ? WHERE idProductos = ?";
+            String sqlUpdateProducto = "UPDATE productos SET cantidadDisponible = cantidadDisponible - ? WHERE idProductos = ?";
             psUpdateProducto = con.prepareStatement(sqlUpdateProducto);
 
             // Iterar sobre los productos comprados
-            for (ComprasProductos detalle : compra.getArticulos()) {
+            for (DetallesFacturas detalle : facturas.getFacturas()) {
                 // Registrar el detalle de la compra
-                psDetalle.setInt(1, idCompra);  // Asignar ID de la compra
+                psDetalle.setInt(1, idVenta);  // Asignar ID de la compra
                 psDetalle.setInt(2, detalle.getProductosId());
                 psDetalle.setBigDecimal(3, detalle.getCantidad());
-                psDetalle.setBigDecimal(4, detalle.getCostoArticulo());
-                psDetalle.setInt(5, detalle.getPorcIva());
+                psDetalle.setBigDecimal(4, detalle.getPrecioCompra());
+                psDetalle.setBigDecimal(5, detalle.getPrecioVenta());
+                psDetalle.setInt(6, detalle.getPorcIva());
+           
 
                 psDetalle.addBatch();  // Agregar a batch
 

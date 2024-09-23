@@ -49,9 +49,16 @@ public class ControladorFacturaventa extends HttpServlet {
                 agregarProductoAlCarrito(request, response);
                 break;
 
-            /*   case "GenerarCompra":
+            case "GenerarVenta":
                 registrarCompra(request, response);
-                break;*/
+                break;
+
+            case "CancelarVenta":
+                // Lógica para cancelar la venta
+                request.getSession().invalidate(); // Esto limpia toda la sesión
+                request.getRequestDispatcher("Vistas/ListaFacturaVenta.jsp").forward(request, response);
+
+                break;
             case "Eliminar":
                 eliminarCompra(request, response);
                 break;
@@ -62,6 +69,457 @@ public class ControladorFacturaventa extends HttpServlet {
                 break;
         }
 
+    }
+
+    private void agregarProductoAlCarrito2(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            // Obtener los parámetros de la solicitud
+            String productoIdStr = request.getParameter("productosId");
+            String cantidadStr = request.getParameter("cantidad");
+            String costoStr = request.getParameter("precioCompra");
+            String precioventastr = request.getParameter("precioVenta");
+            String porcIvastr = request.getParameter("porcIva");
+            String clientestr = request.getParameter("clienteId");
+            String fechastr = request.getParameter("fechaFactura");
+
+            // Verificar que todos los campos estén presentes
+            if (productoIdStr == null || productoIdStr.isEmpty()
+                    || cantidadStr == null || cantidadStr.isEmpty()
+                    || fechastr == null || fechastr.isEmpty()
+                    || costoStr == null || costoStr.isEmpty()
+                    || precioventastr == null || precioventastr.isEmpty()
+                    || porcIvastr == null || porcIvastr.isEmpty()
+                    || clientestr == null || clientestr.isEmpty()) {
+                request.setAttribute("errorMessage", "Uno o más campos están vacíos.");
+                request.getRequestDispatcher("/Vistas/ListaFacturaVenta.jsp").forward(request, response);
+                return;
+            }
+
+            // Convertir valores a tipos adecuados
+            int productosId = Integer.parseInt(productoIdStr);
+            int clienteId = Integer.parseInt(clientestr);
+            int porcIva = Integer.parseInt(porcIvastr);
+            BigDecimal cantidad = new BigDecimal(cantidadStr);
+
+            // Limpiar y convertir los valores de precio
+            BigDecimal costo = new BigDecimal(costoStr.replaceAll("[^\\d.]", ""));
+            BigDecimal costoVenta = new BigDecimal(precioventastr.replaceAll("[^\\d.]", ""));
+
+            // Obtener o inicializar el carrito
+            List<Facturas> carrito = (List<Facturas>) request.getSession().getAttribute("carrito");
+            if (carrito == null) {
+                carrito = new ArrayList<>();
+            }
+
+            // Variable para indicar si el producto ya existe en el carrito
+            boolean productoEncontrado = false;
+
+            // Buscar si el producto ya está en el carrito
+            for (Facturas venta : carrito) {
+                List<DetallesFacturas> detalles = venta.getFacturas();
+                for (DetallesFacturas detalle : detalles) {
+                    if (detalle.getProductosId() == productosId) {
+                        // Actualiza la cantidad si el producto ya está en el carrito
+                        detalle.setCantidad(detalle.getCantidad().add(cantidad));
+                        productoEncontrado = true;
+                        break;
+                    }
+                }
+                if (productoEncontrado) {
+                    break;
+                }
+            }
+
+            // Si el producto no está en el carrito, agrégalo
+            if (!productoEncontrado) {
+                DetallesFacturas nuevoDetalle = new DetallesFacturas();
+                nuevoDetalle.setProductosId(productosId);
+                nuevoDetalle.setCantidad(cantidad);
+                nuevoDetalle.setPrecioCompra(costo);
+                nuevoDetalle.setPrecioVenta(costoVenta);
+                nuevoDetalle.setPorcIva(porcIva);
+
+                // Crear nueva factura si es necesario
+                Facturas nuevaFactura = new Facturas();
+                nuevaFactura.setFecha(fechastr);
+                nuevaFactura.setClienteId(clienteId);
+
+                // Cálculo de totales
+                BigDecimal totalCosto = cantidad.multiply(costo);
+                BigDecimal totalVenta = cantidad.multiply(costoVenta);
+                BigDecimal totalIva = totalCosto.multiply(BigDecimal.valueOf(porcIva)).divide(BigDecimal.valueOf(100));
+
+                nuevaFactura.setTotalCosto(totalCosto);
+                nuevaFactura.setTotalIva(totalIva);
+                nuevaFactura.setTotalPrecioNeto(totalCosto.add(totalIva));
+                nuevaFactura.setTotalVenta(totalVenta);
+
+                List<DetallesFacturas> detalles = new ArrayList<>();
+                detalles.add(nuevoDetalle);
+                nuevaFactura.setFacturas(detalles);
+                carrito.add(nuevaFactura);
+            }
+
+            // Guardar el carrito actualizado en la sesión
+            request.getSession().setAttribute("carrito", carrito);
+            request.getSession().setAttribute("fechaFactura", fechastr);
+
+            // Calcular totales acumulados
+            BigDecimal totalCostoAcumulado = BigDecimal.ZERO;
+            BigDecimal totalIvaAcumulado = BigDecimal.ZERO;
+            BigDecimal totalVentaAcumulado = BigDecimal.ZERO;
+
+            for (Facturas factura : carrito) {
+                totalCostoAcumulado = totalCostoAcumulado.add(factura.getTotalCosto());
+                totalIvaAcumulado = totalIvaAcumulado.add(factura.getTotalIva());
+                totalVentaAcumulado = totalVentaAcumulado.add(factura.getTotalPrecioNeto());
+            }
+
+            // Guardar totales en la sesión
+            request.getSession().setAttribute("totalCosto", totalCostoAcumulado);
+            request.getSession().setAttribute("totalIva", totalIvaAcumulado);
+            request.getSession().setAttribute("totalVentaAcumulado", totalVentaAcumulado);
+
+            // Redirigir a la página del carrito
+            request.getRequestDispatcher("Vistas/ListaFacturaVenta.jsp").forward(request, response);
+
+        } catch (NumberFormatException e) {
+            request.setAttribute("errorMessage", "Error en el formato del costo o en los números. " + e.getMessage());
+            request.getRequestDispatcher("Vistas/ListaFacturaVenta.jsp").forward(request, response);
+        } catch (Exception e) {
+            request.setAttribute("errorMessage", "Error inesperado al procesar la solicitud.");
+            request.getRequestDispatcher("Vistas/ListaFacturaVenta.jsp").forward(request, response);
+        }
+    }
+
+    private void agregarProductoAlCarrito(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            // Obtener los parámetros de la solicitud
+            String productoIdStr = request.getParameter("productosId");
+            String cantidadStr = request.getParameter("cantidad");
+            String costoStr = request.getParameter("precioCompra");
+            String precioventastr = request.getParameter("precioVenta");
+            String porcIvastr = request.getParameter("porcIva");
+            String clientestr = request.getParameter("clienteId");
+            String fechastr = request.getParameter("fechaFactura");
+
+            // Depuración: imprimir los parámetros recibidos
+            /* System.out.println("Parámetros recibidos:");
+            System.out.println("productoId: " + productoIdStr);
+            System.out.println("cantidad: " + cantidadStr);
+            System.out.println("costo: " + costoStr);
+            System.out.println("precioVenta: " + precioventastr);
+            System.out.println("porcIva: " + porcIvastr);
+            System.out.println("clienteId: " + clientestr);
+            System.out.println("fechaFactura: " + fechastr);*/
+            // Verificar que todos los campos estén presentes
+            if (productoIdStr == null || productoIdStr.isEmpty()
+                    || cantidadStr == null || cantidadStr.isEmpty()
+                    || fechastr == null || fechastr.isEmpty()
+                    || costoStr == null || costoStr.isEmpty()
+                    || precioventastr == null || precioventastr.isEmpty()
+                    || porcIvastr == null || porcIvastr.isEmpty()
+                    || clientestr == null || clientestr.isEmpty()) {
+                request.setAttribute("errorMessage", "Uno o más campos están vacíos.");
+                request.getRequestDispatcher("/Vistas/ListaFacturaVenta.jsp").forward(request, response);
+                return;
+            }
+
+            // Convertir valores a tipos adecuados
+            int productosId = Integer.parseInt(productoIdStr);
+            int clienteId = Integer.parseInt(clientestr);
+            int porcIva = Integer.parseInt(porcIvastr);
+            BigDecimal cantidad = new BigDecimal(cantidadStr);
+
+            // Depuración: imprimir los valores convertidos
+            System.out.println("Valores convertidos:");
+            System.out.println("productosId: " + productosId);
+            System.out.println("clienteId: " + clienteId);
+            System.out.println("porcIva: " + porcIva);
+            System.out.println("cantidad: " + cantidad);
+
+            // Limpiar y convertir los valores de precio
+            BigDecimal costo = new BigDecimal(costoStr.replaceAll("[^\\d.]", ""));
+            BigDecimal costoVenta = new BigDecimal(precioventastr.replaceAll("[^\\d.]", ""));
+
+            // Depuración: imprimir precios
+            System.out.println("Precios:");
+            System.out.println("costo: " + costo);
+            System.out.println("costoVenta: " + costoVenta);
+
+            // Obtener o inicializar el carrito
+            List<Facturas> carrito = (List<Facturas>) request.getSession().getAttribute("carrito");
+            if (carrito == null) {
+                carrito = new ArrayList<>();
+            }
+
+            // Variable para indicar si el producto ya existe en el carrito
+            boolean productoEncontrado = false;
+
+            // Buscar si el producto ya está en el carrito
+            for (Facturas venta : carrito) {
+                List<DetallesFacturas> detalles = venta.getFacturas();
+                for (DetallesFacturas detalle : detalles) {
+                    if (detalle.getProductosId() == productosId) {
+                        // Actualiza la cantidad si el producto ya está en el carrito
+                        detalle.setCantidad(detalle.getCantidad().add(cantidad));
+                        productoEncontrado = true;
+                        break;
+                    }
+                }
+                if (productoEncontrado) {
+                    break;
+                }
+            }
+
+            // Si el producto no está en el carrito, agrégalo
+            if (!productoEncontrado) {
+                DetallesFacturas nuevoDetalle = new DetallesFacturas();
+                nuevoDetalle.setProductosId(productosId);
+                nuevoDetalle.setCantidad(cantidad);
+                nuevoDetalle.setPrecioCompra(costo);
+                nuevoDetalle.setPrecioVenta(costoVenta);
+                nuevoDetalle.setPorcIva(porcIva);
+
+                // Crear nueva factura si es necesario
+                Facturas nuevaFactura = new Facturas();
+                nuevaFactura.setFecha(fechastr);
+                nuevaFactura.setClienteId(clienteId);
+
+                // Cálculo de totales
+                BigDecimal totalCosto = cantidad.multiply(costo);
+                BigDecimal totalVenta = cantidad.multiply(costoVenta);
+                BigDecimal totalIva = totalCosto.multiply(BigDecimal.valueOf(porcIva)).divide(BigDecimal.valueOf(100));
+
+                // Depuración: imprimir totales calculados
+                System.out.println("Totales calculados:");
+                System.out.println("totalCosto: " + totalCosto);
+                System.out.println("totalIva: " + totalIva);
+                System.out.println("totalVenta: " + totalVenta);
+
+                nuevaFactura.setTotalCosto(totalCosto);
+                nuevaFactura.setTotalIva(totalIva);
+                nuevaFactura.setTotalVenta(totalVenta);
+
+                List<DetallesFacturas> detalles = new ArrayList<>();
+                detalles.add(nuevoDetalle);
+                nuevaFactura.setFacturas(detalles);
+                carrito.add(nuevaFactura);
+            }
+
+            // Guardar el carrito actualizado en la sesión
+            request.getSession().setAttribute("carrito", carrito);
+            request.getSession().setAttribute("fechaFactura", fechastr);
+
+            // Calcular totales acumulados
+            BigDecimal totalCostoAcumulado = BigDecimal.ZERO;
+            BigDecimal totalIvaAcumulado = BigDecimal.ZERO;
+            BigDecimal totalVentaAcumulado = BigDecimal.ZERO;
+
+            for (Facturas factura : carrito) {
+                totalCostoAcumulado = totalCostoAcumulado.add(factura.getTotalCosto());
+                totalIvaAcumulado = totalIvaAcumulado.add(factura.getTotalIva());
+                totalVentaAcumulado = totalVentaAcumulado.add(factura.getTotalVenta());
+            }
+
+            // Depuración: imprimir totales acumulados
+            System.out.println("Totales acumulados:");
+            System.out.println("totalCostoAcumulado: " + totalCostoAcumulado);
+            System.out.println("totalIvaAcumulado: " + totalIvaAcumulado);
+            System.out.println("totalVentaAcumulado: " + totalVentaAcumulado);
+
+            // Guardar totales acumulados en la sesión, si no hay productos en el carrito
+            if (carrito.isEmpty()) {
+                request.getSession().setAttribute("totalCosto", BigDecimal.ZERO);
+                request.getSession().setAttribute("totalIva", BigDecimal.ZERO);
+                request.getSession().setAttribute("totalVentaAcumulado", BigDecimal.ZERO);
+            } else {
+                request.getSession().setAttribute("totalCosto", totalCostoAcumulado);
+                request.getSession().setAttribute("totalIva", totalIvaAcumulado);
+                request.getSession().setAttribute("totalVentaAcumulado", totalVentaAcumulado);
+            }
+
+            // Redirigir a la página del carrito
+            request.getRequestDispatcher("Vistas/ListaFacturaVenta.jsp").forward(request, response);
+
+        } catch (NumberFormatException e) {
+            request.setAttribute("errorMessage", "Error en el formato del costo o en los números. " + e.getMessage());
+            request.getRequestDispatcher("Vistas/ListaFacturaVenta.jsp").forward(request, response);
+        } catch (Exception e) {
+            request.setAttribute("errorMessage", "Error inesperado al procesar la solicitud.");
+            request.getRequestDispatcher("Vistas/ListaFacturaVenta.jsp").forward(request, response);
+        }
+    }
+
+    private void registrarCompra2(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        // IDatos del formulario
+        //Se recupera de la getSession
+        String fechastr = (String) request.getSession().getAttribute("fechaFactura");
+
+        // Obtener el carrito de la sesión
+        List<Facturas> carrito = (List<Facturas>) request.getSession().getAttribute("carrito");
+
+        // Validar si el carrito es nulo o está vacío
+        if (fechastr == null || carrito == null || carrito.isEmpty()) {
+            // Error, no se puede proceder con la factura
+            request.setAttribute("mensajeError", "Validar datos ingresado  Error! .");
+            request.getRequestDispatcher("Vistas/ListaFacturaVenta.jsp").forward(request, response);
+            return;
+        }
+
+        // Asumir que el Cliente es el mismo para todas las compras en el carrito
+        Facturas primeraCompra = carrito.get(0);
+        int idCliente = primeraCompra.getClienteId(); // Tomar el proveedor de la primera factura del carrito
+
+        // Crear una nueva instancia de factura
+        Facturas compraFinal = new Facturas();
+
+        compraFinal.setClienteId(idCliente); // Asignar el Cliente
+        compraFinal.setFecha(fechastr); // Asignar la fecha de la factura    
+
+        // Inicializar el total de la factura
+        BigDecimal totalCompra = BigDecimal.ZERO;
+
+        // Lista de detalles de la factura
+        List<DetallesFacturas> detallesCompra = new ArrayList<>();
+
+        // Iterar sobre cada factura en el carrito para procesar los productos
+        for (Facturas compra : carrito) {
+            for (DetallesFacturas articulo : compra.getFacturas()) {
+                // Calcular el subtotal del producto (cantidad * costo unitario)
+                BigDecimal subtotalProducto = articulo.getPrecioCompra().multiply(articulo.getCantidad());
+
+                // Sumar el subtotal al total de la factura
+                totalCompra = totalCompra.add(subtotalProducto);
+
+                // Agregar el detalle del producto a la lista de detalles
+                detallesCompra.add(articulo);
+            }
+        }
+
+        // Asignar el total calculado a la factura
+        compraFinal.setTotalVenta(totalCompra);
+
+        // Asignar los detalles de los productos a la factura final
+        compraFinal.setFacturas(detallesCompra);
+
+        // Registrar la factura en la base de datos con todos los productos
+        DaoFacturas.registrarVenta(compraFinal);
+
+        // Guardar el proveedor en la sesión para su uso posterior
+        request.getSession().setAttribute("clienteId", idCliente);
+
+        // Limpiar carrito y proveedor de la sesión
+        request.getSession().removeAttribute("carrito");
+
+        // Redirigir a la confirmación o página de compras vacía
+        request.setAttribute("mensajeExito", "Compra registrada con éxito.");
+        request.getRequestDispatcher("Vistas/ListaFacturaVenta.jsp").forward(request, response);
+    }
+
+    private void registrarCompra(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        // Recuperar datos de la sesión
+        String fechastr = (String) request.getSession().getAttribute("fechaFactura");
+        List<Facturas> carrito = (List<Facturas>) request.getSession().getAttribute("carrito");
+
+        // Validar si el carrito o la fecha son nulos o están vacíos
+        if (fechastr == null || carrito == null || carrito.isEmpty()) {
+            // Error: datos insuficientes para proceder
+            request.setAttribute("mensajeError", "Validar datos ingresados. Error en la fecha o carrito vacío.");
+            request.getRequestDispatcher("Vistas/ListaFacturaVenta.jsp").forward(request, response);
+            return;
+        }
+
+        // Obtener el cliente de la primera factura del carrito (se asume que es el mismo cliente para todas las compras)
+        Facturas primeraCompra = carrito.get(0);
+        int clienteId = primeraCompra.getClienteId();
+
+        // Imprimir valores recuperados de la sesión
+        System.out.println("Fecha factura: " + fechastr);
+        System.out.println("ID Cliente: " + clienteId);
+        System.out.println("Tamaño del carrito: " + carrito.size());
+
+        // Recuperar totales de la sesión
+        BigDecimal totalCosto = (BigDecimal) request.getSession().getAttribute("totalCosto");
+        BigDecimal totalIva = (BigDecimal) request.getSession().getAttribute("totalIva");
+        BigDecimal totalVentaAcumulado = (BigDecimal) request.getSession().getAttribute("totalVentaAcumulado");
+
+        // Asignar valores por defecto si son nulos
+        if (totalCosto == null) {
+            totalCosto = BigDecimal.ZERO;
+        }
+        if (totalIva == null) {
+            totalIva = BigDecimal.ZERO;
+        }
+        if (totalVentaAcumulado == null) {
+            totalVentaAcumulado = BigDecimal.ZERO;
+        }
+
+        // Crear una nueva instancia de Facturas para la compra final
+        Facturas compraFinal = new Facturas();
+        compraFinal.setClienteId(clienteId);  // Asignar cliente
+        compraFinal.setFecha(fechastr);  // Asignar fecha de la factura
+
+        // Asignar los totales recuperados de la sesión a la factura
+        compraFinal.setTotalCosto(totalCosto);
+        compraFinal.setTotalIva(totalIva);
+        compraFinal.setTotalVenta(totalVentaAcumulado);
+
+        // Lista de detalles de la compra
+        List<DetallesFacturas> detallesCompra = new ArrayList<>();
+
+        // Iterar sobre cada factura en el carrito
+        for (Facturas compra : carrito) {
+            // Iterar sobre cada producto en la factura
+            for (DetallesFacturas articulo : compra.getFacturas()) {
+                // Agregar el detalle del producto a la lista de detalles
+                detallesCompra.add(articulo);
+
+                // Imprimir información de cada artículo
+                System.out.println("Producto ID: " + articulo.getProductosId());
+                System.out.println("Cantidad: " + articulo.getCantidad());
+                System.out.println("Precio compra: " + articulo.getPrecioCompra());
+            }
+        }
+
+        // Asignar los detalles de los productos a la factura final
+        compraFinal.setFacturas(detallesCompra);
+
+        // Imprimir total de la compra antes de registrar en la base de datos
+        System.out.println("Total de la compra (Costo): " + totalCosto);
+        System.out.println("Total de la compra (IVA): " + totalIva);
+        System.out.println("Total de la compra (Venta Acumulada): " + totalVentaAcumulado);
+        System.out.println("Número de productos en la compra final: " + detallesCompra.size());
+
+        // Intentar registrar la venta en la base de datos
+        boolean ventaRegistrada = DaoFacturas.registrarVenta(compraFinal);
+
+        if (ventaRegistrada) {
+            // Guardar el cliente en la sesión para uso futuro
+            request.getSession().setAttribute("clienteId", clienteId);
+
+            // Después de registrar la venta, limpiar el carrito y los totales en la sesión
+            request.getSession().removeAttribute("carrito");
+            request.getSession().setAttribute("totalCosto", BigDecimal.ZERO);
+            request.getSession().setAttribute("totalIva", BigDecimal.ZERO);
+            request.getSession().setAttribute("totalVentaAcumulado", BigDecimal.ZERO);
+
+            // Mensaje de éxito
+            request.setAttribute("mensajeExito", "Compra registrada con éxito.");
+        } else {
+            // Si la venta no se pudo registrar, mostrar mensaje de error
+            System.out.println("Error al registrar la compra en la base de datos.");
+            request.setAttribute("mensajeError", "Error al registrar la compra. Por favor, intente de nuevo.");
+        }
+
+// Redirigir a la vista final
+        request.getRequestDispatcher("Vistas/ListaFacturaVenta.jsp").forward(request, response);
     }
 
     private void buscarProducto(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -114,125 +572,6 @@ public class ControladorFacturaventa extends HttpServlet {
         }
     }
 
-    private void agregarProductoAlCarrito(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
-            // Obtener los parámetros de la solicitud
-            String productoIdStr = request.getParameter("productosId");
-            String cantidadStr = request.getParameter("cantidad");
-            String costoStr = request.getParameter("precioCompra");
-            String precioventastr = request.getParameter("precioVenta");
-            String porcIvastr = request.getParameter("porcIva");
-            String clientestr = request.getParameter("clienteId"); // Debe ser el ID del cliente
-            String fechastr = request.getParameter("fechaFactura");
-
-            System.out.println("Producto ID: " + productoIdStr);
-            System.out.println("Cantidad: " + cantidadStr);
-            System.out.println("Costo: " + costoStr);
-            System.out.println("Precio Venta: " + precioventastr);
-            System.out.println("Porcentaje IVA: " + porcIvastr);
-            System.out.println("Cliente ID: " + clientestr);
-            System.out.println("Fecha Factura: " + fechastr);
-
-            // Verificar que todos los campos estén presentes
-            if (productoIdStr == null || productoIdStr.isEmpty()
-                    || cantidadStr == null || cantidadStr.isEmpty()
-                    || fechastr == null || fechastr.isEmpty()
-                    || costoStr == null || costoStr.isEmpty()
-                    || precioventastr == null || precioventastr.isEmpty()
-                    || porcIvastr == null || porcIvastr.isEmpty()
-                    || clientestr == null || clientestr.isEmpty()) {
-
-                request.setAttribute("errorMessage", "Uno o más campos están vacíos.");
-                request.getRequestDispatcher("/Vistas/ListaFacturaVenta.jsp").forward(request, response);
-                return;
-            }
-
-            // Convertir valores a tipos adecuados
-            int productosId = Integer.parseInt(productoIdStr);
-            int clienteId = Integer.parseInt(clientestr);
-            int porcIva = Integer.parseInt(porcIvastr);
-            BigDecimal cantidad = new BigDecimal(cantidadStr);
-
-            // Limpiar y convertir los valores de precio
-            String cleanedCostoStr = costoStr.replaceAll("[^\\d.]", "");
-            String cleanedCostoVentaStr = precioventastr.replaceAll("[^\\d.]", "");
-            if (cleanedCostoStr.isEmpty()) {
-                throw new NumberFormatException("El valor de costo está vacío después de la limpieza.");
-            }
-            BigDecimal costo = new BigDecimal(cleanedCostoStr);
-            BigDecimal costoVenta = new BigDecimal(cleanedCostoVentaStr);
-
-            // Obtener o inicializar el carrito
-            List<Facturas> carrito = (List<Facturas>) request.getSession().getAttribute("carrito");
-            if (carrito == null) {
-                carrito = new ArrayList<>();
-            }
-
-            System.out.println("Productos ID: " + productosId);
-            System.out.println("Cantidad: " + cantidad);
-            System.out.println("Costo: " + costo);
-            System.out.println("Carrito actual: " + carrito.size());
-
-            boolean productoEncontrado = false;
-
-            for (Facturas venta : carrito) {
-                List<DetallesFacturas> detalles = venta.getFacturas();
-                for (DetallesFacturas detalle : detalles) {
-                    if (detalle.getProductosId() == productosId) {
-                        // Si el producto ya está en el carrito, actualiza la cantidad
-                        detalle.setCantidad(detalle.getCantidad().add(cantidad));
-                        productoEncontrado = true;
-                        break;
-                    }
-                }
-                if (productoEncontrado) {
-                    break;
-                }
-            }
-
-            // Si el producto no está en el carrito, agrégalo
-            if (!productoEncontrado) {
-                DetallesFacturas nuevoDetalle = new DetallesFacturas();
-                nuevoDetalle.setProductosId(productosId);
-                nuevoDetalle.setCantidad(cantidad);
-                nuevoDetalle.setPrecioCompra(costo);
-                nuevoDetalle.setPrecioVenta(costoVenta);
-                nuevoDetalle.setPorcIva(porcIva);
-
-                // Crear nueva factura si es necesario
-                Facturas nuevaFactura = new Facturas();
-                List<DetallesFacturas> detalles = new ArrayList<>();
-                detalles.add(nuevoDetalle);
-                nuevaFactura.setFacturas(detalles);
-                carrito.add(nuevaFactura);
-            }
-
-            // Guardar el carrito actualizado en la sesión
-            request.getSession().setAttribute("carrito", carrito);
-            request.getSession().setAttribute("fechaFactura", fechastr);
-
-            // Imprimir el contenido del carrito en la consola para depuración
-            System.out.println("Contenido del carrito:");
-            for (Facturas factura : carrito) {
-                System.out.println("Fecha: " + factura.getFecha() + ", Cliente ID: " + factura.getClienteId() + ", Total Venta: " + factura.getTotalVenta());
-                for (DetallesFacturas detalle : factura.getFacturas()) {
-                    System.out.println("    Producto ID: " + detalle.getProductosId() + ", Cantidad: " + detalle.getCantidad() + ", Costo Unitario: " + detalle.getPrecioCompra());
-                }
-            }
-
-            // Redirigir a la página del carrito
-            request.getRequestDispatcher("Vistas/ListaFacturaVenta.jsp").forward(request, response);
-
-        } catch (NumberFormatException e) {
-            request.setAttribute("errorMessage", "Error en el formato del costo o en los números. " + e.getMessage());
-            request.getRequestDispatcher("Vistas/ListaFacturaVenta.jsp").forward(request, response);
-        } catch (Exception e) {
-            request.setAttribute("errorMessage", "Error inesperado al procesar la solicitud.");
-            request.getRequestDispatcher("Vistas/ListaFacturaVenta.jsp").forward(request, response);
-        }
-    }
-
     private void mantenerBusquedaProducto(HttpServletRequest request) {
         String idprod = request.getParameter("productosId");
 
@@ -262,73 +601,6 @@ public class ControladorFacturaventa extends HttpServlet {
 
     }
 
-    /*private void registrarCompra(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        // IDatos del formulario
-        //Se recupera de la getSession
-        String fechastr = (String) request.getSession().getAttribute("fechaFactura");
-
-        // Obtener el carrito de la sesión
-        List<Compras> carrito = (List<Compras>) request.getSession().getAttribute("carrito");
-
-        // Validar si el carrito es nulo o está vacío
-        if (fechastr == null || carrito == null || carrito.isEmpty()) {
-            // Error, no se puede proceder con la factura
-            request.setAttribute("mensajeError", "Validar datos ingresado  Error! .");
-            request.getRequestDispatcher("Vistas/Lista_Compras_Articulos.jsp").forward(request, response);
-            return;
-        }
-
-        // Asumir que el proveedor es el mismo para todas las compras en el carrito
-        Compras primeraCompra = carrito.get(0);
-        int proveedorId = primeraCompra.getProveedorId(); // Tomar el proveedor de la primera factura del carrito
-
-        // Crear una nueva instancia de factura
-        Compras compraFinal = new Compras();
-
-        compraFinal.setProveedorId(proveedorId); // Asignar el proveedor
-        compraFinal.setFecha(fechastr); // Asignar la fecha de la factura    
-
-        // Inicializar el total de la factura
-        BigDecimal totalCompra = BigDecimal.ZERO;
-
-        // Lista de detalles de la factura
-        List<ComprasProductos> detallesCompra = new ArrayList<>();
-
-        // Iterar sobre cada factura en el carrito para procesar los productos
-        for (Compras compra : carrito) {
-            for (ComprasProductos articulo : compra.getArticulos()) {
-                // Calcular el subtotal del producto (cantidad * costo unitario)
-                BigDecimal subtotalProducto = articulo.getCostoArticulo().multiply(articulo.getCantidad());
-
-                // Sumar el subtotal al total de la factura
-                totalCompra = totalCompra.add(subtotalProducto);
-
-                // Agregar el detalle del producto a la lista de detalles
-                detallesCompra.add(articulo);
-            }
-        }
-
-        // Asignar el total calculado a la factura
-        compraFinal.setTotalCompra(totalCompra);
-
-        // Asignar los detalles de los productos a la factura final
-        compraFinal.setArticulos(detallesCompra);
-
-        // Registrar la factura en la base de datos con todos los productos
-        DaoCompras.registrarCompra(compraFinal);
-
-        // Guardar el proveedor en la sesión para su uso posterior
-        request.getSession().setAttribute("proveedorId", proveedorId);
-
-        // Limpiar carrito y proveedor de la sesión
-        request.getSession().removeAttribute("carrito");
-
-        // Redirigir a la confirmación o página de compras vacía
-        request.setAttribute("mensajeExito", "Compra registrada con éxito.");
-        request.getRequestDispatcher("Vistas/Lista_Compras_Articulos.jsp").forward(request, response);
-    }*/
     private void eliminarCompra(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {

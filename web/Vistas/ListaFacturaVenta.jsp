@@ -24,19 +24,23 @@
 
         <!-- Bootstrap -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+        
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
               integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" 
               crossorigin="anonymous" referrerpolicy="no-referrer">
-        <!-- DataTable -->
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css">
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.3/css/buttons.bootstrap5.min.css">
-
+        
         <!-- Incluye los archivos CSS de Bootstrap -->  
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-...." crossorigin="anonymous" />
 
         <link href="Vistas/EstilosCSS/EstilosFacturasFinal.css" rel="stylesheet" type="text/css"/>
+
+        <!-- SweetAlert CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+        <!-- SweetAlert JS -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
         <!-- Sirven para actualizar la fecha automaticamnente -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -204,7 +208,7 @@
             <div class="row">
                 <div class="col-sm-12 text-center mb-1">
                     <br>
-                    <h2>Factura de Venta</h2>
+                    <h2>Factura de Venta </h2>
                     <hr id="hr_1">
                 </div>
             </div>
@@ -217,7 +221,7 @@
                 <article class="col-sm-5">
                     <div class="card">
                         <div class="card-body">
-                            <form id="formAgregarProducto" action="ControladorFacturaventa" method="POST" autocomplete="off" class="custom-form">
+                            <form id="formAgregarVenta" action="ControladorFacturaventa" method="POST" autocomplete="off" class="custom-form">
                                 <fieldset>
                                     <legend class="tituloPrincipal">Datos de la Factura</legend>
                                     <div class="row mb-2">
@@ -289,8 +293,6 @@
                     </div>
                 </article>
 
-
-
                 <!-- Sección del carrito -->
                 <article class="col-sm-7">
                     <div class="card">
@@ -307,7 +309,7 @@
                                             <th>Precio Unitario</th>
                                             <th>Subtotal</th>
                                             <th>IVA</th> <!-- Nueva columna para IVA -->
-                                            <th>Precio Neto</th> <!-- Nueva columna para Precio Neto -->
+                                            <th>Precio Venta</th> <!-- Nueva columna para Precio Neto -->
                                             <th class="parte1">Acciones</th>
                                         </tr>
                                     </thead>
@@ -316,14 +318,13 @@
                                             NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
                                             BigDecimal totalCosto = BigDecimal.ZERO;
                                             BigDecimal totalIva = BigDecimal.ZERO;
-                                            BigDecimal totalPrecioNeto = BigDecimal.ZERO;
-                                            BigDecimal totalVenta = BigDecimal.ZERO;
-
+                                            BigDecimal totalVentaAcumulado = BigDecimal.ZERO; // Cambié el nombre para evitar confusión
                                             List<Facturas> carrito = (List<Facturas>) request.getSession().getAttribute("carrito");
+
                                             if (carrito == null || carrito.isEmpty()) {
                                         %>
                                         <tr>
-                                            <td colspan="7">No hay productos en el carrito.</td>
+                                            <td colspan="8">No hay productos en el carrito.</td>
                                         </tr>
                                         <%
                                         } else {
@@ -333,16 +334,15 @@
                                                     for (DetallesFacturas detalle : facturas) {
                                                         BigDecimal cantidad = detalle.getCantidad();
                                                         BigDecimal precioUnitario = detalle.getPrecioCompra(); // Precio de compra
-                                                        BigDecimal subtotal = cantidad.multiply(precioUnitario); // Subtotal sin IVA
+                                                        BigDecimal subtotal = cantidad.multiply(precioUnitario); // Subtotal sin IVA (precio neto)
+
                                                         int porcIva = detalle.getPorcIva(); // % IVA
                                                         BigDecimal iva = subtotal.multiply(BigDecimal.valueOf(porcIva)).divide(BigDecimal.valueOf(100)); // Cálculo del IVA
-                                                        BigDecimal precioNeto = subtotal.add(iva); // Subtotal + IVA (Precio Neto)
-
+                                                        BigDecimal precioBrutoProducto = subtotal.add(iva); // Subtotal + IVA (Precio con impuestos)
                                                         // Acumuladores de los totales
-                                                        totalCosto = totalCosto.add(subtotal);
-                                                        totalIva = totalIva.add(iva);
-                                                        totalPrecioNeto = totalPrecioNeto.add(precioNeto);
-                                                        totalVenta = totalVenta.add(precioNeto); // Actualizar totalVenta correctamente
+                                                        totalCosto = totalCosto.add(subtotal); // Total sin IVA (precio neto)
+                                                        totalIva = totalIva.add(iva); // Total del IVA
+                                                        totalVentaAcumulado = totalVentaAcumulado.add(precioBrutoProducto); // Total acumulado de la venta
 
                                         %>
                                         <tr>
@@ -352,7 +352,7 @@
                                             <td><%= currencyFormat.format(precioUnitario)%></td>
                                             <td><%= currencyFormat.format(subtotal)%></td>
                                             <td><%= currencyFormat.format(iva)%></td> <!-- Mostrar el IVA -->
-                                            <td><%= currencyFormat.format(precioNeto)%></td> <!-- Mostrar el precio neto -->
+                                            <td><%= currencyFormat.format(precioBrutoProducto)%></td> <!-- Mostrar el precio bruto del producto -->
                                             <td class="parte1">
                                                 <a href="ControladorFacturaventa?accion=Eliminar&id=<%= detalle.getFacturasId()%>">
                                                     <i class="fas fa-trash-alt"></i>
@@ -368,41 +368,88 @@
                                     </tbody>
                                     <tfoot>
                                         <tr class="line-before-footer" style="background-color: #fff">
-                                            <td colspan="8"></td> <!-- Asegúrate de que el número de columnas coincide con el de tu tabla -->
+                                            <td colspan="8"></td>
                                         </tr>
-                                        <tr class="text-right " style="background-color: #fff">
+                                        <tr class="text-right" style="background-color: #fff">
                                             <td colspan="3"><strong>Total Costo:</strong></td>
-                                            <td colspan="2"><%= currencyFormat.format(totalCosto)%></td>
+                                            <td colspan="2">
+                                                <%= currencyFormat.format(
+                                                        request.getSession().getAttribute("totalCosto") != null
+                                                        ? request.getSession().getAttribute("totalCosto")
+                                                        : BigDecimal.ZERO
+                                                )%>
+                                            </td>
                                         </tr>
-                                        <tr class="text-right " style="background-color: #fff">
+                                        <tr class="text-right" style="background-color: #fff">
                                             <td colspan="3"><strong>Total IVA:</strong></td>
-                                            <td colspan="2"><%= currencyFormat.format(totalIva)%></td>
+                                            <td colspan="2">
+                                                <%= currencyFormat.format(
+                                                        request.getSession().getAttribute("totalIva") != null
+                                                        ? request.getSession().getAttribute("totalIva")
+                                                        : BigDecimal.ZERO
+                                                )%>
+                                            </td>
                                         </tr>
-
-                                        <tr class="text-right " style="background-color: #ffe8a1">
-                                            <td colspan="3"><strong>Total Venta:</strong></td>
-                                            <td colspan="2"><%= currencyFormat.format(totalVenta)%></td>
+                                        <tr class="text-right" style="background-color: #ffe8a1">
+                                            <td colspan="3"><strong>Total Venta Acumulado:</strong></td>
+                                            <td colspan="2">
+                                                <%= currencyFormat.format(
+                                                        request.getSession().getAttribute("totalVentaAcumulado") != null
+                                                        ? request.getSession().getAttribute("totalVentaAcumulado")
+                                                        : BigDecimal.ZERO
+                                                )%>
+                                            </td>
                                         </tr>
                                     </tfoot>
+
+
+
+
                                 </table>
+
 
 
                             </div>
 
                             <!-- Botón para generar compra -->
-                            <form action="ControladorCompras" onclick="print()" method="POST">
-                                <input type="hidden" name="accion" value="GenerarCompra">
+                            <form action="ControladorFacturaventa" onclick="print()" method="POST" class="d-flex">
+                                <input type="hidden" name="accion" value="GenerarVenta">
                                 <div class="text-center parte1">
                                     <button class="btn btn-success" type="submit">Generar Compra</button>
                                 </div>
                             </form>
 
+                            <!-- Botón para cancelar la venta -->
+                            <form action="ControladorFacturaventa" method="POST" >
+                                <input type="hidden" name="accion" value="CancelarVenta">
+                                <div class="text-center parte1">
+                                    <button class="btn btn-secondaryr" type="submit">Cancelar Venta</button>
+                                </div>
+                            </form>
+
                             <!-- Mensaje de error si aplica -->
                             <h1>${mensajeError}</h1>
+
+                            <%
+                                String mensajeExito = (String) request.getAttribute("mensajeExito");
+                            %>
+
+                            <% if (mensajeExito != null) {%>
+                            <script>
+                                Swal.fire({
+                                    title: 'Éxito',
+                                    text: '<%= mensajeExito%>',
+                                    icon: 'success',
+                                    confirmButtonText: 'Aceptar'
+                                });
+                            </script>
+                            <% }%>
+
                         </div>
                     </div>
                 </article>
             </section>
+
         </main>
 
         <footer class="text-center mt-4 parte1">
@@ -430,25 +477,26 @@
             });
 
 
-            document.getElementById("formAgregarProducto").addEventListener("submit", function (event) {
+            document.getElementById("formAgregarVenta").addEventListener("submit", function (event) {
                 // Obtener el valor del botón submit
                 var accion = event.submitter.value;
 
                 // Solo validar los campos si la acción es "AgregarAlCarrito"
-                if (accion === "AgregarAlCarrito") {
+                if (accion === "AgregarAlCarrito2") {
                     // Obtener los campos del formulario
                     var fechaFactura = document.getElementById("fechaFactura");
-                    var proveedorId = document.getElementById("proveedorId");
-                    var proveedor = document.querySelector('input[name="proveedor"]');
+                    var clienteId = document.getElementById("clienteId");
+                    var cliente = document.querySelector('input[name="nombres"]');
                     var productosId = document.querySelector('input[name="productosId"]');
                     var producto = document.querySelector('input[name="producto"]');
-                    var precio = document.querySelector('input[name="precio"]');
+                    var precio = document.querySelector('input[name="precioCompra"]');
+                    var precioventa = document.querySelector('input[name="precioVenta"]');
                     var cantidad = document.querySelector('input[name="cantidad"]');
                     var stock = document.querySelector('input[name="stock"]');
                     var porcIva = document.querySelector('input[name="porcIva"]');
 
                     // Lista de todos los campos a validar
-                    var campos = [fechaFactura, proveedorId, proveedor, productosId, producto, precio, cantidad, stock, porcIva];
+                    var campos = [fechaFactura, clienteId, cliente, productosId, producto, precio, precioventa, cantidad, stock, porcIva];
                     var formularioValido = true;
 
                     // Validar cada campo
@@ -479,9 +527,7 @@
 
         </script>
 
-        <!-- Enlace para libreria Sweet Alert -->
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+        
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -491,17 +537,7 @@
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <!-- Bootstrap JS -->
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <!-- DataTables JS -->
-        <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
-        <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
-        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
-
+        
 
     </body>
 </html>

@@ -33,7 +33,6 @@ public class ControladorUsuarios extends HttpServlet {
         String action = request.getParameter("accion");
 
         switch (action) {
-          
 
             case "registrar":
                 registrarUsuario(request, response);
@@ -68,11 +67,11 @@ public class ControladorUsuarios extends HttpServlet {
     private void registrarUsuario(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-         
+
             Usuarios usuarios = new Usuarios();
 
             // . Se toma la inforacion  del for y se le pasa directamente al obj
-            usuarios.setNombres(request.getParameter("nombres"));       
+            usuarios.setNombres(request.getParameter("nombres"));
             usuarios.setUsuario(request.getParameter("usuario"));
             usuarios.setClave(request.getParameter("clave"));
             usuarios.setPerfilId(Integer.parseInt(request.getParameter("perfilId")));
@@ -113,7 +112,9 @@ public class ControladorUsuarios extends HttpServlet {
             // Obtener el ID del parámetro de solicitud y almacenarlo en la variable de instancia
             ide = Integer.parseInt(request.getParameter("id"));
             Usuarios u = DaoUsuarios.obtenerUsuarioPorId(ide);
+
             request.setAttribute("User", u);
+            request.setAttribute("isEditing", true); // Indicador de edición
 
             listarUsuarios(request, response);
 
@@ -145,10 +146,9 @@ public class ControladorUsuarios extends HttpServlet {
             Usuarios u = DaoUsuarios.obtenerUsuarioPorId(ide);
             request.setAttribute("User", u);
 
-          
             Usuarios usuarios = new Usuarios();
 
-            usuarios.setNombres(request.getParameter("nombres"));         
+            usuarios.setNombres(request.getParameter("nombres"));
             usuarios.setUsuario(request.getParameter("usuario"));
             usuarios.setClave(request.getParameter("clave"));
             usuarios.setPerfilId(Integer.parseInt(request.getParameter("perfilId")));
@@ -162,10 +162,12 @@ public class ControladorUsuarios extends HttpServlet {
                 request.setAttribute("mensaje", "No se pudo actualizar el Consecutivo");
             }
 
-            List<Usuarios> lt = DaoUsuarios.listar();
-            request.setAttribute("listaUsuarios", lt);
-            request.getRequestDispatcher("Vistas/ListaUsuarios.jsp").forward(request, response);
-
+            
+              // Limpia los campos
+            request.setAttribute("categEdit", new Usuarios());
+            
+            listarUsuarios(request, response);           
+           
         } catch (IOException | NumberFormatException | ServletException ex) {
             request.setAttribute("mensaje", "Error al actualizar el Consecutivo: " + ex.getMessage());
             listarUsuarios(request, response);
@@ -182,6 +184,8 @@ public class ControladorUsuarios extends HttpServlet {
             } else {
                 request.setAttribute("mensaje", "No se pudo eliminar el usuario");
             }
+
+          
 
             List<Usuarios> lt = DaoUsuarios.listar();
             request.setAttribute("listaUsuarios", lt);

@@ -132,7 +132,6 @@ public class ControladorCategorias extends HttpServlet {
     }
 }
 
-
     private void actualizarCategorias(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {

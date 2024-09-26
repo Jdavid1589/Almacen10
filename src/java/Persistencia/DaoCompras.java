@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Persistencia;
 
 import Config.Conexion;
@@ -39,8 +35,7 @@ public class DaoCompras {
             String sqlDetalle = "INSERT INTO comprasproductos (comprasId, productosId, cantidad, costoArticulo) VALUES (?, ?, ?, ?)";
 
             // Obtener conexión y desactivar auto-commit para manejar transacción
-          //  Conexion cn = Conexion.getInstance();
-            
+            //  Conexion cn = Conexion.getInstance();
             con = cn.getConnection();
             con.setAutoCommit(false);  // Comenzar la transacción
 
@@ -61,7 +56,7 @@ public class DaoCompras {
 
             // Registrar los detalles de la compra
             psDetalle = con.prepareStatement(sqlDetalle);
-            
+
             for (ComprasProductos detalle : compra.getArticulos()) {
                 psDetalle.setInt(1, idCompra);  // Asignar ID de la compra
                 psDetalle.setInt(2, detalle.getProductosId());
@@ -76,9 +71,7 @@ public class DaoCompras {
 
             // Confirmar la transacción
             con.commit();
-            
-            
-            
+
         } catch (SQLException e) {
             // Manejar el error y hacer rollback
             if (con != null) {
@@ -94,95 +87,102 @@ public class DaoCompras {
         }
         return false;
     }
-    
-    
+
     public static boolean registrarCompra(Compras compra) {
 
-    PreparedStatement psCompra = null;
-    PreparedStatement psDetalle = null;
-    PreparedStatement psUpdateProducto = null;
-    ResultSet rsCompra = null;
+        PreparedStatement psCompra = null;
+        PreparedStatement psDetalle = null;
+        PreparedStatement psUpdateProducto = null;
+        ResultSet rsCompra = null;
 
-    try {
-        // Obtener conexión y desactivar auto-commit para manejar transacción
-        Conexion cn = Conexion.getInstance();
-        con = cn.getConnection();
-        con.setAutoCommit(false);  // Comenzar la transacción
+        try {
+            // Obtener conexión y desactivar auto-commit para manejar transacción
+            Conexion cn = Conexion.getInstance();
+            con = cn.getConnection();
+            con.setAutoCommit(false);  // Comenzar la transacción
 
-        // Consulta para registrar la compra
-        String sqlCompra = "INSERT INTO compras (fecha, proveedorId, totalCompra) VALUES (?, ?, ?)";
-        
-        psCompra = con.prepareStatement(sqlCompra, Statement.RETURN_GENERATED_KEYS);
-        
-        psCompra.setString(1, compra.getFecha());
-        psCompra.setInt(2, compra.getProveedorId());
-        psCompra.setBigDecimal(3, compra.getTotalCompra());
-        
-        psCompra.executeUpdate();
+            // Consulta para registrar la compra
+            String sqlCompra = "INSERT INTO compras (fecha, proveedorId, totalCompra) VALUES (?, ?, ?)";
 
-        // Obtener el ID generado de la compra
-        rsCompra = psCompra.getGeneratedKeys();
-        int idCompra = 0;
-        if (rsCompra.next()) {
-            idCompra = rsCompra.getInt(1);  // Recuperar ID generado
-        }
+            psCompra = con.prepareStatement(sqlCompra, Statement.RETURN_GENERATED_KEYS);
 
-        // Consulta para registrar los detalles de la compra
-        String sqlDetalle = "INSERT INTO comprasproductos (comprasId, productosId, cantidad, costoArticulo, porcIva) VALUES (?, ?, ?, ?,?)";
-        psDetalle = con.prepareStatement(sqlDetalle);
+            psCompra.setString(1, compra.getFecha());
+            psCompra.setInt(2, compra.getProveedorId());
+            psCompra.setBigDecimal(3, compra.getTotalCompra());
 
-        // Consulta para actualizar la cantidad disponible en la tabla productos
-        String sqlUpdateProducto = "UPDATE productos SET cantidadDisponible = cantidadDisponible + ? WHERE idProductos = ?"; 
-        psUpdateProducto = con.prepareStatement(sqlUpdateProducto);
+            psCompra.executeUpdate();
 
-        // Iterar sobre los productos comprados
-        for (ComprasProductos detalle : compra.getArticulos()) {
-            // Registrar el detalle de la compra
-            psDetalle.setInt(1, idCompra);  // Asignar ID de la compra
-            psDetalle.setInt(2, detalle.getProductosId());
-            psDetalle.setBigDecimal(3, detalle.getCantidad());
-            psDetalle.setBigDecimal(4, detalle.getCostoArticulo());
-            psDetalle.setInt(5, detalle.getPorcIva());
-            
-            psDetalle.addBatch();  // Agregar a batch
-
-            // Actualizar el stock del producto
-            psUpdateProducto.setBigDecimal(1, detalle.getCantidad());  // Cantidad comprada
-            psUpdateProducto.setInt(2, detalle.getProductosId());  // ID del producto
-            psUpdateProducto.addBatch();  // Agregar a batch
-        }
-
-        // Ejecutar el batch para los detalles de compra
-        psDetalle.executeBatch();
-
-        // Ejecutar el batch para actualizar la cantidad disponible de los productos
-        psUpdateProducto.executeBatch();
-
-        // Confirmar la transacción
-        con.commit();
-
-        return true;  // Éxito
-
-    } catch (SQLException e) {
-        // Manejar el error y hacer rollback
-        if (con != null) {
-            try {
-                con.rollback();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
+            // Obtener el ID generado de la compra
+            rsCompra = psCompra.getGeneratedKeys();
+            int idCompra = 0;
+            if (rsCompra.next()) {
+                idCompra = rsCompra.getInt(1);  // Recuperar ID generado
             }
+
+            // Consulta para registrar los detalles de la compra
+            String sqlDetalle = "INSERT INTO comprasproductos (comprasId, productosId, cantidad, costoArticulo, porcIva, precioVenta) VALUES (?, ?, ?, ?, ?, ?)";
+            psDetalle = con.prepareStatement(sqlDetalle);
+
+            // Consulta para actualizar la cantidad disponible en la tabla productos
+            String sqlUpdateProducto = "UPDATE productos SET cantidadDisponible = cantidadDisponible + ?,  "
+                    + "precioCompra = ?, precioVenta = ?, fechaActualizacion = ?, porcIva = ? "
+                    + "WHERE idProductos = ?";
+            psUpdateProducto = con.prepareStatement(sqlUpdateProducto);
+
+            //Consulta para actulizar precios
+            // UPDATE productos SET precioCompra = ?, precioVenta = ? WHERE (`idProductos` = ?);
+            // Iterar sobre los productos comprados
+            for (ComprasProductos detalle : compra.getArticulos()) {
+
+                // Registrar el detalle de la compra
+                psDetalle.setInt(1, idCompra);  // Asignar ID de la compra
+                psDetalle.setInt(2, detalle.getProductosId());
+                psDetalle.setBigDecimal(3, detalle.getCantidad());
+                psDetalle.setBigDecimal(4, detalle.getCostoArticulo());
+                psDetalle.setInt(5, detalle.getPorcIva());
+                psDetalle.setBigDecimal(6, detalle.getPrecioVenta());
+
+                psDetalle.addBatch();  // Agregar a batch
+
+                // Actualizar el stock del producto
+                psUpdateProducto.setBigDecimal(1, detalle.getCantidad());  // Cantidad comprada
+                psUpdateProducto.setBigDecimal(2, detalle.getCostoArticulo());  //                   
+                psUpdateProducto.setBigDecimal(3, detalle.getPrecioVenta());  //     
+                psUpdateProducto.setString(4, compra.getFecha());  // Asignar la fecha de compra
+                psUpdateProducto.setInt(5, detalle.getPorcIva());  // ID del producto
+                psUpdateProducto.setInt(6, detalle.getProductosId());  // ID del producto
+                psUpdateProducto.addBatch();  // Agregar a batch
+            }
+
+            // Ejecutar el batch para los detalles de compra
+            psDetalle.executeBatch();
+
+            // Ejecutar el batch para actualizar la cantidad disponible de los productos
+            psUpdateProducto.executeBatch();
+
+            // Confirmar la transacción
+            con.commit();
+
+            return true;  // Éxito
+
+        } catch (SQLException e) {
+            // Manejar el error y hacer rollback
+            if (con != null) {
+                try {
+                    con.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            e.printStackTrace();
+        } finally {
+            cerrarRecursos();  // Cerrar recursos
         }
-        e.printStackTrace();
-    } finally {
-        cerrarRecursos();  // Cerrar recursos
+
+        return false;  // Error
     }
 
-    return false;  // Error
-}
-
-    
-    
-     public static Productos buscarProducto(int id) {
+    public static Productos buscarProducto(int id) {
         Productos producto = null; // Inicializamos como null
         String sql = "SELECT * FROM productos WHERE idProductos = ?"; // Usar consulta parametrizada
 
@@ -236,11 +236,6 @@ public class DaoCompras {
 
         return proveedores; // Retornar el producto encontrado o null
     }
-
-    
-    
-    
-    
 
     // Agrega este método para cerrar las conexiones y recursos
     private static void cerrarRecursos() {

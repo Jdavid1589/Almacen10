@@ -11,8 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -69,6 +68,7 @@ public class DaoFacturas {
 
             // Iterar sobre los productos comprados
             for (DetallesFacturas detalle : facturas.getFacturas()) {
+                
                 // Registrar el detalle de la compra
                 psDetalle.setInt(1, idVenta);  // Asignar ID de la compra
                 psDetalle.setInt(2, detalle.getProductosId());
@@ -167,6 +167,32 @@ public class DaoFacturas {
         }
 
         return clientes; // Retornar el producto encontrado o null
+    }
+     
+     
+     /*Zona Clientes*/
+     
+        public static boolean grabarCliente(Clientes clientes) {
+        try {
+               con = cn.getConnection();
+            String sql = "INSERT INTO clientes(nombres, telefono) "
+                    + "VALUES(?,?);";
+            ps = con.prepareStatement(sql);
+
+            ps.setString(1, clientes.getNombres());
+            ps.setString(2, clientes.getTelefono());
+          
+
+            if (ps.executeUpdate() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+        } finally {
+            cerrarRecursos();
+        }
+        return false;
     }
 
     //**********************************************

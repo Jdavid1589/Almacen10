@@ -17,7 +17,6 @@ public class ControladorUnidMedida extends HttpServlet {
     UnidadMedida unidadMedida = new UnidadMedida();
     int ide;  // Variable de instancia para almacenar el ID
 
-
     private static final long serialVersionUID = 1L;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -116,7 +115,8 @@ public class ControladorUnidMedida extends HttpServlet {
             ide = Integer.parseInt(request.getParameter("id"));
             UnidadMedida UN = DaoUnidMedida.obtenerUnidadPorId(ide);
             request.setAttribute("Unid", UN);
-            request.setAttribute("updated", true);
+          //  request.setAttribute("updated", true);
+            request.setAttribute("isEditing", true); // Indicador de edición
             listarUnidad(request, response);
 
         } catch (Exception ex) {
@@ -142,10 +142,9 @@ public class ControladorUnidMedida extends HttpServlet {
 
             String mensaje = actualizacionExitosa ? "Consecutivo actualizado correctamente" : "No se pudo actualizar el Consecutivo";
             request.setAttribute("mensaje", mensaje);
-            
-             // Limpia los campos
+
+            // Limpia los campos
             request.setAttribute("Unid", new UnidadMedida());
-            
 
             listarUnidad(request, response);
 

@@ -24,25 +24,43 @@
         <!-- Incluye los archivos CSS de Bootstrap -->  
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-...." crossorigin="anonymous" />
-        <!--link href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css" rel="stylesheet"-->
-        
-        
+
         <link href="Vistas/EstilosCSS/EstilosUnidadaM.css" rel="stylesheet" type="text/css"/>
 
+         <!-- Funsion Para el BTN Actualizar / Agregar-->
+    <script>
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const actualizarButton = document.getElementById('btnActualizar');
+            const agregarButton = document.getElementById('btnAgregar');
+
+            const isEditing = actualizarButton.getAttribute('data-editing') === 'true';
+
+            // Deshabilita el botón de agregar si estamos en modo de edición
+            agregarButton.disabled = isEditing;
+            actualizarButton.disabled = !isEditing;
+
+            const editButtons = document.querySelectorAll('.btn-edit');
+
+            editButtons.forEach(button => {
+                button.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    actualizarButton.disabled = false;
+                    agregarButton.disabled = true;  // Deshabilita el botón de agregar al editar
+                    setTimeout(() => {
+                        window.location.href = this.href;
+                    }, 100);
+                });
+            });
+        });
+
+
+    </script>
 
     </head>
 
     <body>
-
-        <style>
-          
-
-
-        </style>
-
-
-
-
 
         <div class="container-fluid mt-4">
             <div class="row">
@@ -68,7 +86,7 @@
                                     <input 
                                         type="text" 
                                         value="${Unid.getUnidadMedida()}"
-                                       class="formulario__input form-control-sm"                          
+                                        class="formulario__input form-control-sm"                          
                                         id="unidadMedida" 
                                         name="unidadMedida" 
                                         placeholder="Ingrese Nombre">
@@ -77,14 +95,15 @@
 
 
                                 <!-- Grupo: Botones -->
-                                <div class=" d-md-block text-center" style=" grid-column: span 2;">
-                                    <button class="btn btn-primary btn-sm" type="submit" name="accion" value="registrar" >
-                                        <i class="fas fa-save "></i> AGREGAR  
-                                    </button>   
-                                    <button type="submit" name="accion" value="actualizar" class="btn btn-warning btn-sm">
+                                <div class=" d-md-block text-center" style=" grid-column: span 2;">                                
+                                    <button class="btn btn-primary btn-sm" type="submit" name="accion" value="registrar" id="btnAgregar"
+                                            data-editing="${isEditing != null && isEditing}">
+                                        <i class="fas fa-save"></i> AGREGAR
+                                    </button>
+                                    <button type="submit" name="accion" value="actualizar" class="btn btn-warning btn-sm" id="btnActualizar"
+                                            data-editing="${isEditing != null && isEditing}">
                                         <i class="bi bi-arrow-repeat"></i> Actualizar
                                     </button>
-
                                     <button type="submit" class="btn btn-secondary btn-sm"   name="accion" value="listar">
                                         <i class="bi bi-x-lg"></i> CANCELAR
                                     </button>

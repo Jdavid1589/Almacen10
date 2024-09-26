@@ -32,7 +32,7 @@
 
         <link href="Vistas/EstilosCSS/EstilosGen3.css" rel="stylesheet" type="text/css"/>
         <link href="Vistas/EstilosCSS/Estilos_generales.css" rel="stylesheet" type="text/css"/>
-  
+
 
 
     </head>
@@ -121,6 +121,7 @@
                 </div>
             </div>
 
+
             <!-- ***** Modal de Registro Producto****-->
 
             <div class="modal fade" id="registroCosecutivo" tabindex="-1" role="dialog" aria-labelledby="registroModalLabel" aria-hidden="true">
@@ -129,9 +130,9 @@
 
                     <div class="modal-content" style="background-color: #F2F2F2;"> <!-- Cambia el color de fondo aquí -->
                         <div class="modal-header">
-                      
+
                             <h5 class="modal-title text-primary  mx-auto"  style="font-size: 22px; margin-top:  25px; " id="registroModalLabel">REGRISTRAR PRODUCTO</h5>
-                      
+
                             <!-- Botón de cerrar estilizado -->
                             <button type="button" class="close elegant-close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
@@ -239,7 +240,7 @@
                                 </div>
 
                                 <div class="formulario__grupo">
-                                    <label for="precioCompra"class="formulario__label" >Presio Compra</label>
+                                    <label for="precioCompra"class="formulario__label" >Precio Compra</label>
                                     <input
                                         type="text" 
                                         class="formulario__input"                          
@@ -249,7 +250,7 @@
                                 </div>
 
                                 <div class="formulario__grupo">
-                                    <label for="precioVenta"class="formulario__label" >Presio Venta</label>
+                                    <label for="precioVenta"class="formulario__label" >Precio Venta</label>
                                     <input
                                         type="text" 
                                         class="formulario__input"                          
@@ -267,23 +268,24 @@
                                         name="porcIva" 
                                         placeholder="Ingrese %">
                                 </div>
+
+
+
+                                <!-- Grupo: Botones -->
+                                <fieldset class="formulario__grupo-btn-enviar my-2 d-flex" >
+                                    <button class="formulario__btn"  type="submit" name="accion" value="registrar" >
+                                        <i class="fas fa-save "></i> AGREGAR  
+                                    </button>                      
+
+                                    <button type="submit" class="formulario__btn_cancelar"  name="accion" value="listar">
+                                        <i class="bi bi-x-lg"></i> CANCELAR
+                                    </button>
+
+                                </fieldset>
+
+
+                            </form>
                         </div>
-
-
-                        <!-- Grupo: Botones -->
-                        <fieldset class="formulario__grupo-btn-enviar my-2 d-flex" >
-                            <button class="formulario__btn"  type="submit" name="accion" value="registrar" >
-                                <i class="fas fa-save "></i> AGREGAR  
-                            </button>                      
-
-                            <button type="submit" class="formulario__btn_cancelar"  name="accion" value="listar">
-                                <i class="bi bi-x-lg"></i> CANCELAR
-                            </button>
-
-                        </fieldset>
-
-
-                        </form>
                     </div>
                 </div>
             </div>   

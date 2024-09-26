@@ -8,9 +8,37 @@ public class ComprasProductos {
     private int productosId;
     private int comprasId;
     private int porcIva; //Nuevo
-    private BigDecimal cantidad; 
+    private BigDecimal cantidad;
     private BigDecimal costoArticulo;
- 
+    private BigDecimal precioVenta;
+
+    public ComprasProductos() {
+    }
+
+    public ComprasProductos(int idCompraProducto, int productosId, int comprasId, int porcIva, BigDecimal cantidad, BigDecimal costoArticulo, BigDecimal precioVenta) {
+        this.idCompraProducto = idCompraProducto;
+        this.productosId = productosId;
+        this.comprasId = comprasId;
+        this.porcIva = porcIva;
+        this.cantidad = cantidad;
+        this.costoArticulo = costoArticulo;
+        this.precioVenta = precioVenta;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("ComprasProductos{");
+        sb.append("idCompraProducto=").append(idCompraProducto);
+        sb.append(", productosId=").append(productosId);
+        sb.append(", comprasId=").append(comprasId);
+        sb.append(", porcIva=").append(porcIva);
+        sb.append(", cantidad=").append(cantidad);
+        sb.append(", costoArticulo=").append(costoArticulo);
+        sb.append(", precioVenta=").append(precioVenta);
+        sb.append('}');
+        return sb.toString();
+    }
 
     public int getComprasId() {
         return comprasId;
@@ -28,38 +56,14 @@ public class ComprasProductos {
         this.porcIva = porcIva;
     }
 
-    
-    
-    
-    
-    @Override
-    public String toString() {
-        return "ComprasProductos{" + "idCompraProducto=" + idCompraProducto + ", productosId=" + productosId + ", comprasId=" + comprasId + ", porcIva=" + porcIva + ", cantidad=" + cantidad + ", costoArticulo=" + costoArticulo + '}';
+    public BigDecimal getPrecioVenta() {
+        return precioVenta;
     }
 
-    
-    
-    
-    
-    public ComprasProductos() {
+    public void setPrecioVenta(BigDecimal precioVenta) {
+        this.precioVenta = precioVenta;
     }
 
-    public ComprasProductos(int idCompraProducto, int productosId, int comprasId, int porcIva, BigDecimal cantidad, BigDecimal costoArticulo) {
-        this.idCompraProducto = idCompraProducto;
-        this.productosId = productosId;
-        this.comprasId = comprasId;
-        this.porcIva = porcIva;
-        this.cantidad = cantidad;
-        this.costoArticulo = costoArticulo;
-    }
-
-  
-
-  
-
-    
-
-    
     public int getIdCompraProducto() {
         return idCompraProducto;
     }
@@ -99,12 +103,5 @@ public class ComprasProductos {
     public void setCostoArticulo(BigDecimal costoArticulo) {
         this.costoArticulo = costoArticulo;
     }
-
-    
-    
-    
-    
-    
-    
 
 }

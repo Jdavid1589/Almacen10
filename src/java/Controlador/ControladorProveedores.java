@@ -79,7 +79,7 @@ public class ControladorProveedores extends HttpServlet {
                 request.setAttribute("mensaje", "el Proveedor no fue registrado, validar campos ingresados");
             }
 
-           listarProveedores(request, response);
+            listarProveedores(request, response);
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -107,7 +107,11 @@ public class ControladorProveedores extends HttpServlet {
             // Obtener el ID del parámetro de solicitud y almacenarlo en la variable de instancia
             ide = Integer.parseInt(request.getParameter("id"));
             Proveedores pr = DaoProveedores.obtenerProveedoresPorId(ide);
+
+            // Establecer la categoría a editar y una bandera para indicar que estamos editando
             request.setAttribute("ProvLista", pr);
+            request.setAttribute("isEditing", true); // Indicador de edición
+
             listarProveedores(request, response);
 
         } catch (Exception ex) {
@@ -126,25 +130,28 @@ public class ControladorProveedores extends HttpServlet {
 
             Proveedores prov = new Proveedores();
 
-           prov.setProveedor(request.getParameter("proveedor"));
+            prov.setProveedor(request.getParameter("proveedor"));
             prov.setTelefono(request.getParameter("telefono"));
             prov.setAsesor(request.getParameter("asesor"));
-           
+
             prov.setIdProveedor(ide);
 
             boolean actualizacionExitosa = DaoProveedores.editar(prov);
 
-                
             if (actualizacionExitosa) {
                 request.setAttribute("mensaje", "Proveedor actualizado correctamente");
             } else {
                 request.setAttribute("mensaje", "No se pudo actualizar el proveedor");
             }
 
+            // Limpia los campos
+            request.setAttribute("ProvLista", new Proveedores());
+
             listarProveedores(request, response);
 
         } catch (IOException | NumberFormatException | ServletException ex) {
             request.setAttribute("mensaje", "Error al actualizar el proveedor: " + ex.getMessage());
+
             listarProveedores(request, response);
         }
     }

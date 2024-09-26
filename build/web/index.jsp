@@ -37,11 +37,11 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="btn btn-outline-light etiqueta_a" href="ControladorCompras?accion=FacturaCompra" target="myframe">Nueva Compra</a>
+                            <a class="btn btn-outline-light etiqueta_a" href="ControladorCompras?accion=FacturaCompra" target="myframe">Ingreso Mercancia</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="btn btn-outline-light etiqueta_a" href="ControladorFacturaventa?accion=ListaFactura" target="myframe">Nueva Venta</a>
+                            <a class="btn btn-outline-light etiqueta_a" href="ControladorFacturaventa?accion=ListaFactura" target="myframe">Ventas</a>
                         </li>
 
                         <li class="nav-item dropdown">

@@ -5,8 +5,10 @@
 <%@page import="java.util.List"%>
 
 <html>
+    
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
         <title> Proveedor</title>      
 
         <!-- Bootstrap -->
@@ -15,6 +17,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
               integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" 
               crossorigin="anonymous" referrerpolicy="no-referrer">
+        
         <!-- DataTable -->
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css">
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.3/css/buttons.bootstrap5.min.css">
@@ -22,13 +25,49 @@
         <!-- Incluye los archivos CSS de Bootstrap -->  
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-...." crossorigin="anonymous" />
-        <!--link href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css" rel="stylesheet"-->
+ 
+        
 
         <link href="Vistas/EstilosCSS/EstilosGen3.css" rel="stylesheet" type="text/css"/>
         <link href="Vistas/EstilosCSS/Estilos_generales.css" rel="stylesheet" type="text/css"/>
         <link href="Vistas/EstilosCSS/EstilosFactura.css" rel="stylesheet" type="text/css"/>
         <link href="Vistas/EstilosCSS/EstilosProveedor.css" rel="stylesheet" type="text/css"/>
-        
+
+
+
+
+        <!-- Funsion Para el BTN Actualizar -->
+        <script>
+
+            document.addEventListener("DOMContentLoaded", function () {
+    const actualizarButton = document.getElementById('btnActualizar');
+    const agregarButton = document.getElementById('btnAgregar');
+    
+    const isEditing = actualizarButton.getAttribute('data-editing') === 'true';
+
+    // Deshabilita el botón de agregar si estamos en modo de edición
+    agregarButton.disabled = isEditing;
+    actualizarButton.disabled = !isEditing;
+
+    const editButtons = document.querySelectorAll('.btn-edit');
+
+    editButtons.forEach(button => {
+        button.addEventListener('click', function (event) {
+            event.preventDefault();
+            actualizarButton.disabled = false;
+            agregarButton.disabled = true;  // Deshabilita el botón de agregar al editar
+            setTimeout(() => {
+                window.location.href = this.href;
+            }, 100);
+        });
+    });
+});
+
+
+
+        </script>
+
+
     </head>
 
     <body>
@@ -93,13 +132,16 @@
                                 <div class="mb-3">
                                 </div>
                                 <!-- Botones -->
-                                <div class=" d-md-block text-center" style=" grid-column: span 2;">
-                                    <button class="btn btn-primary btn-sm" type="submit" name="accion" value="registrar">
+                                <div class="d-md-block text-center" style="grid-column: span 2;">
+                                    <button class="btn btn-primary btn-sm" type="submit" name="accion" value="registrar" id="btnAgregar"
+                                            data-editing="${isEditing != null && isEditing}">
                                         <i class="fas fa-save"></i> AGREGAR
                                     </button>
-                                    <button class="btn btn-warning btn-sm" type="submit" name="accion" value="editarProveedores">
+                                    <button type="submit" name="accion" value="editarProveedores" class="btn btn-warning btn-sm" id="btnActualizar"
+                                            data-editing="${isEditing != null && isEditing}">
                                         <i class="bi bi-arrow-repeat"></i> ACTUALIZAR
-                                    </button>
+                                    </button>                              
+
                                     <button class="btn btn-secondary btn-sm" type="submit" name="accion" value="listar">
                                         <i class="bi bi-x-lg"></i> CANCELAR
                                     </button>
@@ -129,7 +171,7 @@
                                     </thead>
                                     <tbody>
                                         <% List<Proveedores> Lista = (List<Proveedores>) request.getAttribute("listaProveedores");
-                                            for (Proveedores prov : Lista) {%>
+                                        for (Proveedores prov : Lista) {%>
                                         <tr style="text-align: center">
                                             <td><%= prov.getIdProveedor()%></td>
                                             <td><%= prov.getProveedor()%></td>
@@ -170,13 +212,13 @@
                                                         $(document).ready(function () {
                                                             $('.edit-btn').on('click', function (e) {
                                                                 e.preventDefault(); // Evita la redirección predeterminada
-                                                                
+
                                                                 var id = $(this).data('id'); // Obtén el ID del producto
                                                                 // Aquí puedes hacer una llamada AJAX para cargar los datos del producto si es necesario
                                                                 // $.get('ControladorProductos?accion=editar&id=' + id, function(data) {
                                                                 //     // Actualiza los campos del modal con los datos recibidos
                                                                 // });
-                                                                
+
                                                                 // Muestra el modal
                                                                 $('#editarProducto').modal('show');
                                                             });
@@ -206,7 +248,7 @@
 
         <!-- Scrip DataTable -->
         <script>
-                                                        
+
                                                         $(document).ready(function () {
                                                             // Inicializa la tabla DataTables
                                                             var table = $('#myTable').DataTable({
@@ -271,36 +313,36 @@
                                                                     }
                                                                 }
                                                             });
-                                                            
-                                                            
+
+
                                                             // Crear un nuevo contenedor para los botones debajo de la tabla
                                                             $('#myTable_wrapper').append('<div id="myTable_buttons_bottom"></div>');
-                                                            
+
                                                             // Mover los botones a este nuevo contenedor
                                                             $('.dt-buttons', table.table().container()).appendTo($('#myTable_buttons_bottom'));
-                                                            
-                                                            
+
+
                                                             // Función para limitar los botones de paginación
                                                             function limitPagination(table) {
                                                                 var pagination = $(table.table().container()).find('.dataTables_paginate .paginate_button');
                                                                 var numPages = 4; // Limita a 4 botones de paginación
-                                                                
+
                                                                 pagination.each(function (index, element) {
                                                                     if (index > numPages && !$(element).hasClass('next') && !$(element).hasClass('previous')) {
                                                                         $(element).css('display', 'none');
                                                                     }
                                                                 });
                                                             }
-                                                            
+
                                                             // Llama a la función limitPagination cuando se redibuja la tabla
                                                             table.on('draw', function () {
                                                                 limitPagination(table);
                                                             });
-                                                            
+
                                                             // Llama a la función limitPagination inicialmente
                                                             limitPagination(table);
-                                                            
-                                                            
+
+
                                                         });
         </script>
 

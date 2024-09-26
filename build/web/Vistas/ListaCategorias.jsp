@@ -29,35 +29,7 @@
 
         <link href="Vistas/EstilosCSS/EstilosUnidadaM.css" rel="stylesheet" type="text/css"/>
 
-    </head>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const actualizarButton = document.getElementById('btnActualizar');
-            const isEditing = actualizarButton.getAttribute('data-editing') === 'true';
-
-            // Configura el estado del botón basado en el atributo de datos
-            actualizarButton.disabled = !isEditing;
-
-            const editButtons = document.querySelectorAll('.btn-edit');
-
-            editButtons.forEach(button => {
-                button.addEventListener('click', function (event) {
-                    event.preventDefault();
-                    actualizarButton.disabled = false;
-                    setTimeout(() => {
-                        window.location.href = this.href;
-                    }, 100);
-                });
-            });
-        });
-
-
-    </script>
-
-
-    <body>
-
+        <!-- Estilos CSS -->
         <style>
             /* Cambiar el color de fondo y de texto del encabezado */
             thead th {
@@ -94,16 +66,45 @@
                 font-size: 14px;
             }
 
-
-
-
-
-
         </style>
 
+    </head>
+
+    <!-- Funsion Para el BTN Actualizar -->
+    <script>
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const actualizarButton = document.getElementById('btnActualizar');
+            const agregarButton = document.getElementById('btnAgregar');
+
+            const isEditing = actualizarButton.getAttribute('data-editing') === 'true';
+
+            // Deshabilita el botón de agregar si estamos en modo de edición
+            agregarButton.disabled = isEditing;
+            actualizarButton.disabled = !isEditing;
+
+            const editButtons = document.querySelectorAll('.btn-edit');
+
+            editButtons.forEach(button => {
+                button.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    actualizarButton.disabled = false;
+                    agregarButton.disabled = true;  // Deshabilita el botón de agregar al editar
+                    setTimeout(() => {
+                        window.location.href = this.href;
+                    }, 100);
+                });
+            });
+        });
 
 
 
+
+    </script>
+
+
+    <body>
 
         <div class="container-fluid mt-4">
             <div class="row">
@@ -118,8 +119,6 @@
                 <div class="col-sm-4">
                     <div class="card shadow-sm border-0">
                         <div class="card-body">
-
-
                             <h5><b>REGISTRO</b></h5>
                             <!-- Formulario de Registro Productos -->
                             <form   id="formAgregarProducto" class="formulario" action="ControladorCategorias"  autocomplete="off" method="POST" >    
@@ -148,20 +147,15 @@
 
 
                                 <!-- Grupo: Botones -->
-                                <div class=" d-md-block text-center" style=" grid-column: span 2;">
-                                    <button class="btn btn-primary btn-sm" type="submit" name="accion" value="registrar" >
-                                        <i class="fas fa-save "></i> AGREGAR  
-                                    </button>   
+                                <div class=" d-md-block text-center" style=" grid-column: span 2;">                                
+                                     <button class="btn btn-primary btn-sm" type="submit" name="accion" value="registrar" id="btnAgregar"
+                                            data-editing="${isEditing != null && isEditing}">
+                                        <i class="fas fa-save"></i> AGREGAR
+                                    </button>
                                     <button type="submit" name="accion" value="actualizar" class="btn btn-warning btn-sm" id="btnActualizar"
                                             data-editing="${isEditing != null && isEditing}">
                                         <i class="bi bi-arrow-repeat"></i> Actualizar
                                     </button>
-
-
-
-
-
-
 
                                     <button type="submit" class="btn btn-secondary btn-sm"   name="accion" value="listar">
                                         <i class="bi bi-x-lg"></i> CANCELAR

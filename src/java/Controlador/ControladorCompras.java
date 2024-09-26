@@ -6,11 +6,12 @@ import Modelo.ComprasProductos;
 import Modelo.Productos;
 import Modelo.Proveedores;
 import Persistencia.DaoCompras;
-
-
+import Persistencia.DaoProductos;
+import Persistencia.DaoUnidMedida;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -47,6 +48,11 @@ public class ControladorCompras extends HttpServlet {
                 buscarProveedor(request, response);
                 break;
 
+            case "CancelarVenta":
+                // Lógica para cancelar la venta
+                request.getSession().invalidate(); // Esto limpia toda la sesión
+                request.getRequestDispatcher("Vistas/Lista_Compras_Articulos.jsp").forward(request, response);
+
             case "BuscarProductos":
                 buscarProducto(request, response);
                 break;
@@ -70,53 +76,56 @@ public class ControladorCompras extends HttpServlet {
 
     }
 
-    private void buscarProveedor(HttpServletRequest request, HttpServletResponse response)
+    private void actualizarProducto(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            String idProveedor = request.getParameter("proveedorId");
+            String productoIdStr = request.getParameter("productosId");
+            String costoCompraStr = request.getParameter("precio");
+            String costoVentaStr = request.getParameter("precioVenta");
+            String cantidadStr = request.getParameter("cantidad");
 
-            if (idProveedor != null && !idProveedor.isEmpty()) {
-                try {
-                    int proveedorId = Integer.parseInt(idProveedor);
-                    Proveedores proveedor = DaoCompras.buscarProveedor(proveedorId);
-                    request.setAttribute("proveedorEncontrado", proveedor);
-                } catch (NumberFormatException e) {
-                    request.setAttribute("mensaje", "ID de proveedor no válido.");
-                }
+            if (productoIdStr == null || productoIdStr.isEmpty()) {
+                request.setAttribute("mensaje", "El ID del producto es obligatorio.");
+                request.getRequestDispatcher("Vistas/Lista_Compras_Articulos.jsp").forward(request, response);
+                return;
             }
 
-            request.setAttribute("proveedorId", "");
-
-            mantenerBusquedaProducto(request);
-
-            request.getRequestDispatcher("Vistas/Lista_Compras_Articulos.jsp").forward(request, response);
-
-        } catch (IOException | ServletException ex) {
-            request.setAttribute("mensaje", "Error al buscar los datos.");
-            request.getRequestDispatcher("Vistas/Lista_Compras_Articulos.jsp").forward(request, response);
-        }
-    }
-
-    private void buscarProducto(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            String idprod = request.getParameter("productosId");
-
-            if (idprod != null && !idprod.isEmpty()) {
-                try {
-                    int productoId = Integer.parseInt(idprod);
-                    Productos producto = DaoCompras.buscarProducto(productoId);
-                    request.setAttribute("listapr", producto);
-                } catch (NumberFormatException e) {
-                    request.setAttribute("mensaje", "ID de producto no válido.");
-                }
+            if (costoCompraStr == null || !costoCompraStr.matches("\\d+(\\.\\d{1,2})?")
+                    || costoVentaStr == null || !costoVentaStr.matches("\\d+(\\.\\d{1,2})?")) {
+                request.setAttribute("mensaje", "Formato incorrecto en los precios.");
+                request.getRequestDispatcher("Vistas/Lista_Compras_Articulos.jsp").forward(request, response);
+                return;
             }
 
-            mantenerBusquedaProveedor(request);
+            if (cantidadStr == null || !cantidadStr.matches("\\d+")) {
+                request.setAttribute("mensaje", "La cantidad debe ser un número entero.");
+                request.getRequestDispatcher("Vistas/Lista_Compras_Articulos.jsp").forward(request, response);
+                return;
+            }
 
+            int productosId = Integer.parseInt(productoIdStr);
+            BigDecimal precioCompra = new BigDecimal(costoCompraStr.replaceAll("[^\\d.]", ""));
+            BigDecimal precioVenta = new BigDecimal(costoVentaStr.replaceAll("[^\\d.]", ""));
+            Double cantidad = Double.valueOf(cantidadStr);
+
+            // Actualizar el producto en la base de datos
+            Productos producto = DaoProductos.obtenerProductosPorId(productosId);
+            if (producto != null) {
+                producto.setPrecioCompra(precioCompra);
+                producto.setPrecioVenta(precioVenta);
+                producto.setCantidadDisponible(cantidad);
+
+                DaoProductos.editar(producto); // Método que actualiza en la BD
+            } else {
+                request.setAttribute("mensaje", "Producto no encontrado.");
+                request.getRequestDispatcher("Vistas/Lista_Compras_Articulos.jsp").forward(request, response);
+            }
+
+        } catch (NumberFormatException ex) {
+            request.setAttribute("mensaje", "Error en el formato de los datos numéricos.");
             request.getRequestDispatcher("Vistas/Lista_Compras_Articulos.jsp").forward(request, response);
         } catch (Exception ex) {
-            ex.printStackTrace();
-            request.setAttribute("mensaje", "Error al buscar los datos.");
+            request.setAttribute("mensaje", "Error inesperado al procesar la solicitud.");
             request.getRequestDispatcher("Vistas/Lista_Compras_Articulos.jsp").forward(request, response);
         }
     }
@@ -127,7 +136,8 @@ public class ControladorCompras extends HttpServlet {
             // Obtener los parámetros de la solicitud
             String productoIdStr = request.getParameter("productosId");
             String cantidadStr = request.getParameter("cantidad");
-            String costoStr = request.getParameter("precio");
+            String CostoCompraStr = request.getParameter("precio");
+            String costoVentaStr = request.getParameter("precioVenta");
             String proveedorStr = request.getParameter("proveedorId"); // Debe ser el ID del proveedor
             String fechastr = request.getParameter("fechaFactura");
             String porcIvastr = request.getParameter("porcIva");
@@ -136,7 +146,8 @@ public class ControladorCompras extends HttpServlet {
             if (productoIdStr == null || productoIdStr.isEmpty()
                     || cantidadStr == null || cantidadStr.isEmpty()
                     || fechastr == null || fechastr.isEmpty()
-                    || costoStr == null || costoStr.isEmpty()
+                    || CostoCompraStr == null || CostoCompraStr.isEmpty()
+                    || costoVentaStr == null || costoVentaStr.isEmpty()
                     || porcIvastr == null || porcIvastr.isEmpty()
                     || proveedorStr == null || proveedorStr.isEmpty()) {
                 request.setAttribute("errorMessage", "Uno o más campos están vacíos.");
@@ -150,14 +161,16 @@ public class ControladorCompras extends HttpServlet {
             BigDecimal cantidad = new BigDecimal(cantidadStr);
 
             // Limpiar el valor del costo
-            String cleanedCostoStr = costoStr.replaceAll("[^\\d.]", ""); // Elimina caracteres no numéricos, pero mantiene el punto decimal
+            String cleanedCostoStr = CostoCompraStr.replaceAll("[^\\d.]", ""); // Elimina caracteres no numéricos, pero mantiene el punto decimal
+            String cleanedCostoVentaStr = costoVentaStr.replaceAll("[^\\d.]", ""); // Elimina caracteres no numéricos, pero mantiene el punto decimal
 
             // Verificar si el valor limpiado está vacío
-            if (cleanedCostoStr.isEmpty()) {
+            if (cleanedCostoStr.isEmpty() || cleanedCostoVentaStr.isEmpty()) {
                 throw new NumberFormatException("El valor de costo está vacío después de la limpieza.");
             }
 
             BigDecimal costo = new BigDecimal(cleanedCostoStr);
+            BigDecimal costoVenta = new BigDecimal(cleanedCostoVentaStr);
 
             // Convertir el proveedor a entero
             int proveedorId = Integer.parseInt(proveedorStr); // Debe ser un ID numérico
@@ -174,11 +187,14 @@ public class ControladorCompras extends HttpServlet {
             for (Compras compra : carrito) {
                 List<ComprasProductos> articulos = compra.getArticulos();
                 if (articulos != null) {
+
                     for (ComprasProductos detalle : articulos) {
+
                         if (detalle.getProductosId() == productosId) {
                             // Actualiza la cantidad y el costo del producto existente
                             detalle.setCantidad(detalle.getCantidad().add(cantidad));
                             detalle.setCostoArticulo(costo);
+                            detalle.setPrecioVenta(costoVenta);
                             detalle.setPorcIva(porcIva);
 
                             // Actualizar el total de la compra
@@ -202,6 +218,7 @@ public class ControladorCompras extends HttpServlet {
                 detalleCompraProducto.setProductosId(productosId);
                 detalleCompraProducto.setCantidad(cantidad);
                 detalleCompraProducto.setCostoArticulo(costo);
+                detalleCompraProducto.setPrecioVenta(costoVenta);
                 detalleCompraProducto.setPorcIva(porcIva);
 
                 Compras detalleCompra = new Compras();
@@ -221,7 +238,7 @@ public class ControladorCompras extends HttpServlet {
             // Guardar el carrito actualizado en la sesión
             request.getSession().setAttribute("carrito", carrito);
             request.getSession().setAttribute("fechaFactura", fechastr);
-           // request.getSession().setAttribute("proveedorId", proveedorId); // Guardar proveedor en sesión
+            // request.getSession().setAttribute("proveedorId", proveedorId); // Guardar proveedor en sesión
 
             mantenerBusquedaProveedor(request);
 
@@ -233,8 +250,6 @@ public class ControladorCompras extends HttpServlet {
                     System.out.println("    Producto ID: " + detalle.getProductosId() + ", Cantidad: " + detalle.getCantidad() + ", Costo Unitario: " + detalle.getCostoArticulo());
                 }
             }*/
-            
-            
             // Redirigir a la página del carrito
             request.getRequestDispatcher("Vistas/Lista_Compras_Articulos.jsp").forward(request, response);
 
@@ -246,35 +261,6 @@ public class ControladorCompras extends HttpServlet {
             request.setAttribute("errorMessage", "Error inesperado al procesar la solicitud.");
             request.getRequestDispatcher("Vistas/Lista_Compras_Articulos.jsp").forward(request, response);
         }
-    }
-
-    private void mantenerBusquedaProducto(HttpServletRequest request) {
-        String idprod = request.getParameter("productosId");
-
-        if (idprod != null && !idprod.isEmpty()) {
-            request.setAttribute("productosId", "");
-
-            try {
-                int productoId = Integer.parseInt(idprod);
-                Productos producto = DaoCompras.buscarProducto(productoId);
-                request.setAttribute("listapr", producto);
-            } catch (NumberFormatException e) {
-                request.setAttribute("mensaje", "ID de producto no válido.");
-            }
-        }
-    }
-
-    private void mantenerBusquedaProveedor(HttpServletRequest request) {
-        String idProveedor = request.getParameter("proveedorId");
-
-        try {
-            int proveedorId = Integer.parseInt(idProveedor);
-            Proveedores proveedor = DaoCompras.buscarProveedor(proveedorId);
-            request.setAttribute("proveedorEncontrado", proveedor);
-        } catch (NumberFormatException e) {
-            request.setAttribute("mensaje", "ID de proveedor no válido.");
-        }
-
     }
 
     private void registrarCompra(HttpServletRequest request, HttpServletResponse response)
@@ -343,6 +329,103 @@ public class ControladorCompras extends HttpServlet {
         // Redirigir a la confirmación o página de compras vacía
         request.setAttribute("mensajeExito", "Compra registrada con éxito.");
         request.getRequestDispatcher("Vistas/Lista_Compras_Articulos.jsp").forward(request, response);
+    }
+
+    private void buscarProveedor(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            String idProveedor = request.getParameter("proveedorId");
+
+            if (idProveedor != null && !idProveedor.isEmpty()) {
+                try {
+                    int proveedorId = Integer.parseInt(idProveedor);
+                    Proveedores proveedor = DaoCompras.buscarProveedor(proveedorId);
+                    request.setAttribute("proveedorEncontrado", proveedor);
+                } catch (NumberFormatException e) {
+                    request.setAttribute("mensaje", "ID de proveedor no válido.");
+                }
+            }
+
+            request.setAttribute("proveedorId", "");
+
+            mantenerBusquedaProducto(request);
+
+            request.getRequestDispatcher("Vistas/Lista_Compras_Articulos.jsp").forward(request, response);
+
+        } catch (IOException | ServletException ex) {
+            request.setAttribute("mensaje", "Error al buscar los datos.");
+            request.getRequestDispatcher("Vistas/Lista_Compras_Articulos.jsp").forward(request, response);
+        }
+    }
+
+    private void buscarProducto(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            String idprod = request.getParameter("productosId");
+
+            if (idprod != null && !idprod.isEmpty()) {
+                try {
+                    int productoId = Integer.parseInt(idprod);
+
+                    // Buscar el producto utilizando el ID
+                    Productos producto = DaoCompras.buscarProducto(productoId);
+
+                    if (producto != null) {
+                        // Obtener el ID de la unidad de medida desde el producto
+                        int unidadMedidaId = producto.getUnidadMedidaId();
+
+                        // Llamar al método que obtiene el nombre de la unidad de medida
+                        String nombreUnidadMedida = DaoUnidMedida.obtenerNombreUnidad(unidadMedidaId);
+
+                        // Asignar el producto y el nombre de la unidad de medida a la solicitud
+                        request.setAttribute("listapr", producto);
+                        request.setAttribute("nombreUnidadMedida", nombreUnidadMedida);
+                    } else {
+                        request.setAttribute("mensaje", "Producto no encontrado.");
+                    }
+                } catch (NumberFormatException e) {
+                    request.setAttribute("mensaje", "ID de producto no válido.");
+                }
+            }
+
+            // Mantener la búsqueda del proveedor
+            mantenerBusquedaProveedor(request);
+
+            // Reenviar la solicitud a la vista
+            request.getRequestDispatcher("Vistas/Lista_Compras_Articulos.jsp").forward(request, response);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            request.setAttribute("mensaje", "Error al buscar los datos.");
+            request.getRequestDispatcher("Vistas/Lista_Compras_Articulos.jsp").forward(request, response);
+        }
+    }
+
+    private void mantenerBusquedaProducto(HttpServletRequest request) {
+        String idprod = request.getParameter("productosId");
+
+        if (idprod != null && !idprod.isEmpty()) {
+            request.setAttribute("productosId", "");
+
+            try {
+                int productoId = Integer.parseInt(idprod);
+                Productos producto = DaoCompras.buscarProducto(productoId);
+                request.setAttribute("listapr", producto);
+            } catch (NumberFormatException e) {
+                request.setAttribute("mensaje", "ID de producto no válido.");
+            }
+        }
+    }
+
+    private void mantenerBusquedaProveedor(HttpServletRequest request) {
+        String idProveedor = request.getParameter("proveedorId");
+
+        try {
+            int proveedorId = Integer.parseInt(idProveedor);
+            Proveedores proveedor = DaoCompras.buscarProveedor(proveedorId);
+            request.setAttribute("proveedorEncontrado", proveedor);
+        } catch (NumberFormatException e) {
+            request.setAttribute("mensaje", "ID de proveedor no válido.");
+        }
+
     }
 
     private void eliminarCompra(HttpServletRequest request, HttpServletResponse response)

@@ -1,7 +1,4 @@
 
-
-
-
 <%@page import="Persistencia.DaoCategorias"%>
 <%@page import="Modelo.Categorias"%>
 <%@page import="Persistencia.DaoProveedores"%>
@@ -38,7 +35,7 @@
         <!-- Incluye los archivos CSS de Bootstrap -->  
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-...." crossorigin="anonymous" />
-        <!--link href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css" rel="stylesheet"-->
+
 
         <link href="Vistas/EstilosCSS/EstilosGen3.css" rel="stylesheet" type="text/css"/>
         <link href="Vistas/EstilosCSS/Estilos_generales.css" rel="stylesheet" type="text/css"/>
@@ -66,7 +63,6 @@
 
          
             </style>
-
 
 
             <%

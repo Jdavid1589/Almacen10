@@ -54,7 +54,8 @@ public class DaoProductos {
         List<Productos> lista = new ArrayList<>();
         try {
             con = cn.getConnection();
-            String sql = "SELECT * FROM productos;";
+          String sql = "SELECT * FROM productos;";
+       
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {

@@ -23,7 +23,7 @@
 
         <!-- Bootstrap -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
-        
+
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
               integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" 
@@ -43,13 +43,14 @@
         <!-- Sirven para actualizar la fecha automaticamnente -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-          <link href="Vistas/EstilosCSS/EstilosFacturasFinal.css" rel="stylesheet" type="text/css"/>
+        <%--   <link href="Vistas/EstilosCSS/EstilosFacturasFinal.css" rel="stylesheet" type="text/css"/>--%>
         <link href="Vistas/EstilosCSS/EstilosFactUnico.css" rel="stylesheet" type="text/css"/>
 
-         <!-- Estilos Modal -->
+        <!-- Estilos Modal -->
         <style>
-           
+
 
 
         </style>
@@ -78,13 +79,20 @@
                         <div class="card-body">
                             <!-- Sección de datos de la factura -->
                             <form id="formAgregarProducto" action="ControladorCompras" method="POST" autocomplete="off" class="custom-form">
+
+                                <legend  class="tituloPrincipal"  style="margin-top: -30px">Datos de la Factura</legend>
                                 <!-- Fecha de Factura -->
                                 <fieldset>
-                                    <legend  class="tituloPrincipal"  style="margin-top: -30px">Datos de la Factura</legend>
-                                    <div class="row mb-2">
-                                        <div class="col-sm-6">
-                                            <label for="fechaFactura" class="formulario__label">Fecha de Factura:</label>
-                                            <input type="date" class="formulario__input form-control" id="fechaFactura" name="fechaFactura" value="${param.fechaFactura != null ? param.fechaFactura : ''}" placeholder="fecha">
+                                    <div class="row align-items-center mb-2">
+                                        <!-- Ajustamos el tamaño del label y le quitamos margen -->
+                                        <div class="col-sm-4 pr-0">
+                                            <label for="fechaFactura" class="formulario__label m-0">Fecha de Factura:</label>                                          
+                                        </div>
+
+                                        <!-- Ajustamos el tamaño del input y eliminamos margen innecesario -->
+                                        <div class="col-sm-8 pl-0">
+                                            <input type="date" class="formulario__input form-control" id="fechaFactura" name="fechaFactura" 
+                                                   value="${param.fechaFactura != null ? param.fechaFactura : ''}" placeholder="fecha">
                                         </div>
                                     </div>
                                 </fieldset>
@@ -94,11 +102,13 @@
                                     <legend class="w-auto px-2" style="font-size: 20px; font-weight: 600;">Datos del Proveedor</legend>
                                     <div class="row">
                                         <div class="col-sm-6 d-flex">
+
                                             <input type="text" class="formulario__input form-control" id="proveedorId" name="proveedorId" value="${param.proveedorId}" placeholder="Código">
-                                            <button class="btn btn-outline-info mx-2 parte1" type="submit" name="accion" value="BuscarProveedor">Buscar</button>
+                                            <%--  <button class="btn btn-outline-info mx-2 parte1" type="submit" name="accion" value="BuscarProveedor">Buscar</button>--%>
                                         </div>
                                         <div class="col-sm-6">
-                                            <input style="font-weight: 600" type="text" class="formulario__input form-control" name="proveedor" value="${proveedorEncontrado.proveedor}" placeholder="Proveedor">
+                                            <input style="font-weight: 600" type="text" class="formulario__input form-control"
+                                                   id="proveedor" name="proveedor" value="${proveedorEncontrado.proveedor}" placeholder="Proveedor">
                                         </div>
                                     </div>
                                 </fieldset>
@@ -109,12 +119,14 @@
                                 <fieldset class="parte1">
                                     <legend class="w-auto px-2" style="font-size: 20px; font-weight: 600;">Datos del Producto</legend>
                                     <div class="row mb-3">
-                                        <div class="col-sm-6 d-flex">
-                                            <input type="text" class="formulario__input form-control styled-input" name="productosId" placeholder="Ingrese Código" value="${param.productosId}">
-                                            <button class="btn btn-outline-info mx-2" type="submit" name="accion" value="BuscarProductos">Buscar</button>
+
+                                        <div class="col-sm-6 d-flex align-items-center ">
+                                            <input type="text" class="form-control" id="productosId" name="productosId" placeholder="Ingrese Código" >
+                                            <%--  <button class="btn btn-outline-info ml-2" type="submit" name="accion" value="BuscarProductos">Buscar</button>--%>
                                         </div>
+
                                         <div class="col-sm-6">
-                                            <input type="text" class="formulario__input form-control styled-input" style="font-weight: 500;" name="producto" value="${listapr.productos}" placeholder="Producto">
+                                            <input type="text" class="form-control font-weight-bold" id="producto" name="producto" value="${listapr.productos}" placeholder="Producto" readonly>
                                         </div>
                                     </div>
 
@@ -126,58 +138,74 @@
                                             <!-- Primera fila con tres columnas -->
                                             <div class="col-sm-4">
                                                 <label class="formulario__label styled-label">$Costo Articulo</label>
-                                                <input type="text" class="formulario__input form-control styled-input" name="precio" value="${'$ '}${listapr.precioCompra}" placeholder="$/0.00">
+                                                <input type="text" class="formulario__input form-control styled-input" 
+                                                       id="precio" name="precio" value="${'$ '}" placeholder="$/0.00">
                                             </div>
                                             <div class="col-sm-4">
                                                 <label class="formulario__label styled-label">$ Precio Venta</label>
-                                                <input type="text" class="formulario__input form-control styled-input" name="precioVenta" value="${'$ '}${listapr.precioVenta}" placeholder="$/0.00">
+                                                <input type="text" class="formulario__input form-control styled-input" 
+                                                       id="precioVenta"    name="precioVenta" value="${'$ '}" placeholder="$/0.00">
                                             </div>
                                             <div class="col-sm-4">
                                                 <label class="formulario__label styled-label">Cantidad</label>
-                                                <input style="background: #fff" type="number" class="formulario__input form-control styled-input" name="cantidad" placeholder="">
+                                                <input style="background: #ffe8a1; color: #00008B; text-align: center; font-size: 18px" 
+                                                       type="number" class="formulario__input form-control styled-input"
+                                                       id="cantidad" name="cantidad" placeholder="Cantid">
                                             </div>
                                         </div>
                                         <div class="row mb-2">
                                             <!-- Segunda fila con tres columnas -->
                                             <div class="col-sm-4">
                                                 <label class="formulario__label styled-label">Stock</label>
-                                                <input type="text" class="formulario__input form-control styled-input" name="stock" value="${listapr.cantidadDisponible}" placeholder="Stock">
+                                                <input type="text"  id="cantidadDisponible" class="formulario__input form-control styled-input" 
+                                                       name="stock"  placeholder="Stock">
                                             </div>
                                             <div class="col-sm-4">
                                                 <label class="formulario__label styled-label">%Iva</label>
-                                                <input type="text" class="formulario__input form-control styled-input" name="porcIva" value="${listapr.porcIva}" placeholder="%Iva">
+                                                <input type="text" class="formulario__input form-control styled-input" 
+                                                       id="porcIva" name="porcIva" value="${'% '}"  placeholder="%Iva">
                                             </div>
                                             <div class="col-sm-4">
                                                 <label class="formulario__label styled-label">Unidad Medida</label>
-                                                <input type="text" class="formulario__input form-control styled-input" name="unidadmedidad" 
+                                                <input type="text" class="formulario__input form-control styled-input" 
+                                                       id="unidadmedidad" name="unidadmedidad" 
                                                        value="${nombreUnidadMedida}" placeholder="Unidad Med">
                                             </div>
 
                                         </div>
                                     </fieldset>
-                                </fieldset>
-
-                                <hr class="parte1"  id="hr_1">
+                                </fieldset>                               
 
                                 <!-- Botón Agregar al Carrito -->
                                 <div class="text-center parte1">
                                     <button id="btnAgregarAlCarrito" class="btn btn-primary" type="submit" name="accion" value="AgregarAlCarrito">Agregar al Carrito</button>
                                 </div>
                             </form>
+
+                            <!-- Mensaje Con Sweet Alert-->                     
+
                             <%
                                 String mensajeExito = (String) request.getAttribute("mensajeExito");
+                                String mensajeError = (String) request.getAttribute("mensajeError");
                             %>
 
-                            <% if (mensajeExito != null) {%>
                             <script>
+                                <% if (mensajeExito != null) {%>
                                 Swal.fire({
                                     title: 'Éxito',
                                     text: '<%= mensajeExito%>',
                                     icon: 'success',
                                     confirmButtonText: 'Aceptar'
                                 });
+                                <% } else if (mensajeError != null) {%>
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: '<%= mensajeError%>',
+                                    icon: 'error',
+                                    confirmButtonText: 'Aceptar'
+                                });
+                                <% }%>
                             </script>
-                            <% }%>
                         </div>
                     </div>
                 </article>
@@ -187,7 +215,7 @@
                     <div class="card">
                         <legend class="tituloPrincipal">Detalles</legend>
                         <div class="card-body">
-                            <div class="table-responsive">
+                            <div class="table-responsive" style="margin-top: -30px">
                                 <table class="table table-striped table-hover sticky-top">
                                     <thead class="table-header">
                                         <tr class="text-center">
@@ -208,7 +236,7 @@
                                             if (carrito == null || carrito.isEmpty()) {
                                         %>
                                         <tr class="text-center">
-                                            <td colspan="5">No hay productos en el carrito.</td>
+                                            <td colspan="7">No hay productos en el carrito.</td>
                                         </tr>
                                         <%
                                         } else {
@@ -244,8 +272,8 @@
                                         %>
                                     </tbody>
                                     <tfoot>
-                                        <tr class="line-before-footer">
-                                            <td colspan="6"></td> <!-- Asegúrate de que el número de columnas coincide con el de tu tabla -->
+                                        <tr class="line-before-footer"  style="background-color: #fff">
+                                            <td colspan="7"></td> <!-- Asegúrate de que el número de columnas coincide con el de tu tabla -->
                                         </tr>
                                         <tr class="text-right " style="background-color: #ffecb5">
                                             <td colspan="2"><strong>Total Factura:</strong></td>
@@ -254,9 +282,9 @@
                                     </tfoot>
                                 </table>
                             </div>                       
-                            
-                            
-                               <div class="d-flex justify-content-center mt-3">
+
+
+                            <div class="d-flex justify-content-center mt-3">
                                 <!-- Botón para generar compra -->
                                 <form action="ControladorCompras" onclick="print()" method="POST" class="mr-2">
                                     <input type="hidden" name="accion" value="GenerarCompra">
@@ -266,16 +294,16 @@
                                 <!-- Botón para cancelar la venta -->
                                 <form action="ControladorCompras" method="POST">
                                     <input type="hidden" name="accion" value="CancelarVenta">
-                                    <button class="btn btn-secondary btn-custom" type="submit">Cancelar Venta</button>
+                                    <button class="btn btn-secondary btn-custom" type="submit">Cancelar</button>
                                 </form>
                             </div>
-                            
+
 
                             <!-- Mensaje de error si aplica -->
                             <h1>${mensajeError}</h1>
                         </div>
                     </div>
-                    <p>Cada que se realiza una compra, se ingresa al sistema para actulizar inventarios y los precios del articulo </p>
+                    <p class="text-center pt-5">         Cada que se realiza una compra, se ingresa al sistema para actulizar inventarios y los precios del articulo </p>
                 </article>
 
             </section>
@@ -283,11 +311,167 @@
         </main>
 
         <footer class="text-center mt-4 parte1">
-            <p>&copy; 2024 Empresa JB. Todos los derechos reservados.</p>
+            <p>&copy; 2024 Sistemas JB.</p>
         </footer>
 
 
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <!-- Funsion Buscar producto -->
+        <script>
+            $(document).ready(function () {
+                let typingTimer; // Timer identifier
+                const doneTypingInterval = 500; // Tiempo en milisegundos (500 ms = 0.5 segundos)
+
+                $('#productosId').on('input', function () {
+                    clearTimeout(typingTimer); // Limpiar el temporizador si el usuario sigue escribiendo
+                    const codigo = $(this).val();
+
+                    // Configurar un nuevo temporizador para la búsqueda
+                    typingTimer = setTimeout(function () {
+                        // Solo proceder si el campo no está vacío
+                        if (codigo) {
+                            $.ajax({
+                                url: "ControladorCompras?accion=BuscarProductos&productosId=" + codigo,
+                                method: "GET",
+                                dataType: 'json',
+                                success: function (data) {
+                                    if (data.nombre) {
+                                        $('#producto').val(data.nombre); // Asigna el nombre del producto
+                                        $('#precio').val(data.precioCompra); // Asigna el precio de compra
+                                        $('#precioVenta').val(data.precioVenta); // Asigna el precio de venta
+                                        $('#cantidadDisponible').val(data.cantidadDisponible); // Asigna el stock
+                                        $('#porcIva').val(data.porcIva); // Asigna el porcentaje de IVA
+                                        $('#unidadmedidad').val(data.nombreUnidad); // Asigna la unidad de medida
+
+                                        // Mover el foco al campo de cantidad
+                                        $('#cantidad').focus();
+                                    } else {
+                                        // Si no se encuentra el producto, limpiar los campos
+                                        $('#producto').val('');
+                                        $('#precio').val('');
+                                        $('#precioVenta').val('');
+                                        $('#cantidadDisponible').val('');
+                                        $('#porcIva').val('');
+                                        $('#unidadmedidad').val('');
+                                    }
+                                },
+                                error: function (xhr, status, error) {
+                                    console.error('Error al obtener el producto:', error);
+                                }
+                            });
+                        } else {
+                            // Si el código está vacío, limpiar los campos
+                            $('#producto').val('');
+                            $('#precio').val('');
+                            $('#precioVenta').val('');
+                            $('#cantidadDisponible').val('');
+                            $('#porcIva').val('');
+                            $('#unidadmedidad').val('');
+                        }
+                    }, doneTypingInterval); // Espera antes de hacer la búsqueda
+                });
+            });
+
+
+
+
+
+            /*-------------------------------------------------------------------------------------*/
+            // Funsion para buscar Proveedor
+            $(document).ready(function () {
+                $('#proveedorId').on('input', function () {
+                    var codigo = $(this).val();
+
+                    if (codigo) {
+                        $.ajax({
+                            url: "ControladorCompras?accion=BuscarProveedor&proveedorId=" + codigo,
+                            method: "GET",
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.nombre2) {
+                                    $('#proveedor').val(data.nombre2); // Asigna el nombre del producto
+
+                                } else {
+                                    $('#proveedor').val(''); // Limpia el campo si no se encuentra el producto
+
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                console.error('Error al obtener el proveedor', error);
+                            }
+                        });
+                    } else {
+                        $('#proveedor').val(''); // Limpia el campo si el código está vacío
+
+                    }
+                });
+            });
+
+
+
+
+
+        </script>
+
+        <!-- Script Limpiar campos  -->
+        <script>
+
+            //Funsion para inicializar la fecha 
+
+            document.addEventListener('DOMContentLoaded', function () {
+                flatpickr("#fechaFactura", {
+                    dateFormat: "Y-m-d", // Formato de fecha
+                    altInput: true, // Muestra un campo de texto alternativo
+                    altFormat: "F j, Y", // Formato alternativo que se muestra al usuario
+                    defaultDate: "today" // Fecha por defecto (hoy)
+                });
+            });
+
+
+            document.getElementById("formAgregarProducto").addEventListener("submit", function (event) {
+                var accion = event.submitter.value;
+
+                if (accion === "AgregarAlCarrito") {
+                    var fechaFactura = document.getElementById("fechaFactura");
+                    var proveedorId = document.getElementById("proveedorId");
+                    var proveedor = document.querySelector('input[name="proveedor"]');
+                    var productosId = document.querySelector('input[name="productosId"]');
+                    var producto = document.querySelector('input[name="producto"]');
+                    var precio = document.querySelector('input[name="precio"]');
+                    var cantidad2 = document.querySelector('input[name="cantidad"]');
+                    var stock = document.querySelector('input[name="stock"]');
+                    var porcIva = document.querySelector('input[name="porcIva"]');
+                    var unidad = document.querySelector('input[name="unidadmedidad"]');
+
+                    var campos = [fechaFactura, proveedorId, proveedor, productosId, producto, precio, cantidad2, stock, porcIva, unidad];
+                    var formularioValido = true;
+
+                    campos.forEach(function (campo) {
+                        if (!campo.value) {
+                            campo.classList.add("campo-vacio");
+                            formularioValido = false;
+                        } else {
+                            campo.classList.remove("campo-vacio");
+                        }
+                    });
+
+                    if (!formularioValido) {
+                        event.preventDefault(); // Prevent form submission
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Campos obligatorios',
+                            text: 'Por favor, completa todos los campos obligatorios.',
+                            confirmButtonText: 'Aceptar'
+                        });
+                    }
+                }
+            });
+
+
+        </script>
+
+
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
         <script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
@@ -296,64 +480,6 @@
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <!-- Bootstrap JS -->
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-        <!-- Script Limpiar campos  -->
-        <script>
-
-                                //Funsion para inicializar la fecha 
-
-                                document.addEventListener('DOMContentLoaded', function () {
-                                    flatpickr("#fechaFactura", {
-                                        dateFormat: "Y-m-d", // Formato de fecha
-                                        altInput: true, // Muestra un campo de texto alternativo
-                                        altFormat: "F j, Y", // Formato alternativo que se muestra al usuario
-                                        defaultDate: "today" // Fecha por defecto (hoy)
-                                    });
-                                });
-
-
-                              document.getElementById("formAgregarProducto").addEventListener("submit", function (event) {
-    var accion = event.submitter.value;
-
-    if (accion === "AgregarAlCarrito") {
-        var fechaFactura = document.getElementById("fechaFactura");
-        var proveedorId = document.getElementById("proveedorId");
-        var proveedor = document.querySelector('input[name="proveedor"]');
-        var productosId = document.querySelector('input[name="productosId"]');
-        var producto = document.querySelector('input[name="producto"]');
-        var precio = document.querySelector('input[name="precio"]');
-        var cantidad2 = document.querySelector('input[name="cantidad"]');
-        var stock = document.querySelector('input[name="stock"]');
-        var porcIva = document.querySelector('input[name="porcIva"]');
-        var unidad = document.querySelector('input[name="unidadmedidad"]');
-
-        var campos = [fechaFactura, proveedorId, proveedor, productosId, producto, precio, cantidad2, stock, porcIva, unidad];
-        var formularioValido = true;
-
-        campos.forEach(function (campo) {
-            if (!campo.value) {
-                campo.classList.add("campo-vacio");
-                formularioValido = false;
-            } else {
-                campo.classList.remove("campo-vacio");
-            }
-        });
-
-        if (!formularioValido) {
-            event.preventDefault(); // Prevent form submission
-            Swal.fire({
-                icon: 'error',
-                title: 'Campos obligatorios',
-                text: 'Por favor, completa todos los campos obligatorios.',
-                confirmButtonText: 'Aceptar'
-            });
-        }
-    }
-});
-
-
-        </script>
-
 
     </body>
 </html>

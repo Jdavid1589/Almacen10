@@ -1,8 +1,10 @@
 
 /* Fondo general de la factura */
 body {
+    padding: 0px;
     background-color: #f7f9fb;
-    font-family: 'Poppins', sans-serif;
+    /*font-family: 'Poppins', sans-serif;*/
+       font-family: 'Playfair Display', serif; /* Tipografía elegante */
 }
 
 /* Mejora de la tarjeta */
@@ -12,7 +14,21 @@ body {
     border: none;
 }
 
+h1{
+    color: #0056b3;
+    font-family: system-ui, -apple-system, Oxygen, 'Segoe UI', Roboto, sans-serif;
+    font-weight: 600
 
+}
+h2{
+    padding-top:   15px;
+
+    color: #0056b3;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 30px
+
+}
 
 /* Divider customizado */
 #hr_1 {

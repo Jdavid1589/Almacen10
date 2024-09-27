@@ -44,8 +44,9 @@
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
         <!-- Estilos Personalizados -->
-        <link href="Vistas/EstilosCSS/EstilosFacturasFinal.css" rel="stylesheet" type="text/css"/>
+        <%--   <link href="Vistas/EstilosCSS/EstilosFacturasFinal.css" rel="stylesheet" type="text/css"/>--%>
         <link href="Vistas/EstilosCSS/EstilosFactUnico.css" rel="stylesheet" type="text/css"/>
 
 
@@ -98,7 +99,7 @@
                                         <div class="d-flex">
                                             <legend class="w-auto px-2" style="font-size: 20px; font-weight: 600;">Datos del Cliente</legend>
                                             <span class="btn btn-primary2 text-warning my-2" title="Registrar Cliente Nuevo" data-toggle="modal" data-target="#registroCliente">
-                                                <i class="fas fa-plus"></i> 
+                                                <i class="fas fa-plus"></i> Nuevo
                                             </span>
                                         </div>
 
@@ -123,10 +124,12 @@
 
                                 <fieldset class="border p-3 rounded shadow-sm mt-4 parte1">
                                     <legend class="w-auto px-2" style="font-size: 20px; font-weight: 600;">Datos del Producto</legend>
+
                                     <div class="row mb-3">
                                         <div class="col-sm-6 d-flex align-items-center ">
                                             <input type="text" class="form-control" id="productosId" name="productosId" placeholder="Ingrese Código" >
-                                            <button class="btn btn-outline-info ml-2" type="submit" name="accion" value="BuscarProductos">Buscar</button>
+
+                                            <%--  <button class="btn btn-outline-info ml-2" type="submit" name="accion" value="BuscarProductos">Buscar</button>--%>
                                         </div>
                                         <div class="col-sm-6">
                                             <input type="text" class="form-control font-weight-bold" id="producto" name="producto" value="${listapr.productos}" placeholder="Producto" readonly>
@@ -143,7 +146,9 @@
                                             </div>
                                             <div class="col-sm-3">
                                                 <label class="formulario__label styled-label">Cantidad</label>
-                                                <input style="background: #fff" type="number" class="formulario__input form-control styled-input" name="cantidad" placeholder="">
+                                                <input style="background: #ffe8a1; color: #00008B; text-align: center; font-size: 18px" 
+                                                       type="number" class="formulario__input form-control styled-input"
+                                                       id="cantidad" name="cantidad" placeholder="# Cant">
                                             </div>
                                             <div class="col-sm-4">
                                                 <label class="formulario__label styled-label">Stock</label>
@@ -162,10 +167,7 @@
 
                                         </div>
                                     </fieldset>
-                                </fieldset>
-
-
-                                <hr class="parte1" id="hr_1">
+                                </fieldset>                            
 
                                 <div class="text-center parte1">
                                     <button id="btnAgregarAlCarrito" class="btn btn-primary" type="submit" name="accion" value="AgregarAlCarrito2">Agregar al Carrito</button>
@@ -183,23 +185,22 @@
 
                             <div class="row align-items-center mb-2">
                                 <!-- Campo Fecha de Factura -->
-                                <div class="col-sm-3 pr-0" style="padding: 0; margin-top: -30px">
+                                <div class="col-sm-3 pr-0 m-0" style="padding: 0; margin-top: -35px">
                                     <label for="fechaFactura" class="formulario__label m-0">Fecha de Factura:</label>
                                 </div>
-                                <div class="col-sm-3 pr-0" style="padding: 0; margin-top: -30px; border: none">
+                                <div class="col-sm-3 pr-0 m-0 " style="padding: 0; margin-top: -35px; border: none">
                                     <input type="date" class="formulario__input form-control" id="fechaFactura" name="fechaFactura" value="${param.fechaFactura != null ? param.fechaFactura : ''}" placeholder="Fecha">
                                 </div>
                                 <!-- Campo Cliente -->
-                                <div class="col-sm-2 pr-0" style="padding: 0; margin-top: -30px">
+                                <div class="col-sm-2 pr-0 m-0 " style="padding: 0; margin-top: -35px">
                                     <label for="nombres" class="formulario__label m-0 pr-0">Cliente:</label>
                                 </div>
-                                <div class="col-sm-3 pr-0 " style="padding: 0; margin-top: -30px">
+                                <div class="col-sm-3 pr-0 m-0 " style="padding: 0; margin-top: -35px">
                                     <input type="text" class="form-control font-weight-bold" name="nombres" value="${clienteEncontrado.nombres}" placeholder="Cliente">
                                 </div>
                             </div>
 
-
-
+                            <!-- Inicio Tabla -->
 
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover sticky-top">
@@ -400,42 +401,56 @@
         <!-- Funsion Buscar producto -->
         <script>
             $(document).ready(function () {
-                $('#productosId').on('input', function () {
-                    var codigo = $(this).val();
+                let typingTimer; // Timer identifier
+                const doneTypingInterval = 500; // Tiempo en milisegundos (500 ms = 0.5 segundos)
 
-                    if (codigo) {
-                        $.ajax({
-                            url: "ControladorFacturaventa?accion=BuscarProductos&productosId=" + codigo,
-                            method: "GET",
-                            dataType: 'json',
-                            success: function (data) {
-                                if (data.nombre) {
-                                    $('#producto').val(data.nombre); // Asigna el nombre del producto
-                                    $('#precioCompra').val(data.precioCompra); // Asigna el precio de compra
-                                    $('#precioVenta').val(data.precioVenta); // Asigna el precio de venta
-                                    $('#cantidadDisponible').val(data.cantidadDisponible); // Asigna el stock
-                                    $('#porcIva').val(data.porcIva); // Asigna el porcentaje de IVA
-                                } else {
-                                    $('#producto').val(''); // Limpia el campo si no se encuentra el producto
-                                    $('#precioCompra').val(''); // Limpia el campo de precio de compra
-                                    $('#precioVenta').val(''); // Limpia el campo de precio de venta
-                                    $('#cantidadDisponible').val(''); // Limpia el campo de stock
-                                    $('#porcIva').val(''); // Limpia el campo de porcentaje de IVA
+                $('#productosId').on('input', function () {
+                    clearTimeout(typingTimer); // Limpiar el temporizador si el usuario sigue escribiendo
+                    const codigo = $(this).val();
+
+                    // Configurar un nuevo temporizador para la búsqueda
+                    typingTimer = setTimeout(function () {
+                        // Solo proceder si el campo no está vacío
+                        if (codigo) {
+                            $.ajax({
+                                url: "ControladorFacturaventa?accion=BuscarProductos&productosId=" + codigo,
+                                method: "GET",
+                                dataType: 'json',
+                                success: function (data) {
+                                    if (data.nombre) {
+                                        $('#producto').val(data.nombre); // Asigna el nombre del producto
+                                        $('#precioCompra').val(data.precioCompra); // Asigna el precio de compra
+                                        $('#precioVenta').val(data.precioVenta); // Asigna el precio de venta
+                                        $('#cantidadDisponible').val(data.cantidadDisponible); // Asigna el stock
+                                        $('#porcIva').val(data.porcIva); // Asigna el porcentaje de IVA
+
+                                        // Mover el foco al campo de cantidad
+                                        $('#cantidad').focus();
+                                    } else {
+                                        // Si no se encuentra el producto, limpiar los campos
+                                        $('#producto').val('');
+                                        $('#precioCompra').val('');
+                                        $('#precioVenta').val('');
+                                        $('#cantidadDisponible').val('');
+                                        $('#porcIva').val('');
+                                    }
+                                },
+                                error: function (xhr, status, error) {
+                                    console.error('Error al obtener el producto:', error);
                                 }
-                            },
-                            error: function (xhr, status, error) {
-                                console.error('Error al obtener el producto:', error);
-                            }
-                        });
-                    } else {
-                        $('#producto').val(''); // Limpia el campo si el código está vacío
-                        $('#precioCompra').val(''); // Limpia el campo de precio de compra
-                        $('#precioVenta').val(''); // Limpia el campo de precio de venta
-                        $('#cantidadDisponible').val(''); // Limpia el campo de stock
-                        $('#porcIva').val(''); // Limpia el campo de porcentaje de IVA
-                    }
+                            });
+                        } else {
+                            // Si el código está vacío, limpiar los campos
+                            $('#producto').val('');
+                            $('#precioCompra').val('');
+                            $('#precioVenta').val('');
+                            $('#cantidadDisponible').val('');
+                            $('#porcIva').val('');
+                        }
+                    }, doneTypingInterval); // Espera antes de hacer la búsqueda
                 });
             });
+
 
 
         </script>

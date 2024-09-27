@@ -1,72 +1,81 @@
-     /* General Styles */
-           
+/* General Styles */
 
-            /* Container Styles */
-            #login-container {
-                max-width: 400px;
-                margin: 50px auto;
-                padding: 20px;
-                background: rgba(255, 255, 255, 0.9); /* Fondo blanco con opacidad para hacer el formulario destacar */
-                border-radius: 8px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            }
+/* Estilo para los títulos h2 y h3 */
+h2, h3 {
+    font-family: 'Playfair Display', serif; /* Tipografía elegante */
+    color: #FF0000;
+    text-align: center;
+    line-height: 1.5;
 
-            /* Title Styles */
-            .form-title {
-                margin-bottom: 20px;
-                font-size: 24px;
-                font-weight: bold;
-                text-align: center;
-                color: #007bff;
-            }
+}
 
-            /* Form Group Styles */
-            .form-group {
-                margin-bottom: 15px;
-            }
+/* Container Styles */
+#login-container {
+    font-family: 'Playfair Display', serif; /* Tipografía elegante */
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.9); /* Fondo blanco con opacidad para hacer el formulario destacar */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
-            .form-group label {
-                display: block;
-                font-weight: 600;
-                margin-bottom: 5px;
-            }
+/* Title Styles */
+.form-title {
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    color: #007bff;
+}
 
-            .form-input {
-                width: 100%;
-                padding: 10px;
-                border: 1px solid #ddd;
-                border-radius: 4px;
-                font-size: 16px;
-            }
+/* Form Group Styles */
+.form-group {
+    margin-bottom: 15px;
+}
 
-            /* Button Styles */
-            .submit-btn {
-                width: 100%;
-                padding: 10px;
-                border: none;
-                border-radius: 4px;
-                background-color: #007bff;
-                color: #fff;
-                font-size: 16px;
-                cursor: pointer;
-                transition: background-color 0.3s;
-            }
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
 
-            .submit-btn:hover {
-                background-color: #0056b3;
-            }
+.form-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
 
-            /* Error Message Styles */
-            .error-message {
-                color: red;
-                text-align: center;
-                margin-top: 10px;
-            }
+/* Button Styles */
+.submit-btn {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
 
-            /* Brand Styles */
-            .brand {
-                margin-top: 20px;
-                text-align: center;
-                font-size: 18px;
-                color: #666;
-            }
+.submit-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Error Message Styles */
+.error-message {
+    color: red;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Brand Styles */
+.brand {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 18px;
+    color: #666;
+}

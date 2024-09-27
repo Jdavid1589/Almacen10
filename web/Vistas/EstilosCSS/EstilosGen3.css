@@ -6,7 +6,7 @@
 }
 
 .my-btn {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Playfair Display', serif; /* Tipografía elegante */
     white-space: nowrap;
     padding: 0.5rem 1rem;
     font-size: 12px;
@@ -36,7 +36,7 @@ a #mipapelera:hover{
 /* Estilo para contenedor de tabla */
 .table-container {
     max-height: 800px;
- overflow-y:  scroll; /* Agrega una barra de desplazamiento vertical si es necesario */
+    overflow-y:  scroll; /* Agrega una barra de desplazamiento vertical si es necesario */
     margin-right: 3px;
 }
 
@@ -103,7 +103,7 @@ h1 {
 
 /* Estilo para los títulos h2 y h3 */
 h2, h3 {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Playfair Display', serif; /* Tipografía elegante */
     color: #FF0000;
     text-align: center;
     line-height: 1.5;
@@ -117,7 +117,7 @@ h2, h3 {
 
 /* Estilo para el título personalizado */
 .custom-title {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Playfair Display', serif; /* Tipografía elegante */
     color: #0056b3;
     text-align: center;
     line-height: 1.5;
@@ -194,27 +194,22 @@ h4{
     background: #fff;            /* Establece el color de fondo del elemento a blanco */
     font-size: 12px;             /* Establece el tamaño de la fuente a 14 píxeles */
     font-weight: bold;           /* Establece el peso de la fuente a 'bold', haciendo que el texto sea negrita */
+    font-family: 'Playfair Display', serif; /* Tipografía elegante */
 
-    font-family: 'Roboto', Arial Narrow;
-    /* 
-   * Aplica la fuente 'Raleway' al texto del elemento.
-   * La fuente 'Raleway' es una fuente personalizada que se carga desde Google Fonts.
-   * Si por alguna razón 'Raleway' no se puede cargar, se usa 'sans-serif' como una fuente de respaldo.
-   * 'sans-serif' es una categoría de fuentes sin adornos en los extremos de los caracteres,
-   * lo que las hace generalmente más legibles en pantallas digitales.
-   */
 }
+
+
 #th_2 {
     background:  #ffe8a1;
     color:  #09f;
-    font-family: 'Roboto', Arial Narrow;
+    font-family: 'Playfair Display', serif; /* Tipografía elegante */
     font-size: 14px;
     font-weight: bold;
 }
 #th_2_ {
 
     color:  #fff;
-    font-family: 'Roboto', Arial Narrow;
+    font-family: 'Playfair Display', serif; /* Tipografía elegante */
     font-size: 13px;
     font-weight: bold;
 }

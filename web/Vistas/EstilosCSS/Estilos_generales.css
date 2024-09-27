@@ -2,15 +2,17 @@
 /* Estilo para el cuerpo del documento */
 body {
     /* Familia de fuentes para el texto del cuerpo */
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Playfair Display', serif; /* Tipografía elegante */
     /* Color de fondo del cuerpo */
     background: #E5E5E5;
 }
+
 
 /* Estilo para la barra */
 .navbar{
     /*  background: rgb(25, 55, 86); /*Azul Oscuro */
     background: #0d6efd; /*Azul Oscuro */
+    font-family: 'Playfair Display', serif; /* Tipografía elegante */
     padding: 10px;
 
 }
@@ -22,7 +24,7 @@ body {
 
 .etiqueta_a {
 
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Playfair Display', serif; /* Tipografía elegante */
     font-size: 16px;
     border: none;
     transition: border-color 0.3s, background-color 0.5s; /* Agregar transición para background-color y border */
@@ -36,7 +38,7 @@ body {
 
 .salir-btn {
     color: #000;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Playfair Display', serif; /* Tipografía elegante */
     font-size: 14px;
     border:none;
     transition: border-color 0.3s;
@@ -74,13 +76,7 @@ body {
     box-sizing: border-box;
 }
 
-/* Estilo para el cuerpo del documento */
-body {
-    /* Familia de fuentes para el texto del cuerpo */
-    font-family: 'Roboto', sans-serif;
-    /* Color de fondo del cuerpo */
-    background: #E5E5E5;
-}
+
 
 /* Estilo para el elemento principal */
 main {
@@ -110,7 +106,7 @@ main {
 /* Estilo para las etiquetas (labels) con texto azul */
 label {
     color: #000;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Playfair Display', serif; /* Tipografía elegante */
     white-space: nowrap;
     padding: 0.5rem 0.5rem;
     font-size: 14px;
@@ -291,7 +287,7 @@ label {
     color: #fff;
     font-weight: bold;
     border: none;
-    border-radius: 3px;
+    border-radius: 5px;
     cursor: pointer;
     transition: .1s ease all;
 }

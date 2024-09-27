@@ -1,6 +1,6 @@
 /* General Styles */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Playfair Display', serif; /* Tipografía elegante */
     margin: 0;
     padding:0px;
     background-color: #f8f9fa; /* Color de fondo suave */
@@ -8,6 +8,8 @@ body {
 
 /* Navbar Styles */
 .navbar {
+      font-family: 'Playfair Display', serif; /* Tipografía elegante */
+      font-size: 20px;
     background-color: #343a40; /* Color oscuro para el navbar */
     border-bottom: 3px solid #007bff; /* Línea azul en la parte inferior */
 }

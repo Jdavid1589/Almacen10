@@ -2,8 +2,12 @@ package Controlador;
 
 import Modelo.Proveedores;
 import Persistencia.DaoProveedores;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -38,6 +42,9 @@ public class ControladorProveedores extends HttpServlet {
 
             case "listar":
                 listarProveedores(request, response);
+                break;
+            case "listar2":
+                listarProveedores2(request, response);
                 break;
 
             case "editar":
@@ -98,6 +105,60 @@ public class ControladorProveedores extends HttpServlet {
             ex.printStackTrace();
             request.setAttribute("mensaje", "Error al listar los proveedores");
             request.getRequestDispatcher("Vistas/ListaProveedores.jsp").forward(request, response);
+        }
+    }
+
+    private void listarProveedores2(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        ObjectMapper objectMapper = new ObjectMapper(); // Para convertir objetos Java a JSON    
+
+        try {
+            List<Proveedores> listaProveedores = DaoProveedores.listar();  // Obtenemos la lista de la base de datos
+
+            PrintWriter out = response.getWriter();
+            if (listaProveedores != null && !listaProveedores.isEmpty()) {
+                objectMapper.writeValue(out, listaProveedores);  // Enviar la lista como JSON
+            } else {
+                // Si no hay proveedores, enviar un mensaje en formato JSON
+                Map<String, String> responseMessage = new HashMap<>();
+                responseMessage.put("mensaje", "No se encontraron proveedores.");
+                objectMapper.writeValue(out, responseMessage);
+            }
+            out.flush();
+        } catch (Exception ex) {
+            ex.printStackTrace();  // Depuración
+
+            // Enviar mensaje de error en caso de excepción
+            Map<String, String> responseMessage = new HashMap<>();
+            responseMessage.put("mensaje", "Error al listar los proveedores.");
+            PrintWriter out = response.getWriter();
+            objectMapper.writeValue(out, responseMessage);
+            out.flush();
+        }
+    }
+
+// Clase para la respuesta Json
+    public class ResponseMessage {
+
+        private String mensaje;
+
+        public ResponseMessage() {
+        }
+
+        public ResponseMessage(String mensaje) {
+            this.mensaje = mensaje;
+        }
+
+        public String getMensaje() {
+            return mensaje;
+        }
+
+        public void setMensaje(String mensaje) {
+            this.mensaje = mensaje;
         }
     }
 

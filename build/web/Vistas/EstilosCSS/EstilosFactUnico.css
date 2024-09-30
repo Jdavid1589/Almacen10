@@ -4,7 +4,7 @@ body {
     padding: 0px;
     background-color: #f7f9fb;
     /*font-family: 'Poppins', sans-serif;*/
-       font-family: 'Playfair Display', serif; /* Tipografía elegante */
+    font-family: 'Playfair Display', serif; /* Tipografía elegante */
 }
 
 /* Mejora de la tarjeta */
@@ -118,6 +118,7 @@ tfoot tr {
     text-transform: uppercase;
     letter-spacing: 0.2px;
     color: #333;
+    padding: 10px; /* Reducir el padding */
 
 }
 .tituloPrincipal2 {
@@ -174,11 +175,27 @@ button.btn-success {
 
 /* Estilos personalizados para los inputs */
 .styled-input {
-    border-radius: 8px; /* Redondea las esquinas del input */
+
+    border-radius: 6px; /* Redondea las esquinas del input */
     border: 2px solid #0056b3; /* Borde de color */
-    padding: 10px;
+    padding: 6px;
     transition: all 0.3s ease;
-    font-weight: 600
+    font-weight: 600;
+    color: #000;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 1.1rem;
+    text-align: center;
+
+}
+
+@media print{
+
+    .parte1{
+        display: none;
+
+    }
+
 }
 
 .styled-input:focus {
@@ -188,8 +205,11 @@ button.btn-success {
 
 /* Opcional: estilizar los inputs con un ícono a la izquierda */
 .styled-input::placeholder {
-    color: #999999; /* Cambia el color del placeholder */
+    color: #45A049; /* Cambia el color del placeholder */
+    font-weight: bold;
+    font-size: 1.1rem;
 }
+
 /* Estilos para el fieldset */
 .formulario__fieldset {
     border: 2px solid #007bff; /* Borde azul */
@@ -219,157 +239,157 @@ button.btn-success {
 
 
 
-            .formulario__input {
-                border-radius: 0.25rem; /* Un poco de redondeo en los bordes */
-            }
+.formulario__input {
+    border-radius: 0.25rem; /* Un poco de redondeo en los bordes */
+}
 
-            .btn-primary2 {
-                background-color: #5A9BD5;
-                border: none;
-                border-radius: 10px;
-                padding: 7px 7px;
-                font-size: 12px;
-                transition: background-color 0.3s ease;
-            }
+.btn-primary2 {
+    background-color: #5A9BD5;
+    border: none;
+    border-radius: 10px;
+    padding: 7px 7px;
+    font-size: 12px;
+    transition: background-color 0.3s ease;
+}
 
-            /* Estilo elegante para el modal */
-            .modal-content {
-                background-color: #FAFAFA; /* Color de fondo claro */
-                border-radius: 15px; /* Bordes redondeados */
-                box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.15); /* Sombra suave */
-            }
+/* Estilo elegante para el modal */
+.modal-content {
+    background-color: #FAFAFA; /* Color de fondo claro */
+    border-radius: 15px; /* Bordes redondeados */
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.15); /* Sombra suave */
+}
 
-            /* Estilo para el título */
-            .modal-title {
-                font-family: 'Playfair Display', serif; /* Tipografía elegante */
-                font-size: 24px;
-                color: #333;
-                letter-spacing: 1px;
-            }
+/* Estilo para el título */
+.modal-title {
+    font-family: 'Playfair Display', serif; /* Tipografía elegante */
+    font-size: 24px;
+    color: #333;
+    letter-spacing: 1px;
+}
 
-            /* Botón de cerrar estilizado */
-            .elegant-close {
-                background: transparent;
-                border: none;
-                color: #888;
-                font-size: 28px;
-                font-weight: lighter;
-            }
+/* Botón de cerrar estilizado */
+.elegant-close {
+    background: transparent;
+    border: none;
+    color: #888;
+    font-size: 28px;
+    font-weight: lighter;
+}
 
-            .elegant-close:hover {
-                color: #555;
-            }
+.elegant-close:hover {
+    color: #555;
+}
 
-            /* Estilos para el formulario */
-            .formulario__input {
-                border: 2px solid #ddd;
-                border-radius: 8px;
-                padding: 12px;
-                font-size: 16px;
-                background-color: #F7F7F7;
-                transition: border 0.3s ease;
-            }
+/* Estilos para el formulario */
+.formulario__input {
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 16px;
+    background-color: #F7F7F7;
+    transition: border 0.3s ease;
+}
 
-            .formulario__input:focus {
-                border-color: #999;
-                box-shadow: none;
-                outline: none;
-            }
+.formulario__input:focus {
+    border-color: #999;
+    box-shadow: none;
+    outline: none;
+}
 
-            /* Estilo de los botones más pequeños */
-            .formulario__btn {
-                background-color: #4CAF50;
-                border: none;
-                padding: 8px 16px; /* Reduce el tamaño del padding */
-                border-radius: 6px; /* Reduce el redondeado */
-                color: white;
-                font-size: 14px; /* Reduce el tamaño de la fuente */
-                transition: background-color 0.3s ease;
-            }
+/* Estilo de los botones más pequeños */
+.formulario__btn {
+    background-color: #4CAF50;
+    border: none;
+    padding: 8px 16px; /* Reduce el tamaño del padding */
+    border-radius: 6px; /* Reduce el redondeado */
+    color: white;
+    font-size: 14px; /* Reduce el tamaño de la fuente */
+    transition: background-color 0.3s ease;
+}
 
-            .formulario__btn:hover {
-                background-color: #45A049;
-            }
+.formulario__btn:hover {
+    background-color: #45A049;
+}
 
-            .formulario__btn_cancelar {
-                background-color: #e74c3c;
-                border: none;
-                padding: 8px 16px; /* Reduce el tamaño del padding */
-                border-radius: 6px; /* Reduce el redondeado */
-                color: white;
-                font-size: 14px; /* Reduce el tamaño de la fuente */
-                transition: background-color 0.3s ease;
-                margin-left: 10px;
-            }
+.formulario__btn_cancelar {
+    background-color: #e74c3c;
+    border: none;
+    padding: 8px 16px; /* Reduce el tamaño del padding */
+    border-radius: 6px; /* Reduce el redondeado */
+    color: white;
+    font-size: 14px; /* Reduce el tamaño de la fuente */
+    transition: background-color 0.3s ease;
+    margin-left: 10px;
+}
 
-            .formulario__btn_cancelar:hover {
-                background-color: #c0392b;
-            }
-
-
-            /* Sombra en los botones */
-            button {
-                box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-            }
-
-            /* Margen extra para el modal */
-            .modal-dialog-centered {
-                margin-top: 50px;
-            }
-
-            /* Margen para los campos del formulario */
-            .formulario__grupo {
-                margin-bottom: 15px;
-            }
-
-            /* Ajuste para campos más amplios */
-            .formulario__input {
-                width: 100%;
-                box-sizing: border-box;
-            }
+.formulario__btn_cancelar:hover {
+    background-color: #c0392b;
+}
 
 
-            /* Estilo personalizado para los botones */
-            .btn-custom {
-                padding: 12px 20px;
-                font-size: 16px;
-                font-weight: 600;
-                border-radius: 8px;
-                transition: all 0.3s ease;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            }
+/* Sombra en los botones */
+button {
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+}
 
-            /* Botón de facturar - estilo */
-            .btn-success {
-                background-color: #28a745;
-                border: none;
-                color: #fff;
-            }
+/* Margen extra para el modal */
+.modal-dialog-centered {
+    margin-top: 50px;
+}
 
-            /* Efecto hover para el botón de facturar */
-            .btn-success:hover {
-                background-color: #218838;
-                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-            }
+/* Margen para los campos del formulario */
+.formulario__grupo {
+    margin-bottom: 15px;
+}
 
-            /* Botón de cancelar venta - estilo */
-            .btn-secondary {
-                background-color: #6c757d;
-                border: none;
-                color: #fff;
-            }
+/* Ajuste para campos más amplios */
+.formulario__input {
+    width: 100%;
+    box-sizing: border-box;
+}
 
-            /* Efecto hover para el botón de cancelar */
-            .btn-secondary:hover {
-                background-color: #5a6268;
-                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-            }
 
-            /* Alinear los botones en la misma fila */
-            .d-flex {
-                display: flex;
-                gap: 15px; /* Espacio entre los botones */
-            }
+/* Estilo personalizado para los botones */
+.btn-custom {
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Botón de facturar - estilo */
+.btn-success {
+    background-color: #28a745;
+    border: none;
+    color: #fff;
+}
+
+/* Efecto hover para el botón de facturar */
+.btn-success:hover {
+    background-color: #218838;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Botón de cancelar venta - estilo */
+.btn-secondary {
+    background-color: #6c757d;
+    border: none;
+    color: #fff;
+}
+
+/* Efecto hover para el botón de cancelar */
+.btn-secondary:hover {
+    background-color: #5a6268;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Alinear los botones en la misma fila */
+.d-flex {
+    display: flex;
+    gap: 15px; /* Espacio entre los botones */
+}
 
 
 

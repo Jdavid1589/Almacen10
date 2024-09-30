@@ -14,12 +14,12 @@
         <group>
             <file>file:/E:/User/Documents/NetBeansProjects/Almacen/src/java/Controlador/ControladorFacturaventa.java</file>
             <file>file:/E:/User/Documents/NetBeansProjects/Almacen/web/Vistas/EstilosCSS/EstilosFactUnico.css</file>
+            <file>file:/E:/User/Documents/NetBeansProjects/Almacen/web/Vistas/EstilosCSS/EstilosFacturasFinal.css</file>
             <file>file:/E:/User/Documents/NetBeansProjects/Almacen/web/Vistas/ListaFacturaVenta.jsp</file>
-            <file>file:/E:/User/Documents/NetBeansProjects/Almacen/src/java/Modelo/Productos.java</file>
             <file>file:/E:/User/Documents/NetBeansProjects/Almacen/web/Vistas/Lista_Compras_Articulos.jsp</file>
             <file>file:/E:/User/Documents/NetBeansProjects/Almacen/src/java/Persistencia/DaoFacturas.java</file>
-            <file>file:/E:/User/Documents/NetBeansProjects/Almacen/web/Vistas/ListaUsuarios.jsp</file>
-            <file>file:/E:/User/Documents/NetBeansProjects/Almacen/src/java/Modelo/DetallesFacturas.java</file>
+            <file>file:/E:/User/Documents/NetBeansProjects/Almacen/src/java/Controlador/ControladorCompras.java</file>
+            <file>file:/E:/User/Documents/NetBeansProjects/Almacen/src/java/Controlador/ControladorProveedores.java</file>
         </group>
     </open-files>
 </project-private>

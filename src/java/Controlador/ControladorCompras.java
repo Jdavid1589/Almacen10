@@ -136,6 +136,7 @@ public class ControladorCompras extends HttpServlet {
     private void agregarProductoAlCarrito(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            
             // Obtener los parámetros de la solicitud
             String productoIdStr = request.getParameter("productosId");
             String cantidadStr = request.getParameter("cantidad");
@@ -245,14 +246,7 @@ public class ControladorCompras extends HttpServlet {
 
             mantenerBusquedaProveedor(request);
 
-            // Imprimir el contenido del carrito en la consola
-            //  System.out.println("Contenido del carrito:");
-            /*for (Compras compra : carrito) {
-                System.out.println("Fecha: " + compra.getFecha() + ", Proveedor ID: " + compra.getProveedorId() + ", Total Compra: " + compra.getTotalCompra());
-                for (ComprasProductos detalle : compra.getArticulos()) {
-                    System.out.println("    Producto ID: " + detalle.getProductosId() + ", Cantidad: " + detalle.getCantidad() + ", Costo Unitario: " + detalle.getCostoArticulo());
-                }
-            }*/
+          
             // Redirigir a la página del carrito
             request.getRequestDispatcher("Vistas/Lista_Compras_Articulos.jsp").forward(request, response);
 
@@ -334,7 +328,7 @@ public class ControladorCompras extends HttpServlet {
         request.getRequestDispatcher("Vistas/Lista_Compras_Articulos.jsp").forward(request, response);
     }
 
-    /// Buscar producto con respuesta Json
+ 
     /// Buscar producto con respuesta Json
     private void buscarProducto(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");

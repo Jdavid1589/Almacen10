@@ -127,12 +127,13 @@
 
                                     <div class="row mb-3">
                                         <div class="col-sm-6 d-flex align-items-center ">
-                                            <input type="text" class="form-control" id="productosId" name="productosId" placeholder="Ingrese Código" >
+                                            <input type="text" class="form-control styled-input" id="productosId" name="productosId" placeholder="Ingrese Código" >
 
                                             <%--  <button class="btn btn-outline-info ml-2" type="submit" name="accion" value="BuscarProductos">Buscar</button>--%>
                                         </div>
                                         <div class="col-sm-6">
-                                            <input type="text" class="form-control font-weight-bold" id="producto" name="producto" value="${listapr.productos}" placeholder="Producto" readonly>
+                                            <input  style="border: 2px solid #1F4E79; font-weight: bold;font-size: 1.1rem;   text-transform: uppercase; " 
+                                                    type="text" class="form-control font-weight-bold styled-input" id="producto" name="producto" value="${listapr.productos}" placeholder="Producto" readonly>
                                         </div>
                                     </div>                                   
 
@@ -140,26 +141,29 @@
                                         <legend class="formulario__legend">--</legend>
                                         <div class="row mb-2">
                                             <!-- Primera fila con tres columnas -->
+
                                             <div class="col-sm-4">
-                                                <label class="formulario__label styled-label">Precio Compra</label>
-                                                <input type="text" id="precioCompra" class="formulario__input form-control styled-input" name="precioCompra" placeholder="$/0.00">
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <label class="formulario__label styled-label">Cantidad</label>
-                                                <input style="background: #ffe8a1; color: #00008B; text-align: center; font-size: 18px" 
-                                                       type="number" class="formulario__input form-control styled-input"
-                                                       id="cantidad" name="cantidad" placeholder="# Cant">
+                                                <label class="formulario__label styled-label">CANTIDAD</label>
+                                                <input 
+                                                    style="border: 2px solid #1F4E79; font-weight: bold; font-size: 1.1rem; text-transform: uppercase; color: #bb2929;text-align: center "          
+                                                    type="number" class="formulario__input form-control styled-input"
+                                                    id="cantidad" name="cantidad" placeholder="# Cant">
                                             </div>
                                             <div class="col-sm-4">
-                                                <label class="formulario__label styled-label">Stock</label>
+                                                <label style="display: none;" class="formulario__label styled-label">Precio Compra</label>
+                                                <input type="hidden" id="precioCompra" class="formulario__input form-control styled-input" name="precioCompra" placeholder="$/0.00">
+                                            </div>
+
+                                            <div class="col-sm-4">
+                                                <label class="formulario__label styled-label">Stock Actual</label>
                                                 <input type="text" id="cantidadDisponible" class="formulario__input form-control styled-input" name="cantidadDisponible" placeholder="Stock">
                                             </div>
                                             <div class="row mb-2">
-                                                <div class="col-sm-4">
+                                                <div class="col-sm-4 d-none">
                                                     <label class="formulario__label styled-label">Precio Venta</label>
                                                     <input type="text" id="precioVenta" class="formulario__input form-control styled-input" name="precioVenta" placeholder="$/0.00">
                                                 </div>
-                                                <div class="col-sm-4">
+                                                <div class="col-sm-4 d-none">
                                                     <label class="formulario__label styled-label">%Iva</label>
                                                     <input type="text" id="porcIva" class="formulario__input form-control styled-input" name="porcIva" placeholder="%Iva">
                                                 </div>
@@ -395,7 +399,9 @@
                     </div>
                 </div>
             </div>
-        </div>  
+        </div> 
+
+
 
 
         <!-- Funsion Buscar producto -->

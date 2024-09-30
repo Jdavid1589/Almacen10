@@ -255,16 +255,19 @@ public class ControladorFacturaventa extends HttpServlet {
         // Registrar la factura en la base de datos con todos los productos
         DaoFacturas.registrarVenta(compraFinal);
 
-        // Guardar el cliente en la sesión para su uso posterior
-        request.getSession().setAttribute("clienteId", idCliente);
+      
 
         // Limpiar carrito y cliente de la sesión
         request.getSession().removeAttribute("carrito");
+        
+     
 
         // Redirigir a la confirmación o página de compras vacía
         request.setAttribute("mensajeExito", "Compra registrada con éxito.");
         request.setAttribute("mensajeError", "Validar datos ingresados. ¡Error!");
-        request.getRequestDispatcher("Vistas/ListaFacturaVenta.jsp").forward(request, response);
+      //  request.getRequestDispatcher("Vistas/ListaFacturaVenta.jsp").forward(request, response);
+            // Redirigir para cargar el cliente predeterminado
+            CargarCliente(request, response);
     }
 
     private void CargarCliente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

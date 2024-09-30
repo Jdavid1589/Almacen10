@@ -1,5 +1,6 @@
 
 
+<%@page import="Modelo.Proveedores"%>
 <%@page import="java.text.NumberFormat"%>
 <%@page import="java.util.Locale"%>
 <%@page import="java.math.BigDecimal"%>
@@ -50,7 +51,14 @@
 
         <!-- Estilos Modal -->
         <style>
+            @media print{
 
+                .parte1{
+                    display: none;
+
+                }
+
+            }
 
 
         </style>
@@ -101,17 +109,22 @@
                                 <fieldset>
                                     <legend class="w-auto px-2" style="font-size: 20px; font-weight: 600;">Datos del Proveedor</legend>
                                     <div class="row">
-                                        <div class="col-sm-6 d-flex">
 
-                                            <input type="text" class="formulario__input form-control" id="proveedorId" name="proveedorId" value="${param.proveedorId}" placeholder="Código">
-                                            <%--  <button class="btn btn-outline-info mx-2 parte1" type="submit" name="accion" value="BuscarProveedor">Buscar</button>--%>
+                                        <div class="col-sm-6 d-flex">
+                                            <input    style="border: 2px solid #1F4E79; font-weight: bold;font-size: 0.9rem; text-transform: uppercase; " 
+                                                      type="text" class="formulario__input form-control" id="proveedorId" name="proveedorId" value="${param.proveedorId}" placeholder="Código">                                 
                                         </div>
+
                                         <div class="col-sm-6">
-                                            <input style="font-weight: 600" type="text" class="formulario__input form-control"
-                                                   id="proveedor" name="proveedor" value="${proveedorEncontrado.proveedor}" placeholder="Proveedor">
+                                            <input style="border: 2px solid #1F4E79; font-weight: bold;font-size: 1.1rem;   text-transform: uppercase; " 
+                                                   type="text" class="formulario__input form-control"
+                                                   id="proveedor" name="proveedor" value="${proveedorEncontrado.proveedor}" placeholder="Proveedor" readonly>
                                         </div>
                                     </div>
                                 </fieldset>
+
+
+
 
                                 <hr id="hr_1">
 
@@ -120,52 +133,57 @@
                                     <legend class="w-auto px-2" style="font-size: 20px; font-weight: 600;">Datos del Producto</legend>
                                     <div class="row mb-3">
 
-                                        <div class="col-sm-6 d-flex align-items-center ">
-                                            <input type="text" class="form-control" id="productosId" name="productosId" placeholder="Ingrese Código" >
+                                        <div class="col-sm-6 d-flex  ">
+                                            <input  style="border: 2px solid #1F4E79; font-weight: bold;font-size: 0.9rem; text-transform: uppercase; " 
+                                                    type="text" class="formulario__input form-control" id="productosId" name="productosId" placeholder="Ingrese Código" >
                                             <%--  <button class="btn btn-outline-info ml-2" type="submit" name="accion" value="BuscarProductos">Buscar</button>--%>
                                         </div>
 
                                         <div class="col-sm-6">
-                                            <input type="text" class="form-control font-weight-bold" id="producto" name="producto" value="${listapr.productos}" placeholder="Producto" readonly>
+                                            <input 
+                                                style="border: 2px solid #1F4E79; font-weight: bold;font-size: 1.1rem;   text-transform: uppercase; " 
+                                                type="text" class="formulario__input form-control" id="producto" name="producto" value="${listapr.productos}" placeholder="Producto" readonly>
+
                                         </div>
                                     </div>
 
                                     <!-- Información del producto -->
                                     <fieldset class="formulario__fieldset">
-                                        <legend class="formulario__legend">Campos para Actualizar en el Inventario!</legend>
+                                        <legend class="formulario__legend parte1">Campos para Actualizar en el Inventario!</legend>
 
-                                        <div class="row mb-2">
+                                        <div class="row mb-2 parte1">
                                             <!-- Primera fila con tres columnas -->
-                                            <div class="col-sm-4">
+                                            <div class="col-sm-4 parte1">
                                                 <label class="formulario__label styled-label">$Costo Articulo</label>
                                                 <input type="text" class="formulario__input form-control styled-input" 
                                                        id="precio" name="precio" value="${'$ '}" placeholder="$/0.00">
                                             </div>
-                                            <div class="col-sm-4">
+                                            <div class="col-sm-4 parte1">
                                                 <label class="formulario__label styled-label">$ Precio Venta</label>
                                                 <input type="text" class="formulario__input form-control styled-input" 
                                                        id="precioVenta"    name="precioVenta" value="${'$ '}" placeholder="$/0.00">
                                             </div>
-                                            <div class="col-sm-4">
+                                            <div class="col-sm-4 parte1">
                                                 <label class="formulario__label styled-label">Cantidad</label>
-                                                <input style="background: #ffe8a1; color: #00008B; text-align: center; font-size: 18px" 
-                                                       type="number" class="formulario__input form-control styled-input"
-                                                       id="cantidad" name="cantidad" placeholder="Cantid">
+                                                <input    style="border: 2px solid #1F4E79; font-weight: bold; font-size: 1.1rem; text-transform: uppercase; color: #000;text-align: center "                                               
+                                                          type="number"
+                                                          class="formulario__input form-control styled-input"
+                                                          id="cantidad" name="cantidad" placeholder="Cantid">
                                             </div>
                                         </div>
                                         <div class="row mb-2">
                                             <!-- Segunda fila con tres columnas -->
-                                            <div class="col-sm-4">
+                                            <div class="col-sm-4 parte1">
                                                 <label class="formulario__label styled-label">Stock</label>
-                                                <input type="text"  id="cantidadDisponible" class="formulario__input form-control styled-input" 
+                                                <input type="text"  id="cantidadDisponible" class="formulario__input styled-input" 
                                                        name="stock"  placeholder="Stock">
                                             </div>
-                                            <div class="col-sm-4">
+                                            <div class="col-sm-4 parte1">
                                                 <label class="formulario__label styled-label">%Iva</label>
                                                 <input type="text" class="formulario__input form-control styled-input" 
                                                        id="porcIva" name="porcIva" value="${'% '}"  placeholder="%Iva">
                                             </div>
-                                            <div class="col-sm-4">
+                                            <div class="col-sm-4 parte1">
                                                 <label class="formulario__label styled-label">Unidad Medida</label>
                                                 <input type="text" class="formulario__input form-control styled-input" 
                                                        id="unidadmedidad" name="unidadmedidad" 
@@ -215,7 +233,27 @@
                     <div class="card">
                         <legend class="tituloPrincipal">Detalles</legend>
                         <div class="card-body">
-                            <div class="table-responsive" style="margin-top: -30px">
+
+                            <div class="row align-items-center mb-2">
+                                <!-- Campo Fecha de Factura -->
+                                <div class="col-sm-3 pr-0 m-0" style="padding: 0; margin-top: -45px">
+                                    <label for="fechaFactura" class="formulario__label ">Fecha de Factura:</label>
+                                </div>
+                                <div class="col-sm-3 pr-0 m-0 " style="padding: 0; margin-top: -45px; border: none;">
+                                    <input type="date" class="formulario__input form-control" id="fechaFactura" name="fechaFactura" value="${param.fechaFactura != null ? param.fechaFactura : ''}" placeholder="Fecha">
+                                </div>
+                                <!-- Campo Cliente -->
+                                <div class="col-sm-2 pr-0 m-0 " style="padding: 0; margin-top: -45px;">
+                                    <label for="nombres" class="formulario__label m-0 pr-0">Proveedor</label>
+                                </div>
+                                <div class="col-sm-3 pr-0 m-0 " style="padding: 0; margin-top: -45px">
+                                    <input style="border:none; font-weight: bold; font-size: 0.9rem;   text-transform: uppercase; " 
+                                           type="text" class="formulario__input form-control"
+                                           id="proveedor" name="proveedor" value="${proveedorEncontrado.proveedor}" placeholder="Proveedor" readonly>
+                                </div>
+                            </div>
+
+                            <div class="table-responsive" style="margin-top: -30px; margin: 5px">
                                 <table class="table table-striped table-hover sticky-top">
                                     <thead class="table-header">
                                         <tr class="text-center">
@@ -286,13 +324,13 @@
 
                             <div class="d-flex justify-content-center mt-3">
                                 <!-- Botón para generar compra -->
-                                <form action="ControladorCompras" onclick="print()" method="POST" class="mr-2">
+                                <form action="ControladorCompras" onclick="print()" method="POST" class="mr-2  parte1">
                                     <input type="hidden" name="accion" value="GenerarCompra">
                                     <button class="btn btn-success btn-custom" type="submit">Facturar</button>
                                 </form>
 
                                 <!-- Botón para cancelar la venta -->
-                                <form action="ControladorCompras" method="POST">
+                                <form action="ControladorCompras" method="POST" class="parte1">
                                     <input type="hidden" name="accion" value="CancelarVenta">
                                     <button class="btn btn-secondary btn-custom" type="submit">Cancelar</button>
                                 </form>
@@ -303,7 +341,7 @@
                             <h1>${mensajeError}</h1>
                         </div>
                     </div>
-                    <p class="text-center pt-5">         Cada que se realiza una compra, se ingresa al sistema para actulizar inventarios y los precios del articulo </p>
+                    <p class="text-center pt-5  parte1">Cada que se realiza una compra, se ingresa al sistema para actulizar inventarios y los precios del articulo </p>
                 </article>
 
             </section>
@@ -313,6 +351,13 @@
         <footer class="text-center mt-4 parte1">
             <p>&copy; 2024 Sistemas JB.</p>
         </footer>
+
+
+
+
+
+
+
 
 
 

@@ -5,19 +5,40 @@
 package Util;
 
 import Modelo.Bodega;
+import Modelo.Clientes;
 import Modelo.Compras;
 import Modelo.ComprasProductos;
 import Modelo.Productos;
-import Persistencia.CompraDAO;
+
 import Persistencia.DaoBodega;
 import Persistencia.DaoCompras;
-import Persistencia.DaoProductos;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import Persistencia.DaoFacturas;
+
 
 public class Varias {
+    
+    
+   /* public static void main(String[] args) {
+        // Crear un objeto Clientes con los datos a actualizar
+        Clientes cliente = new Clientes();
+        
+        // Establecer los valores del cliente que deseas actualizar
+        cliente.setId(3); // ID del cliente que quieres actualizar
+        cliente.setNombres("Juan Pérez");
+        cliente.setTelefono("123456789");
 
+        // Llamar al método editar para intentar actualizar el registro
+        boolean resultado = DaoFacturas.editar(cliente);
+
+        // Validar el resultado de la operación de actualización
+        if (resultado) {
+            System.out.println("Actualización exitosa.");
+        } else {
+            System.out.println("Error al actualizar el registro.");
+        }
+        }
+        }*/
+}
     /*  public static void main(String[] args) {
         
     List<Bodega> bodegas = DaoBodega. listar();
@@ -114,4 +135,4 @@ public class Varias {
             System.out.println("Error al registrar la compra.");
         }
     }*/
-}
+

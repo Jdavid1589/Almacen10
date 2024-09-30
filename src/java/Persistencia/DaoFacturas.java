@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,7 +48,7 @@ public class DaoFacturas {
             psVenta.setString(1, facturas.getFecha());
             psVenta.setInt(2, facturas.getClienteId());
             psVenta.setBigDecimal(3, facturas.getTotalCosto());
-            psVenta.setBigDecimal(4, facturas.getTotalIva());       
+            psVenta.setBigDecimal(4, facturas.getTotalIva());
             psVenta.setBigDecimal(5, facturas.getTotalVenta());
 
             psVenta.executeUpdate();
@@ -68,7 +70,7 @@ public class DaoFacturas {
 
             // Iterar sobre los productos comprados
             for (DetallesFacturas detalle : facturas.getFacturas()) {
-                
+
                 // Registrar el detalle de la compra
                 psDetalle.setInt(1, idVenta);  // Asignar ID de la compra
                 psDetalle.setInt(2, detalle.getProductosId());
@@ -76,7 +78,6 @@ public class DaoFacturas {
                 psDetalle.setBigDecimal(4, detalle.getPrecioCompra());
                 psDetalle.setBigDecimal(5, detalle.getPrecioVenta());
                 psDetalle.setInt(6, detalle.getPorcIva());
-           
 
                 psDetalle.addBatch();  // Agregar a batch
 
@@ -113,8 +114,8 @@ public class DaoFacturas {
 
         return false;  // Error
     }
-    
-     public static Productos buscarProducto(int id) {
+
+    public static Productos buscarProducto(int id) {
         Productos producto = null; // Inicializamos como null
         String sql = "SELECT * FROM productos WHERE idProductos = ?"; // Usar consulta parametrizada
 
@@ -144,8 +145,8 @@ public class DaoFacturas {
 
         return producto; // Retornar el producto encontrado o null
     }
-     
-     public static Clientes buscarCliente(int id) {
+
+    public static Clientes buscarCliente(int id) {
         Clientes clientes = null; // Inicializamos como null
         String sql = "SELECT * FROM clientes WHERE id = ?"; // Usar consulta parametrizada
 
@@ -158,7 +159,7 @@ public class DaoFacturas {
                     clientes.setId(rs.getInt("id"));
                     clientes.setNombres(rs.getString("nombres"));
                     clientes.setTelefono(rs.getString("telefono"));
-                  
+
                     // Rellenar otros campos necesarios
                 }
             }
@@ -168,20 +169,18 @@ public class DaoFacturas {
 
         return clientes; // Retornar el producto encontrado o null
     }
-     
-     
-     /*Zona Clientes*/
-     
-        public static boolean grabarCliente(Clientes clientes) {
+
+    ///---------------------------Zona Clientes----------------------------------------
+    public static boolean grabarCliente(Clientes clientes) {
         try {
-               con = cn.getConnection();
+            con = cn.getConnection();
+
             String sql = "INSERT INTO clientes(nombres, telefono) "
                     + "VALUES(?,?);";
             ps = con.prepareStatement(sql);
 
             ps.setString(1, clientes.getNombres());
             ps.setString(2, clientes.getTelefono());
-          
 
             if (ps.executeUpdate() > 0) {
                 return true;
@@ -189,6 +188,110 @@ public class DaoFacturas {
                 return false;
             }
         } catch (Exception e) {
+        } finally {
+            cerrarRecursos();
+        }
+        return false;
+    }
+
+    public static List<Clientes> listar() {
+        List<Clientes> lista = new ArrayList<>();
+        try {
+            con = cn.getConnection();
+            String sql = "SELECT * FROM clientes;";
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Clientes cliente = new Clientes();
+
+                cliente.setId(rs.getInt("id"));
+                cliente.setNombres(rs.getString("nombres"));
+                cliente.setTelefono(rs.getString("telefono"));
+
+                lista.add(cliente);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            cerrarRecursos();
+        }
+        return lista;
+    }
+
+    public static Clientes obtenerClientePorId(int id) {
+        Clientes clt = null;
+
+        String sql = "SELECT * FROM clientes WHERE id=?";
+
+        try (Connection con = cn.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    clt = new Clientes();
+
+                    clt.setId(rs.getInt("id"));
+                    clt.setNombres(rs.getString("nombres"));
+                    clt.setTelefono(rs.getString("telefono"));
+
+                }
+            }
+        } catch (SQLException ex) {
+            // Registra el error sin mostrar detalles al usuario
+            Logger.getLogger(DaoProveedores.class
+                    .getName()).log(Level.SEVERE, "Error al acceder a la base de datos", ex);
+
+        }
+
+        return clt;
+    }
+
+    public static boolean editar(Clientes clientes) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = cn.getConnection(); // Asumo que cn.getConnection() está bien configurado
+
+            // Consulta SQL para actualizar el cliente
+            String sql = "UPDATE clientes SET nombres = ?, telefono =? WHERE id = ?";
+
+            ps = con.prepareStatement(sql);
+            ps.setString(1, clientes.getNombres());
+            ps.setString(2, clientes.getTelefono());
+            ps.setInt(3, clientes.getId());  // Asegúrate de incluir el ID del cliente
+
+            // Ejecutar la consulta de actualización
+            int rowsAffected = ps.executeUpdate();
+
+            // Verificar si se actualizó algún registro
+            if (rowsAffected > 0) {
+                return true; // La actualización fue exitosa
+            }
+
+        } catch (SQLException ex) {
+            // Imprimir información del error
+            ex.printStackTrace();
+        } finally {
+            // Cerrar recursos en el bloque "finally"
+            cerrarRecursos();
+        }
+        return false; // La actualización falló
+    }
+
+    public static boolean eliminar(int id) {
+        try {
+            con = cn.getConnection();
+            String sql = "DELETE FROM clientes WHERE id=?";
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+
+            if (ps.executeUpdate() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Maneja las excepciones de mejor manera, por ejemplo, lanzando una excepción personalizada.
         } finally {
             cerrarRecursos();
         }

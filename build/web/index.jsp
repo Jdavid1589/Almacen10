@@ -49,13 +49,15 @@
                                 Registros Varios
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="ControladorUsuarios?accion=listar" target="myframe">Usuarios</a></li>
+                                <li><a class="dropdown-item"  href="ControladorFacturaventa?accion=listarCliente" target="myframe">Clientes</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="ControladorUnidMedida?accion=listar" target="myframe">Unidad Medida</a></li>
+                                <li><a class="dropdown-item"  href="ControladorProveedores?accion=listar" target="myframe">Proveedores</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="ControladorCategorias?accion=listar" target="myframe">Categorias</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item"  href="ControladorProveedores?accion=listar" target="myframe">Proveedores</a></li>
+                                <li><a class="dropdown-item" href="ControladorUnidMedida?accion=listar" target="myframe">Unidad Medida</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="ControladorUsuarios?accion=listar" target="myframe">Usuarios</a></li>
 
 
                             </ul>

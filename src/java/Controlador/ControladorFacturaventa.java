@@ -4,7 +4,9 @@ import Modelo.Clientes;
 import Modelo.DetallesFacturas;
 import Modelo.Facturas;
 import Modelo.Productos;
+import Modelo.Proveedores;
 import Persistencia.DaoFacturas;
+import Persistencia.DaoProveedores;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
@@ -16,8 +18,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ControladorFacturaventa extends HttpServlet {
+
+    int ide;  // Variable de instancia para almacenar el ID
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -57,6 +63,23 @@ public class ControladorFacturaventa extends HttpServlet {
 
             case "registrarCliente":
                 CrearCliente(request, response);
+                break;
+            case "registrarCt2":
+                CrearCliente2(request, response);
+                break;
+
+            case "listarCliente":
+                clientesL(request, response);
+                break;
+
+            case "editarcliente":
+                editCl(request, response);
+                break;
+            case "updateCL":
+                update(request, response);
+                break;
+            case "deletCl":
+                eliminarCliente(request, response);
                 break;
 
             case "CancelarVenta":
@@ -255,19 +278,15 @@ public class ControladorFacturaventa extends HttpServlet {
         // Registrar la factura en la base de datos con todos los productos
         DaoFacturas.registrarVenta(compraFinal);
 
-      
-
         // Limpiar carrito y cliente de la sesión
         request.getSession().removeAttribute("carrito");
-        
-     
 
         // Redirigir a la confirmación o página de compras vacía
         request.setAttribute("mensajeExito", "Compra registrada con éxito.");
         request.setAttribute("mensajeError", "Validar datos ingresados. ¡Error!");
-      //  request.getRequestDispatcher("Vistas/ListaFacturaVenta.jsp").forward(request, response);
-            // Redirigir para cargar el cliente predeterminado
-            CargarCliente(request, response);
+        //  request.getRequestDispatcher("Vistas/ListaFacturaVenta.jsp").forward(request, response);
+        // Redirigir para cargar el cliente predeterminado
+        CargarCliente(request, response);
     }
 
     private void CargarCliente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -498,8 +517,8 @@ public class ControladorFacturaventa extends HttpServlet {
                 // Actualizar el carrito en la sesión
                 request.getSession().setAttribute("carrito", carritoVenta);
 
-                 // Redirigir para cargar el cliente predeterminado
-            CargarCliente(request, response);
+                // Redirigir para cargar el cliente predeterminado
+                CargarCliente(request, response);
             } else {
                 request.setAttribute("errorMessage", "Carrito no encontrado.");
                 request.getRequestDispatcher("Vistas/ListaFacturaVenta.jsp").forward(request, response);
@@ -540,6 +559,119 @@ public class ControladorFacturaventa extends HttpServlet {
             request.setAttribute("mensaje", "Error al registrar el Consecutivo");
             request.getRequestDispatcher("Vistas/ListaFacturaVenta.jsp").forward(request, response);
         }
+    }
+
+    private void CrearCliente2(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+
+            Clientes clientes = new Clientes();
+
+            // . Se toma la inforacion  del for y se le pasa directamente al obj
+            clientes.setNombres(request.getParameter("nombres"));
+            clientes.setTelefono(request.getParameter("telefono"));
+
+            if (DaoFacturas.grabarCliente(clientes)) {
+                request.setAttribute("mensajeExito", "el Cliente fue registrado");
+            } else {
+                request.setAttribute("mensajeErrro", "el Cliente no fue registrado, validar campos ingresados");
+            }
+
+            clientesL(request, response);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            request.setAttribute("mensaje", "Error al registrar el Consecutivo");
+            clientesL(request, response);
+        }
+    }
+
+    private void clientesL(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            List<Clientes> lt = DaoFacturas.listar();
+            request.setAttribute("listarClt2", lt);
+            request.getRequestDispatcher("Vistas/ListaClientes.jsp").forward(request, response);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            request.setAttribute("mensaje", "Error al listar los proveedores");
+            request.getRequestDispatcher("Vistas/ListaClientes.jsp").forward(request, response);
+        }
+    }
+
+    private void editCl(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            // Obtener el ID del parámetro de solicitud y almacenarlo en la variable de instancia
+            ide = Integer.parseInt(request.getParameter("id"));
+            Clientes clt = DaoFacturas.obtenerClientePorId(ide);
+
+            // Establecer la categoría a editar y una bandera para indicar que estamos editando
+            request.setAttribute("CLS", clt);
+            request.setAttribute("isEditing", true); // Indicador de edición
+
+            clientesL(request, response);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            request.setAttribute("mensaje", "Error al editar el consecutivo");
+            clientesL(request, response);
+        }
+    }
+
+    private void update(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            // Utilizar la variable de instancia para obtener el ID
+            Clientes clt = DaoFacturas.obtenerClientePorId(ide);
+            request.setAttribute("CLS", clt);
+
+            Clientes cl2 = new Clientes();
+
+            cl2.setNombres(request.getParameter("nombres"));
+            cl2.setTelefono(request.getParameter("telefono"));
+
+            cl2.setId(ide);
+
+            boolean actualizacionExitosa = DaoFacturas.editar(cl2);
+
+            if (actualizacionExitosa) {
+                request.setAttribute("mensaje", "Cliente actualizado correctamente");
+            } else {
+                request.setAttribute("mensaje", "No se pudo actualizar el Cliente");
+            }
+
+            // Limpia los campos
+            request.setAttribute("CLS", new Clientes());
+
+            clientesL(request, response);
+
+        } catch (IOException | NumberFormatException | ServletException ex) {
+            request.setAttribute("mensaje", "Error al actualizar el proveedor: " + ex.getMessage());
+
+            clientesL(request, response);
+        }
+    }
+
+    private void eliminarCliente(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+
+            if (DaoFacturas.eliminar(id)) {
+                request.setAttribute("mensaje", "El proveedor fue eliminado correctamente");
+            } else {
+                request.setAttribute("mensaje", "No se pudo eliminar el Cliente");
+            }
+
+            clientesL(request, response);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            request.setAttribute("mensaje", "Error al eliminar el cliente");
+            clientesL(request, response);
+        }
+
     }
 
     @Override

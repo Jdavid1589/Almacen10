@@ -197,6 +197,21 @@ button.btn-success {
     }
 
 }
+@media print {
+    .parte1_ {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        height: 100vh;
+        margin: 0 auto;
+    }
+
+    .parte1 { /* Reemplaza con la clase o id de la zona oculta */
+        display: none; /* Oculta completamente esa sección al imprimir */
+    }
+}
+
 
 .styled-input:focus {
     border-color: #007bff; /* Cambia el color del borde cuando el input está activo */

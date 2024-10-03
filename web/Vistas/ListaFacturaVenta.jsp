@@ -69,7 +69,7 @@
         <main class="container-fluid">
             <section class="row">
                 <article class="col-sm-5">
-                    <div class="card">
+                    <div class="card parte1">
                         <div class="card-body">
                             <form id="formAgregarVenta" action="ControladorFacturaventa" method="POST" autocomplete="off" >
 
@@ -182,7 +182,7 @@
                 </article>
 
                 <!-- Sección del carrito -->
-                <article class="col-sm-7">
+                <article class="col-sm-7 parte1_">
                     <div class="card">
                         <legend class="tituloPrincipal">Detalles</legend>
                         <div class="card-body">
@@ -296,13 +296,13 @@
 
                             <div class="d-flex justify-content-center mt-3">
                                 <!-- Botón para generar compra -->
-                                <form action="ControladorFacturaventa" onclick="print()" method="POST" class="mr-2">
+                                <form class="parte1" action="ControladorFacturaventa" onclick="print()" method="POST" class="mr-2">
                                     <input type="hidden" name="accion" value="GenerarVenta">
                                     <button class="btn btn-success btn-custom" type="submit">Facturar</button>
                                 </form>
 
                                 <!-- Botón para cancelar la venta -->
-                                <form action="ControladorFacturaventa" method="POST">
+                                <form class="parte1" action="ControladorFacturaventa" method="POST">
                                     <input type="hidden" name="accion" value="CancelarVenta">
                                     <button class="btn btn-secondary btn-custom" type="submit">Cancelar Venta</button>
                                 </form>

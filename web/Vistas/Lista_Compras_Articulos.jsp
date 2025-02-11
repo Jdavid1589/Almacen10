@@ -140,9 +140,8 @@
                                         </div>
 
                                         <div class="col-sm-6">
-                                            <input 
-                                                style="border: 2px solid #1F4E79; font-weight: bold;font-size: 1.1rem;   text-transform: uppercase; " 
-                                                type="text" class="formulario__input form-control" id="producto" name="producto" value="${listapr.productos}" placeholder="Producto" readonly>
+                                            <input style="border: 2px solid #1F4E79; font-weight: bold;font-size: 1.1rem;   text-transform: uppercase; " 
+                                                type="text" class="formulario__input form-control" id="productos" name="productos" value="${lista.productos}" placeholder="Productos" readonly>
 
                                         </div>
                                     </div>

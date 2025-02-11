@@ -21,7 +21,10 @@
     </head>
 
     <body>
-        <nav class="navbar navbar-expand-lg border-3 fixed-top">
+        
+     
+    </header>
+         <nav class="navbar navbar-expand-lg border-3 fixed-top">
             <div class="container-fluid">
                 <a>
                     <img src="./img/LogoJB3.jpg" alt="" height="40" width="40" style="left: 30px">
@@ -33,19 +36,19 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item ml-5">
-                            <a class="btn btn-outline-light etiqueta_a" href="ControladorProductos?accion=listar" target="myframe">Bodega/Productos</a>
+                            <a class="btn btn-warning" href="ControladorProductos?accion=listar" target="myframe">Bodega/Productos</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="btn btn-outline-light etiqueta_a" href="ControladorCompras?accion=FacturaCompra" target="myframe">Ingreso Mercancia</a>
+                            <a class="btn btn-warning" href="ControladorCompras?accion=FacturaCompra" target="myframe">Ingreso Mercancia</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="btn btn-outline-light etiqueta_a" href="ControladorFacturaventa?accion=ListaFactura" target="myframe">Ventas</a>
+                            <a class="btn btn-warning" href="ControladorFacturaventa?accion=ListaFactura" target="myframe">Ventas</a>
                         </li>
 
                         <li class="nav-item dropdown">
-                            <a class="btn btn-outline-light dropdown-toggle etiqueta_a" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="b btn-info" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Registros Varios
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -62,9 +65,9 @@
                         </li>
                     </ul>
 
-                    <!-- Posiciona el botón de cierre de sesión en la esquina derecha -->
-                    <form action="ControladorValidar" method="POST" class="mx-auto">
-                        <button class="btn btn-outline-light-salir" name="accion" value="Salir">Cerrar Sesión</button>
+                    <!--Posiciona el botón de cierre de sesión en la esquina derecha -->
+                   <form action="ControladorValidar" method="POST" class="mx-auto">
+                        <button class="btn btn-danger" name="accion" value="Salir">Cerrar Sesión</button>
                     </form>
                 </div>
             </div>
@@ -84,7 +87,21 @@
             </div>
         </div>
     </div>
-
+    
+      <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                color: #333;
+                margin: 0;
+                padding: 0;
+                background-image: url('./img/img_abarrotes.avif'); /* Cambia esta ruta por la ubicación de tu imagen */
+                background-size: cover; /* Asegura que la imagen cubra todo el fondo */
+                background-repeat: no-repeat; /* Evita que la imagen se repita */
+                background-attachment: fixed; /* Fija la imagen de fondo para un efecto más elegante */
+            }
+        </style>
+     
 
     <script>
         // Función para ocultar el título cuando el iframe cargue una nueva página

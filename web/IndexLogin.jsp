@@ -10,6 +10,7 @@
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
         <link href="./Vistas/EstilosCSS/EstilosLogin.css" rel="stylesheet" type="text/css"/>
+        
         <title>Sistema Control Inventarios</title>
 
     </head>
@@ -41,14 +42,14 @@
         </div>
 
         <!-- Estilos -->
-        <style>
+      <style>
             body {
                 font-family: Arial, sans-serif;
                 background-color: #f4f4f4;
                 color: #333;
                 margin: 0;
                 padding: 0;
-                background-image: url('./img/img_abarrotes.avif'); /* Cambia esta ruta por la ubicación de tu imagen */
+                background-image: url('./img/costella.png'); /* Cambia esta ruta por la ubicación de tu imagen */
                 background-size: cover; /* Asegura que la imagen cubra todo el fondo */
                 background-repeat: no-repeat; /* Evita que la imagen se repita */
                 background-attachment: fixed; /* Fija la imagen de fondo para un efecto más elegante */

@@ -82,7 +82,7 @@
         <div class="card-body col-sm-12 ">
 
             <div  style="margin-top:60px; margin-left: 20px ">
-                <span  class="btn btn-primary text-warning my-2 " title="Agregar Productos Nuevos" data-toggle="modal" data-target="#registroCosecutivo">
+                <span  class="btn btn-success " title="Agregar Productos Nuevos" data-toggle="modal" data-target="#registroCosecutivo">
                     <i class="fas fa-plus"></i>  Agregar Nuevo
                 </span>
             </div>
@@ -168,7 +168,7 @@
                     <div class="modal-content" style="background-color: #F2F2F2;"> <!-- Cambia el color de fondo aquí -->
                         <div class="modal-header">
 
-                            <h5 class="modal-title text-primary  mx-auto"  style="font-size: 22px; margin-top:  25px; " id="registroModalLabel">REGRISTRAR PRODUCTO</h5>
+                            <h5 class="modal-title text-primary  mx-auto"  style="font-size: 22px; margin-top:  25px; " id="registroModalLabel">REGISTRAR PRODUCTO</h5>
 
                             <!-- Botón de cerrar estilizado -->
                             <button type="button" class="close elegant-close" data-dismiss="modal" aria-label="Close">

@@ -12,7 +12,7 @@ public class Conexion {
     private static final String URL = "jdbc:mysql://localhost:3306/" + DATABASE_NAME + "?useUnicode=true&characterEncoding=UTF-8";
 
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "jdproot123456";
+    private static final String PASSWORD = ""; // BD Jorge sin Contraseña
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 
     private static Conexion instancia;

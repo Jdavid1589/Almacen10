@@ -115,7 +115,7 @@
 
         <div class="modal-content" style="background-color: #F2F2F2;"> <!-- Cambia el color de fondo aquí -->
             <div class="modal-header">
-                <h5 class="modal-title text-primary  mx-auto"  style="font-size: 22px;" id="registroModalLabel">REGRISTRAR CONSECUTIVO</h5>
+                <h5 class="modal-title text-primary  mx-auto"  style="font-size: 22px;" id="registroModalLabel">REGISTRAR CONSECUTIVO</h5>
                 <!-- Botón de cerrar estático -->
                 <button type="button" class="close"  data-dismiss="modal" aria-label="Close" style="position: static;">
                     <span aria-hidden="true">&times;</span>
